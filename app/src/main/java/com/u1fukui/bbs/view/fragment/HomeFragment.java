@@ -1,4 +1,4 @@
-package com.u1fukui.bbs;
+package com.u1fukui.bbs.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

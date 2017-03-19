@@ -1,4 +1,4 @@
-package com.u1fukui.bbs;
+package com.u1fukui.bbs.view.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,9 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
+import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.ActivityMainBinding;
+import com.u1fukui.bbs.view.fragment.MyPageFragment;
+import com.u1fukui.bbs.view.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 

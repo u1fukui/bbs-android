@@ -1,4 +1,4 @@
-package com.u1fukui.bbs;
+package com.u1fukui.bbs.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.u1fukui.bbs.databinding.FragmentHomeBinding;
 import com.u1fukui.bbs.databinding.FragmentMypageBinding;
 
 public class MyPageFragment extends Fragment {
