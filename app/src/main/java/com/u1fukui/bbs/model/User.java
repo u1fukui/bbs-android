@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @AllArgsConstructor
-public class Category implements Serializable {
+public class User implements Serializable {
 
-    private static final long serialVersionUID = 4312405835923148571L;
+    private static final long serialVersionUID = 8679411212262196713L;
 
-    public int id;
+    public long id;
 
     public String name;
 }

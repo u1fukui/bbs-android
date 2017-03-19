@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return categoryList.get(position).getName();
+            return categoryList.get(position).name;
         }
     }
 }
