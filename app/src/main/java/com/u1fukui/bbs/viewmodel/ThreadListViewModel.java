@@ -6,7 +6,7 @@ import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
 
-import com.u1fukui.bbs.model.Thread;
+import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.User;
 
 import java.util.ArrayList;
@@ -46,8 +46,8 @@ public class ThreadListViewModel implements ViewModel {
         List<ThreadViewModel> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             User author = new User(i, "作者" + i);
-            Thread thread = new Thread(i, "タイトル" + i, "本文です", author, new Date(), new Date());
-            list.add(new ThreadViewModel(thread));
+            BbsThread bbsThread = new BbsThread(i, "タイトル" + i, "本文です", author, new Date(), new Date());
+            list.add(new ThreadViewModel(bbsThread));
         }
         renderThreadList(list);
     }

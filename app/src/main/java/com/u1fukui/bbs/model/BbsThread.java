@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Thread implements Serializable {
+public class BbsThread implements Serializable {
 
     private static final long serialVersionUID = -4762213969235749270L;
 
