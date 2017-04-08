@@ -69,6 +69,12 @@ public class ThreadListFragment extends Fragment {
         binding.recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
     }
 
+    @Override
+    public void onDestroyView() {
+        binding.unbind();
+        super.onDestroyView();
+    }
+
     private static class Adapter extends ObservableListRecyclerAdapter<ThreadViewModel, BindingHolder<ViewThreadCellBinding>> {
 
         public Adapter(@NonNull ObservableList<ThreadViewModel> list) {

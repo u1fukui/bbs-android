@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         initFragments(savedInstanceState);
     }
 
+    @Override
+    protected void onDestroy() {
+        binding.unbind();
+        super.onDestroy();
+    }
+
     private void initViews() {
         binding.bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

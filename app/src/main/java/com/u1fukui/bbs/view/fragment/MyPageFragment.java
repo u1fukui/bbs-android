@@ -28,4 +28,10 @@ public class MyPageFragment extends Fragment {
         binding = FragmentMypageBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+    @Override
+    public void onDestroyView() {
+        binding.unbind();
+        super.onDestroyView();
+    }
 }

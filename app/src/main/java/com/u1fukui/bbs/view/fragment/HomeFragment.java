@@ -44,6 +44,12 @@ public class HomeFragment extends Fragment {
         binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
 
+    @Override
+    public void onDestroyView() {
+        binding.unbind();
+        super.onDestroyView();
+    }
+
     private List<Category> createCategoryList() {
         List<Category> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
