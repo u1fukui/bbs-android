@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.FragmentThreadListBinding;
 import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
+import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
@@ -47,7 +48,7 @@ public class ThreadListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ThreadListViewModel();
+        viewModel = new ThreadListViewModel(getContext());
     }
 
     @Nullable
@@ -71,6 +72,7 @@ public class ThreadListFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        viewModel.destroy();
         binding.unbind();
         super.onDestroyView();
     }

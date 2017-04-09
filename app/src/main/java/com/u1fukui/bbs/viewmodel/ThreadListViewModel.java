@@ -1,5 +1,6 @@
 package com.u1fukui.bbs.viewmodel;
 
+import android.content.Context;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
@@ -9,6 +10,7 @@ import android.view.View;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.User;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,12 @@ public class ThreadListViewModel implements ViewModel {
 
     @Getter
     private ObservableList<ThreadViewModel> threadViewModelList = new ObservableArrayList<>();
+
+    private WeakReference<Context> contextRef;
+
+    public ThreadListViewModel(Context context) {
+        contextRef = new WeakReference<>(context);
+    }
 
     //region Databinding
     public void onSwipeRefresh() {
@@ -47,7 +55,7 @@ public class ThreadListViewModel implements ViewModel {
         for (int i = 0; i < 20; i++) {
             User author = new User(i, "作者" + i);
             BbsThread bbsThread = new BbsThread(i, "タイトル" + i, "本文です", author, new Date(), new Date());
-            list.add(new ThreadViewModel(bbsThread));
+            list.add(new ThreadViewModel(contextRef.get(), bbsThread));
         }
         renderThreadList(list);
     }
