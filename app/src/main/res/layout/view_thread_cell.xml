@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/blue_alpha_50"
             android:textSize="10sp"
-            android:text="@{viewModel.name}"
+            android:text="@{viewModel.bbsThread.author.name}"
             tools:text="Yuichiさん" />
 
         <TextView

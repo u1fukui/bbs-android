@@ -12,14 +12,11 @@ public class ThreadViewModel implements ViewModel {
 
     public final BbsThread bbsThread;
 
-    public final String name;
-
     public final CharSequence updatedAt;
 
     public ThreadViewModel(BbsThread bbsThread) {
         this.bbsThread = bbsThread;
-        this.name = bbsThread.getAuthor().name;
-        this.updatedAt = DateFormat.format(DATE_FORMAT_PATTERN, bbsThread.getUpdatedAt());
+        this.updatedAt = DateFormat.format(DATE_FORMAT_PATTERN, bbsThread.updatedAt);
     }
 
     public void onClickThread(View view) {

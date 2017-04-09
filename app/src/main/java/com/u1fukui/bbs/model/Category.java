@@ -3,7 +3,6 @@ package com.u1fukui.bbs.model;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @AllArgsConstructor
 public class Category implements Serializable {
