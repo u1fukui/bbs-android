@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.u1fukui.bbs.viewmodel.CommentViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{viewModel::onClickComment}"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.commentNumber}"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="1." />
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@{viewModel.userName}"
+                android:textColor="@color/blue_alpha_50"
+                android:textSize="10sp"
+                tools:text="Yuichiさん" />
+
+            <TextView
+                android:id="@+id/updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{viewModel.createdAt}"
+                android:textColor="@color/grey500"
+                android:textSize="10sp"
+                tools:text="2017/01/01 12:00" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header"
+            android:layout_marginTop="10dp"
+            android:maxLines="3"
+            android:text="@{viewModel.comment.description}"
+            android:textSize="10sp"
+            tools:text="ここに本文を表示します" />
+
+    </RelativeLayout>
+
+</layout>
