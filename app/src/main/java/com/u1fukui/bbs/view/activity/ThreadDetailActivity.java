@@ -50,9 +50,10 @@ public class ThreadDetailActivity extends AppCompatActivity {
 
         BbsThread thread = (BbsThread) getIntent().getSerializableExtra(EXTRA_THREAD);
         viewModel = new ThreadDetailViewModel(thread);
-        viewModel.start();
+        binding.setViewModel(viewModel);
 
         initViews();
+        viewModel.start();
     }
 
     private void initViews() {

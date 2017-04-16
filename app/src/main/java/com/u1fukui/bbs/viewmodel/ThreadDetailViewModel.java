@@ -35,6 +35,7 @@ public class ThreadDetailViewModel implements ViewModel {
 
     //region Databinding
     public void onSwipeRefresh() {
+        refreshing.set(true);
         loadCommentList();
     }
     //endregion
@@ -45,6 +46,7 @@ public class ThreadDetailViewModel implements ViewModel {
 
     private void loadCommentList() {
         if (loadingVisibility.get() == View.VISIBLE) {
+            refreshing.set(false);
             return;
         }
         loadingVisibility.set(View.VISIBLE);

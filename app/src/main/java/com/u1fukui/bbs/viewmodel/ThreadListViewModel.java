@@ -36,6 +36,7 @@ public class ThreadListViewModel implements ViewModel {
 
     //region Databinding
     public void onSwipeRefresh() {
+        refreshing.set(true);
         loadThreadList();
     }
     //endregion
@@ -46,6 +47,7 @@ public class ThreadListViewModel implements ViewModel {
 
     private void loadThreadList() {
         if (loadingVisibility.get() == View.VISIBLE) {
+            refreshing.set(false);
             return;
         }
         loadingVisibility.set(View.VISIBLE);
