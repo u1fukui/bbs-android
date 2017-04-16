@@ -56,7 +56,7 @@ public class ThreadListViewModel implements ViewModel {
         List<ThreadViewModel> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             User author = new User(i, "作者" + i);
-            BbsThread bbsThread = new BbsThread(i, "タイトル" + i, "本文です", author, new Date(), new Date());
+            BbsThread bbsThread = new BbsThread(i, "タイトル" + i, author, i, new Date(), new Date());
             list.add(new ThreadViewModel(contextRef.get(), bbsThread));
         }
         renderThreadList(list);

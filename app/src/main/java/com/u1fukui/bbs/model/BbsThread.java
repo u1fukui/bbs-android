@@ -14,9 +14,9 @@ public class BbsThread implements Serializable {
 
     public String title;
 
-    public String description;
-
     public User author;
+
+    public int commentCount;
 
     public Date createdAt;
 

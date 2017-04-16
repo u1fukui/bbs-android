@@ -9,53 +9,62 @@
             type="com.u1fukui.bbs.viewmodel.ThreadViewModel" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:onClick="@{viewModel::onClickThread}">
-
-        <TextView
-            android:id="@+id/author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/blue_alpha_50"
-            android:textSize="10sp"
-            android:text="@{viewModel.bbsThread.author.name}"
-            tools:text="Yuichiさん" />
-
-        <TextView
-            android:id="@+id/updated_at"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/author"
-            android:textColor="@color/grey500"
-            android:textSize="10sp"
-            android:text="@{viewModel.updatedAt}"
-            tools:text="2017/01/01 12:00 更新" />
+        android:onClick="@{viewModel::onClickThread}"
+        android:orientation="vertical"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/updated_at"
-            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="2"
             android:text="@{viewModel.bbsThread.title}"
-            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             tools:text="タイトル" />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title"
-            android:layout_marginTop="10dp"
-            android:maxLines="3"
-            android:textSize="10sp"
-            android:text="@{viewModel.bbsThread.description}"
-            tools:text="ここに本文を表示します" />
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.updatedAt}"
+                android:textColor="@color/grey500"
+                android:textSize="12sp"
+                tools:text="2017/01/01 12:00" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_chat_bubble_outline_black_18dp"
+                android:drawablePadding="3dp"
+                android:gravity="center_vertical"
+                android:text="@{Integer.toString(viewModel.bbsThread.commentCount)}"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                tools:text="0" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </layout>
