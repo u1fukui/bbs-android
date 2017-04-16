@@ -53,9 +53,9 @@ public class ThreadDetailViewModel implements ViewModel {
 
         //TODO: サーバからデータを取得する
         List<CommentViewModel> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 1; i <= 20; i++) {
             User author = new User(i, "コメンター" + i);
-            Comment comment = new Comment(i, bbsThread.id, i, "コメント", author, new Date());
+            Comment comment = new Comment(i, bbsThread.id, i, "コメント", author, i, new Date());
             list.add(new CommentViewModel(comment));
         }
         renderCommentList(list);
