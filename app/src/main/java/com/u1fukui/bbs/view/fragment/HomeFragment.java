@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.u1fukui.bbs.databinding.FragmentHomeBinding;
+import com.u1fukui.bbs.databinding.FragmentTabBinding;
 import com.u1fukui.bbs.model.Category;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class HomeFragment extends Fragment {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    private FragmentHomeBinding binding;
+    private FragmentTabBinding binding;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentTabBinding.inflate(inflater, container, false);
         initViews();
 
         return binding.getRoot();
