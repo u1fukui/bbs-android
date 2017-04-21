@@ -48,7 +48,6 @@ public class MyPageFragment extends Fragment {
 
     private static class MyPagePagerAdapter extends FragmentPagerAdapter {
 
-        //TODO: 実装
         enum Tab {
             FAVORITE {
                 @Override
@@ -65,7 +64,7 @@ public class MyPageFragment extends Fragment {
             HISTORY {
                 @Override
                 Fragment createInsatance() {
-                    return FavoriteThreadListFragment.newInstance();
+                    return HistoryThreadListFragment.newInstance();
                 }
 
                 @Override
