@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return ThreadListFragment.newInstance(categoryList.get(position));
+            return CategoryThreadListFragment.newInstance(categoryList.get(position));
         }
 
         @Override

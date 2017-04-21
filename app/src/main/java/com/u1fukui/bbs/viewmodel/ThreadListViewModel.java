@@ -8,11 +8,10 @@ import android.databinding.ObservableList;
 import android.view.View;
 
 import com.u1fukui.bbs.model.BbsThread;
-import com.u1fukui.bbs.model.User;
+import com.u1fukui.bbs.repository.ThreadListRepository;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
@@ -30,8 +29,11 @@ public class ThreadListViewModel implements ViewModel {
 
     private WeakReference<Context> contextRef;
 
-    public ThreadListViewModel(Context context) {
-        contextRef = new WeakReference<>(context);
+    private ThreadListRepository repository;
+
+    public ThreadListViewModel(Context context, ThreadListRepository repository) {
+        this.contextRef = new WeakReference<>(context);
+        this.repository = repository;
     }
 
     //region Databinding
@@ -53,13 +55,12 @@ public class ThreadListViewModel implements ViewModel {
         loadingVisibility.set(View.VISIBLE);
 
         //TODO: サーバからデータを取得する
-        List<ThreadViewModel> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            User author = new User(i, "作者" + i);
-            BbsThread bbsThread = new BbsThread(i, "タイトル" + i, author, i, new Date(), new Date());
-            list.add(new ThreadViewModel(contextRef.get(), bbsThread));
+        List<BbsThread> threadList = repository.fetchThreadList();
+        List<ThreadViewModel> viewModelList = new ArrayList<>();
+        for (BbsThread thread : threadList) {
+            viewModelList.add(new ThreadViewModel(contextRef.get(), thread));
         }
-        renderThreadList(list);
+        renderThreadList(viewModelList);
     }
 
     private void renderThreadList(List<ThreadViewModel> list) {

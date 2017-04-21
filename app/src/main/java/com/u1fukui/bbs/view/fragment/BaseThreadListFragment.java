@@ -14,18 +14,13 @@ import android.view.ViewGroup;
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.FragmentThreadListBinding;
 import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
-import com.u1fukui.bbs.model.BbsThread;
-import com.u1fukui.bbs.model.Category;
+import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
 import com.u1fukui.bbs.viewmodel.ThreadListViewModel;
 import com.u1fukui.bbs.viewmodel.ThreadViewModel;
 
-public class ThreadListFragment extends Fragment {
-
-    public static final String TAG = ThreadListFragment.class.getSimpleName();
-
-    private static final String ARG_CATEGORY = "arg.categroy";
+public abstract class BaseThreadListFragment extends Fragment {
 
     private FragmentThreadListBinding binding;
 
@@ -33,22 +28,12 @@ public class ThreadListFragment extends Fragment {
 
     private Adapter adapter;
 
-    public static ThreadListFragment newInstance(Category category) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_CATEGORY, category);
-
-        ThreadListFragment instance = new ThreadListFragment();
-        instance.setArguments(args);
-        return instance;
-    }
-
-    public ThreadListFragment() {
-    }
+    abstract ThreadListRepository getRepository();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ThreadListViewModel(getContext());
+        viewModel = new ThreadListViewModel(getContext(), getRepository());
     }
 
     @Nullable
