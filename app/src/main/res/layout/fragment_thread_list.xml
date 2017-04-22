@@ -27,6 +27,15 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="14dp"
+            app:srcCompat="@drawable/ic_create_white_24dp"
+            android:onClick="@{viewModel.onClickFloatingActionButton}"/>
+
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,14 +1,17 @@
 package com.u1fukui.bbs.viewmodel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
+import android.widget.Toast;
 
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.repository.ThreadListRepository;
+import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -40,6 +43,13 @@ public class ThreadListViewModel implements ViewModel {
     public void onSwipeRefresh() {
         refreshing.set(true);
         loadThreadList();
+    }
+
+    public void onClickFloatingActionButton(View view) {
+        Context context = contextRef.get();
+        if (context != null) {
+            context.startActivity(new Intent(context, CreateThreadActivity.class));
+        }
     }
     //endregion
 

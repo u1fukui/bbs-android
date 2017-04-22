@@ -20,6 +20,7 @@
         </activity>
 
         <activity android:name=".view.activity.ThreadDetailActivity" />
+        <activity android:name=".view.activity.CreateThreadActivity" />
     </application>
 
 </manifest>

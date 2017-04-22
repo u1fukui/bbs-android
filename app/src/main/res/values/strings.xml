@@ -3,4 +3,6 @@
 
     <string name="main_tab_home">Home</string>
     <string name="main_tab_mypage">MyPage</string>
+
+    <string name="create_thread_title">スレッド作成</string>
 </resources>
