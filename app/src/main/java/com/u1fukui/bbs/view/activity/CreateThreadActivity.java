@@ -16,7 +16,7 @@ public class CreateThreadActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_thread);
 
+        initToolbar(binding.toolbar, true);
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle(R.string.create_thread_title);
     }
 }

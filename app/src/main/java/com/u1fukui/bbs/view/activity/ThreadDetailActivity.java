@@ -47,11 +47,11 @@ public class ThreadDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_thread_detail);
-        setSupportActionBar(binding.toolbar);
 
         BbsThread thread = (BbsThread) getIntent().getSerializableExtra(EXTRA_THREAD);
         viewModel = new ThreadDetailViewModel(thread);
         binding.setViewModel(viewModel);
+        initToolbar(binding.toolbar, true);
 
         initViews();
         viewModel.start();
