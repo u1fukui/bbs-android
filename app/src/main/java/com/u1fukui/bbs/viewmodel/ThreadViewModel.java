@@ -2,7 +2,6 @@ package com.u1fukui.bbs.viewmodel;
 
 import android.content.Context;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 
 import com.u1fukui.bbs.model.BbsThread;
