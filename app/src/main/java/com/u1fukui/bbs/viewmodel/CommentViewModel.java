@@ -1,5 +1,7 @@
 package com.u1fukui.bbs.viewmodel;
 
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableInt;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -12,22 +14,29 @@ public class CommentViewModel implements ViewModel {
 
     public final Comment comment;
 
-    public final String commentNumber;
-
-    public final String userName;
-
     public final CharSequence createdAt;
+
+    public final ObservableBoolean isLiked;
+
+    public final ObservableInt likeCount;
 
     public CommentViewModel(Comment comment) {
         this.comment = comment;
-        this.commentNumber = Integer.toString(comment.displayNumber);
-        this.userName = comment.author.name;
         this.createdAt = DateFormat.format(DATE_FORMAT_PATTERN, comment.createdAt);
+        this.isLiked = new ObservableBoolean(comment.isLiked);
+        this.likeCount = new ObservableInt(comment.likeCount);
     }
 
     public void onClickComment(View view) {
         //TODO: 実装
         Log.d("TAG", "click comment: " + comment.id);
+    }
+
+    public void onClickLikeButton(View view) {
+        isLiked.set(!isLiked.get());
+        likeCount.set(isLiked.get() ? likeCount.get() + 1 : likeCount.get() - 1);
+
+        //TODO: アニメーション
     }
 
     @Override

@@ -22,5 +22,7 @@ public class Comment implements Serializable {
 
     public int likeCount;
 
+    public boolean isLiked;
+
     public Date createdAt;
 }
