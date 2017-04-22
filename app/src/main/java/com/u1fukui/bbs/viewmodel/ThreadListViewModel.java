@@ -7,7 +7,6 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
-import android.widget.Toast;
 
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.repository.ThreadListRepository;
@@ -17,6 +16,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 
 public class ThreadListViewModel implements ViewModel {
@@ -64,13 +68,30 @@ public class ThreadListViewModel implements ViewModel {
         }
         loadingVisibility.set(View.VISIBLE);
 
-        //TODO: サーバからデータを取得する
-        List<BbsThread> threadList = repository.fetchThreadList();
-        List<ThreadViewModel> viewModelList = new ArrayList<>();
-        for (BbsThread thread : threadList) {
-            viewModelList.add(new ThreadViewModel(contextRef.get(), thread));
-        }
-        renderThreadList(viewModelList);
+        repository.fetchThreadList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<BbsThread>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        // nop
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<BbsThread> bbsThreads) {
+                        List<ThreadViewModel> viewModelList = new ArrayList<>();
+                        for (BbsThread thread : bbsThreads) {
+                            viewModelList.add(new ThreadViewModel(contextRef.get(), thread));
+                        }
+                        renderThreadList(viewModelList);
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        //TODO: 実装
+                    }
+                });
     }
 
     private void renderThreadList(List<ThreadViewModel> list) {

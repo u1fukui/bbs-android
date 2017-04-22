@@ -5,8 +5,9 @@ import com.u1fukui.bbs.model.BbsThread;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface ThreadListRepository {
 
-    //TODO: return Single
-    abstract List<BbsThread> fetchThreadList();
+    Single<List<BbsThread>> fetchThreadList();
 }
