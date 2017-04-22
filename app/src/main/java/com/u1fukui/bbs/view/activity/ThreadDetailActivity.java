@@ -7,24 +7,21 @@ import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.ActivityThreadDetailBinding;
 import com.u1fukui.bbs.databinding.ViewCommentCellBinding;
-import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
 import com.u1fukui.bbs.viewmodel.CommentViewModel;
 import com.u1fukui.bbs.viewmodel.ThreadDetailViewModel;
-import com.u1fukui.bbs.viewmodel.ThreadViewModel;
 
-public class ThreadDetailActivity extends AppCompatActivity {
+public class ThreadDetailActivity extends BaseActivity {
 
     public static final String TAG = ThreadDetailActivity.class.getSimpleName();
 
@@ -35,6 +32,10 @@ public class ThreadDetailActivity extends AppCompatActivity {
     private ThreadDetailViewModel viewModel;
 
     private Adapter adapter;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     public static Intent createIntent(Context context, BbsThread thread) {
         Intent intent = new Intent(context, ThreadDetailActivity.class);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -78,11 +79,11 @@
                 android:id="@+id/like_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="6dp"
                 android:background="@android:color/transparent"
-                android:selected="@{viewModel.isLiked}"
                 android:onClick="@{viewModel::onClickLikeButton}"
-                android:src="@drawable/btn_like" />
+                android:padding="6dp"
+                android:selected="@{viewModel.isLiked}"
+                app:srcCompat="@drawable/btn_like" />
 
             <TextView
                 android:id="@+id/like_count"

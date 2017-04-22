@@ -15,7 +15,7 @@ import com.u1fukui.bbs.databinding.ActivityMainBinding;
 import com.u1fukui.bbs.view.fragment.MyPageFragment;
 import com.u1fukui.bbs.view.fragment.HomeFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
 
