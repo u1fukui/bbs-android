@@ -5,4 +5,8 @@
     <string name="main_tab_mypage">MyPage</string>
 
     <string name="create_thread_title">スレッド作成</string>
+    <string name="create_thread_item_category">カテゴリ</string>
+    <string name="create_thread_item_title">タイトル</string>
+    <string name="create_thread_item_description">本文</string>
+    <string name="create_thread_btn_post">投稿</string>
 </resources>

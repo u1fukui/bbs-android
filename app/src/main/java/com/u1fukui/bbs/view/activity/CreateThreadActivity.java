@@ -6,17 +6,23 @@ import android.support.annotation.Nullable;
 
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.ActivityCreateThreadBinding;
+import com.u1fukui.bbs.repository.CategoryListRepository;
+import com.u1fukui.bbs.viewmodel.CreateThreadViewModel;
 
 public class CreateThreadActivity extends BaseActivity {
 
-    ActivityCreateThreadBinding binding;
+    private ActivityCreateThreadBinding binding;
+
+    private CreateThreadViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new CreateThreadViewModel(new CategoryListRepository());
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_thread);
+        binding.setViewModel(viewModel);
 
         initToolbar(binding.toolbar, true);
-        setSupportActionBar(binding.toolbar);
+        viewModel.start();
     }
 }
