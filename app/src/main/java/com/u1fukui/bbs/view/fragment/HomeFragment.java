@@ -1,5 +1,6 @@
 package com.u1fukui.bbs.view.fragment;
 
+import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,23 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.u1fukui.bbs.databinding.FragmentTabBinding;
+import com.u1fukui.bbs.databinding.FragmentHomeBinding;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.CategoryListRepository;
-
-import java.util.List;
-
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import com.u1fukui.bbs.viewmodel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    private FragmentTabBinding binding;
+    private FragmentHomeBinding binding;
+
+    private HomeViewModel viewModel;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -35,41 +31,27 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = new HomeViewModel(new CategoryListRepository());
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTabBinding.inflate(inflater, container, false);
-        fetchCategoryList();
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding.setViewModel(viewModel);
+        initViews();
+
+        viewModel.start();
 
         return binding.getRoot();
     }
 
-    private void fetchCategoryList() {
-        CategoryListRepository repository = new CategoryListRepository();
-        repository.fetchCategoryList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Category>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        // nop
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull List<Category> categoryList) {
-                        initViews(categoryList);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        //TODO: 実装
-                    }
-                });
-    }
-
-    private void initViews(List<Category> categoryList) {
+    private void initViews() {
+        binding.viewPager.setAdapter(new HomePagerAdapter(getChildFragmentManager(), viewModel.getCategoryList()));
         binding.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        binding.viewPager.setAdapter(new HomePagerAdapter(getChildFragmentManager(), categoryList));
         binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
 
@@ -81,11 +63,37 @@ public class HomeFragment extends Fragment {
 
     private static class HomePagerAdapter extends FragmentPagerAdapter {
 
-        private final List<Category> categoryList;
+        private final ObservableList<Category> categoryList;
 
-        public HomePagerAdapter(FragmentManager manager, List<Category> categoryList) {
+        public HomePagerAdapter(FragmentManager manager, ObservableList<Category> categoryList) {
             super(manager);
             this.categoryList = categoryList;
+            this.categoryList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<Category>>() {
+                @Override
+                public void onChanged(ObservableList<Category> sender) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeChanged(ObservableList<Category> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeInserted(ObservableList<Category> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeMoved(ObservableList<Category> sender, int fromPosition, int toPosition, int itemCount) {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onItemRangeRemoved(ObservableList<Category> sender, int positionStart, int itemCount) {
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         @Override

@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.u1fukui.bbs.databinding.FragmentTabBinding;
+import com.u1fukui.bbs.databinding.FragmentMypageBinding;
 
 public class MyPageFragment extends Fragment {
 
     public static final String TAG = MyPageFragment.class.getSimpleName();
 
-    private FragmentTabBinding binding;
+    private FragmentMypageBinding binding;
 
     public static MyPageFragment newInstance() {
         return new MyPageFragment();
@@ -28,7 +28,7 @@ public class MyPageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTabBinding.inflate(inflater, container, false);
+        binding = FragmentMypageBinding.inflate(inflater, container, false);
         initViews();
 
         return binding.getRoot();
