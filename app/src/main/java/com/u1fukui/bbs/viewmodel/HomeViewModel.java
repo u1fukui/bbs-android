@@ -31,7 +31,9 @@ public class HomeViewModel implements ViewModel{
     }
 
     public void start() {
-        fetchCategoryList();
+        if (categoryList.isEmpty()) {
+            fetchCategoryList();
+        }
     }
 
     private void fetchCategoryList() {

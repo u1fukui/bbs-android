@@ -58,7 +58,9 @@ public class ThreadListViewModel implements ViewModel {
     //endregion
 
     public void start() {
-        loadThreadList();
+        if (threadViewModelList.isEmpty()) {
+            loadThreadList();
+        }
     }
 
     private void loadThreadList() {
