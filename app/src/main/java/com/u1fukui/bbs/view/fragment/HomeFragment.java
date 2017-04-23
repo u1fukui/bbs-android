@@ -12,9 +12,15 @@ import android.view.ViewGroup;
 
 import com.u1fukui.bbs.databinding.FragmentTabBinding;
 import com.u1fukui.bbs.model.Category;
+import com.u1fukui.bbs.repository.CategoryListRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class HomeFragment extends Fragment {
 
@@ -33,14 +39,37 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentTabBinding.inflate(inflater, container, false);
-        initViews();
+        fetchCategoryList();
 
         return binding.getRoot();
     }
 
-    private void initViews() {
+    private void fetchCategoryList() {
+        CategoryListRepository repository = new CategoryListRepository();
+        repository.fetchCategoryList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Category>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        // nop
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<Category> categoryList) {
+                        initViews(categoryList);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        //TODO: 実装
+                    }
+                });
+    }
+
+    private void initViews(List<Category> categoryList) {
         binding.tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        binding.viewPager.setAdapter(new HomePagerAdapter(getChildFragmentManager(), createCategoryList()));
+        binding.viewPager.setAdapter(new HomePagerAdapter(getChildFragmentManager(), categoryList));
         binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
 
@@ -48,14 +77,6 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         binding.unbind();
         super.onDestroyView();
-    }
-
-    private List<Category> createCategoryList() {
-        List<Category> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new Category(i, "カテゴリ" + i));
-        }
-        return list;
     }
 
     private static class HomePagerAdapter extends FragmentPagerAdapter {
