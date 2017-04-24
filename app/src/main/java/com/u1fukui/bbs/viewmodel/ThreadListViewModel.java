@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
 
@@ -13,6 +11,7 @@ import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 import com.u1fukui.bbs.view.customview.ErrorView;
+import com.u1fukui.bbs.view.helper.LoadingManager;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -28,15 +27,9 @@ import lombok.Getter;
 public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     //region DataBinding
+    public final LoadingManager loadingManager = new LoadingManager();
+
     public final ObservableBoolean refreshing = new ObservableBoolean(false);
-
-    public final ObservableInt contentVisibility = new ObservableInt(View.GONE);
-
-    public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
-
-    public final ObservableInt errorViewVisibility = new ObservableInt(View.GONE);
-
-    public final ObservableField<String> errorMessage = new ObservableField<>();
     //endregion
 
     @Getter
@@ -72,11 +65,11 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
     }
 
     private void fetchThreadList() {
-        if (loadingVisibility.get() == View.VISIBLE) {
+        if (loadingManager.isLoading()) {
             refreshing.set(false);
             return;
         }
-        loadingVisibility.set(View.VISIBLE);
+        loadingManager.startLoading();
 
         repository.fetchThreadList()
                 .subscribeOn(Schedulers.io())
@@ -99,12 +92,7 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        contentVisibility.set(View.GONE);
-                        loadingVisibility.set(View.GONE);
-
-                        //TODO: エラー文言
-                        errorMessage.set("エラーです");
-                        errorViewVisibility.set(View.VISIBLE);
+                        loadingManager.showErrorView(e);
                     }
                 });
     }
@@ -113,15 +101,12 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
         threadViewModelList.clear();
         threadViewModelList.addAll(list);
 
-        errorViewVisibility.set(View.GONE);
-        loadingVisibility.set(View.GONE);
-        contentVisibility.set(View.VISIBLE);
+        loadingManager.showContentView();
         refreshing.set(false);
     }
 
     @Override
     public void destroy() {
-
     }
 
     @Override

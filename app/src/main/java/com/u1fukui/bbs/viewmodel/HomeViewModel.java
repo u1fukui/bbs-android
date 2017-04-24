@@ -1,14 +1,12 @@
 package com.u1fukui.bbs.viewmodel;
 
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
-import android.view.View;
 
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.CategoryListRepository;
 import com.u1fukui.bbs.view.customview.ErrorView;
+import com.u1fukui.bbs.view.helper.LoadingManager;
 
 import java.util.List;
 
@@ -21,15 +19,7 @@ import lombok.Getter;
 
 public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
-    //region DataBinding
-    public final ObservableInt contentVisibility = new ObservableInt(View.GONE);
-
-    public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
-
-    public final ObservableInt errorViewVisibility = new ObservableInt(View.GONE);
-
-    public final ObservableField<String> errorMessage = new ObservableField<>();
-    //endregion
+    public final LoadingManager loadingManager = new LoadingManager();
 
     @Getter
     private final ObservableList<Category> categoryList = new ObservableArrayList<>();
@@ -47,10 +37,10 @@ public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
     }
 
     private void fetchCategoryList() {
-        if (loadingVisibility.get() == View.VISIBLE) {
+        if (loadingManager.isLoading()) {
             return;
         }
-        loadingVisibility.set(View.VISIBLE);
+        loadingManager.startLoading();
 
         repository.fetchCategoryList()
                 .subscribeOn(Schedulers.io())
@@ -65,20 +55,12 @@ public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
                     public void onSuccess(@NonNull List<Category> categoryList) {
                         HomeViewModel.this.categoryList.clear();
                         HomeViewModel.this.categoryList.addAll(categoryList);
-
-                        errorViewVisibility.set(View.GONE);
-                        loadingVisibility.set(View.GONE);
-                        contentVisibility.set(View.VISIBLE);
+                        loadingManager.showContentView();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        contentVisibility.set(View.GONE);
-                        loadingVisibility.set(View.GONE);
-
-                        //TODO: エラー文言
-                        errorMessage.set("エラーです");
-                        errorViewVisibility.set(View.VISIBLE);
+                        loadingManager.showErrorView(e);
                     }
                 });
     }
