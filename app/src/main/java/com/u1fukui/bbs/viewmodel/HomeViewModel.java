@@ -1,12 +1,14 @@
 package com.u1fukui.bbs.viewmodel;
 
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
 
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.CategoryListRepository;
+import com.u1fukui.bbs.view.customview.ErrorView;
 
 import java.util.List;
 
@@ -17,9 +19,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 
-public class HomeViewModel implements ViewModel{
+public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
+
+    public final ObservableInt contentVisibility = new ObservableInt(View.GONE);
 
     public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
+
+    public final ObservableInt errorViewVisibility = new ObservableInt(View.GONE);
+
+    public final ObservableField<String> errorMessage = new ObservableField<>();
 
     @Getter
     private final ObservableList<Category> categoryList = new ObservableArrayList<>();
@@ -56,13 +64,19 @@ public class HomeViewModel implements ViewModel{
                         HomeViewModel.this.categoryList.clear();
                         HomeViewModel.this.categoryList.addAll(categoryList);
 
+                        errorViewVisibility.set(View.GONE);
                         loadingVisibility.set(View.GONE);
+                        contentVisibility.set(View.VISIBLE);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        //TODO: エラー表示対応
+                        contentVisibility.set(View.GONE);
                         loadingVisibility.set(View.GONE);
+
+                        //TODO: エラー文言
+                        errorMessage.set("エラーです");
+                        errorViewVisibility.set(View.VISIBLE);
                     }
                 });
     }
@@ -70,5 +84,10 @@ public class HomeViewModel implements ViewModel{
     @Override
     public void destroy() {
 
+    }
+
+    @Override
+    public void onClickReloadButton() {
+        fetchCategoryList();
     }
 }

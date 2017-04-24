@@ -9,4 +9,6 @@
     <string name="create_thread_item_title">タイトル</string>
     <string name="create_thread_item_description">本文</string>
     <string name="create_thread_btn_post">投稿</string>
+
+    <string name="error_view_btn_reload">再読込み</string>
 </resources>

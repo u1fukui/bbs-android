@@ -7,13 +7,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.ActivityMainBinding;
-import com.u1fukui.bbs.view.fragment.MyPageFragment;
 import com.u1fukui.bbs.view.fragment.HomeFragment;
+import com.u1fukui.bbs.view.fragment.MyPageFragment;
 
 public class MainActivity extends BaseActivity {
 
