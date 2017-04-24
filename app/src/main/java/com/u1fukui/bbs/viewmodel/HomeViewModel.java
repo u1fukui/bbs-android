@@ -21,6 +21,7 @@ import lombok.Getter;
 
 public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
+    //region DataBinding
     public final ObservableInt contentVisibility = new ObservableInt(View.GONE);
 
     public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
@@ -28,6 +29,7 @@ public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
     public final ObservableInt errorViewVisibility = new ObservableInt(View.GONE);
 
     public final ObservableField<String> errorMessage = new ObservableField<>();
+    //endregion
 
     @Getter
     private final ObservableList<Category> categoryList = new ObservableArrayList<>();

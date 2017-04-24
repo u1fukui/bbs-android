@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.View;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.activity.CreateThreadActivity;
+import com.u1fukui.bbs.view.customview.ErrorView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -23,12 +25,18 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 
-public class ThreadListViewModel implements ViewModel {
+public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     //region DataBinding
     public final ObservableBoolean refreshing = new ObservableBoolean(false);
 
+    public final ObservableInt contentVisibility = new ObservableInt(View.GONE);
+
     public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
+
+    public final ObservableInt errorViewVisibility = new ObservableInt(View.GONE);
+
+    public final ObservableField<String> errorMessage = new ObservableField<>();
     //endregion
 
     @Getter
@@ -46,7 +54,7 @@ public class ThreadListViewModel implements ViewModel {
     //region Databinding
     public void onSwipeRefresh() {
         refreshing.set(true);
-        loadThreadList();
+        fetchThreadList();
     }
 
     public void onClickFloatingActionButton(View view) {
@@ -59,11 +67,11 @@ public class ThreadListViewModel implements ViewModel {
 
     public void start() {
         if (threadViewModelList.isEmpty()) {
-            loadThreadList();
+            fetchThreadList();
         }
     }
 
-    private void loadThreadList() {
+    private void fetchThreadList() {
         if (loadingVisibility.get() == View.VISIBLE) {
             refreshing.set(false);
             return;
@@ -91,7 +99,12 @@ public class ThreadListViewModel implements ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        //TODO: 実装
+                        contentVisibility.set(View.GONE);
+                        loadingVisibility.set(View.GONE);
+
+                        //TODO: エラー文言
+                        errorMessage.set("エラーです");
+                        errorViewVisibility.set(View.VISIBLE);
                     }
                 });
     }
@@ -100,12 +113,19 @@ public class ThreadListViewModel implements ViewModel {
         threadViewModelList.clear();
         threadViewModelList.addAll(list);
 
+        errorViewVisibility.set(View.GONE);
         loadingVisibility.set(View.GONE);
+        contentVisibility.set(View.VISIBLE);
         refreshing.set(false);
     }
 
     @Override
     public void destroy() {
 
+    }
+
+    @Override
+    public void onClickReloadButton() {
+        fetchThreadList();
     }
 }
