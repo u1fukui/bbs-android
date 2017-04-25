@@ -4,6 +4,9 @@
     <string name="main_tab_home">Home</string>
     <string name="main_tab_mypage">MyPage</string>
 
+    <string name="select_category_title">カテゴリ選択</string>
+    <string name="select_category_description">作成するスレッドの\nカテゴリを選択してください</string>
+
     <string name="create_thread_title">スレッド作成</string>
     <string name="create_thread_item_category">カテゴリ</string>
     <string name="create_thread_item_title">タイトル</string>

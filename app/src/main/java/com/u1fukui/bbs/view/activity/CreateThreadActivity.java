@@ -6,23 +6,27 @@ import android.support.annotation.Nullable;
 
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.ActivityCreateThreadBinding;
-import com.u1fukui.bbs.repository.CategoryListRepository;
-import com.u1fukui.bbs.viewmodel.CreateThreadViewModel;
+import com.u1fukui.bbs.view.fragment.SelectCategoryFragment;
 
 public class CreateThreadActivity extends BaseActivity {
 
     private ActivityCreateThreadBinding binding;
 
-    private CreateThreadViewModel viewModel;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new CreateThreadViewModel(new CategoryListRepository());
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_thread);
-        binding.setViewModel(viewModel);
 
         initToolbar(binding.toolbar, true);
-        viewModel.start();
+        initViews(savedInstanceState);
+    }
+
+    private void initViews(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            return;
+        }
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, SelectCategoryFragment.newInstance())
+                .commit();
     }
 }
