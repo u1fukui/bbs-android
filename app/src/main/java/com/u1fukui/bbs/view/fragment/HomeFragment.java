@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new HomeViewModel(new CategoryListRepository());
+        viewModel = new HomeViewModel(getContext(), new CategoryListRepository());
     }
 
     @Nullable

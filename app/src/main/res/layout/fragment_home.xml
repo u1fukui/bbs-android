@@ -13,19 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{viewModel.loadingManager.contentVisibility}">
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tab_layout"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top" />
+                android:layout_height="match_parent">
 
-        </android.support.v4.view.ViewPager>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top" />
+
+            </android.support.v4.view.ViewPager>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="14dp"
+                android:onClick="@{viewModel.onClickFloatingActionButton}"
+                app:srcCompat="@drawable/ic_create_white_24dp" />
+        </FrameLayout>
 
         <com.u1fukui.bbs.view.customview.ErrorView
             android:id="@+id/error_view"
