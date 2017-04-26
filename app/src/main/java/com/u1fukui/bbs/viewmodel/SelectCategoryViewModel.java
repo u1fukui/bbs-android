@@ -7,6 +7,7 @@ import android.databinding.ObservableList;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.CategoryListRepository;
 import com.u1fukui.bbs.view.customview.ErrorView;
+import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 import com.u1fukui.bbs.view.helper.LoadingManager;
 
 import java.util.ArrayList;
@@ -28,8 +29,11 @@ public class SelectCategoryViewModel implements ViewModel, ErrorView.ErrorViewLi
 
     private final CategoryListRepository repository;
 
-    public SelectCategoryViewModel(CategoryListRepository repository) {
+    private final CreateThreadNavigator navigator;
+
+    public SelectCategoryViewModel(CategoryListRepository repository, CreateThreadNavigator navigator) {
         this.repository = repository;
+        this.navigator = navigator;
     }
 
     public void start() {
@@ -57,7 +61,7 @@ public class SelectCategoryViewModel implements ViewModel, ErrorView.ErrorViewLi
                     public void onSuccess(@NonNull List<Category> categoryList) {
                         List<CategoryViewModel> viewModelList = new ArrayList<>();
                         for (Category category : categoryList) {
-                            viewModelList.add(new CategoryViewModel(category));
+                            viewModelList.add(new CategoryViewModel(category, navigator));
                         }
 
                         SelectCategoryViewModel.this.categoryList.clear();

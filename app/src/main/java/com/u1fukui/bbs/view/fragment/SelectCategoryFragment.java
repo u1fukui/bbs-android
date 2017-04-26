@@ -16,8 +16,10 @@ import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.FragmentSelectCategoryBinding;
 import com.u1fukui.bbs.databinding.ViewCategoryCellBinding;
 import com.u1fukui.bbs.repository.CategoryListRepository;
+import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
+import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 import com.u1fukui.bbs.viewmodel.CategoryViewModel;
 import com.u1fukui.bbs.viewmodel.SelectCategoryViewModel;
 
@@ -36,7 +38,11 @@ public class SelectCategoryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new SelectCategoryViewModel(new CategoryListRepository());
+
+        if (getActivity() instanceof CreateThreadActivity) {
+            CreateThreadNavigator navigator = ((CreateThreadActivity) getActivity()).getNavigator();
+            viewModel = new SelectCategoryViewModel(new CategoryListRepository(), navigator);
+        }
     }
 
     @Nullable
