@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.u1fukui.bbs.databinding.FragmentInputThreadInfoBinding;
 import com.u1fukui.bbs.model.Category;
+import com.u1fukui.bbs.repository.ThreadRepository;
+import com.u1fukui.bbs.view.activity.CreateThreadActivity;
+import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 import com.u1fukui.bbs.viewmodel.InputThreadInfoViewModel;
 
 public class InputThreadInfoFragment extends Fragment {
@@ -33,8 +36,12 @@ public class InputThreadInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Category category = (Category) getArguments().getSerializable(ARG_CATEGORY);
-        viewModel = new InputThreadInfoViewModel(category);
+        if (getActivity() instanceof CreateThreadActivity) {
+            Category category = (Category) getArguments().getSerializable(ARG_CATEGORY);
+            ThreadRepository repository = new ThreadRepository();
+            CreateThreadNavigator navigator = ((CreateThreadActivity) getActivity()).getNavigator();
+            viewModel = new InputThreadInfoViewModel(category, repository, navigator);
+        }
     }
 
     @Nullable

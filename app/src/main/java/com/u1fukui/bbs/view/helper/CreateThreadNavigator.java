@@ -25,4 +25,8 @@ public class CreateThreadNavigator {
                 .addToBackStack(null)
                 .commit();
     }
+
+    public void finish() {
+        activity.finish();
+    }
 }
