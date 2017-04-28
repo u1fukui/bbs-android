@@ -51,6 +51,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:imeOptions="actionNext"
+                    android:maxLength="@{viewModel.MAX_TITLE_LENGTH}"
+                    android:maxLines="1"
+                    android:onTextChanged="@{viewModel::onTitleTextChanged}"
+                    android:singleLine="true"
                     android:text="@={viewModel.title}"
                     android:textSize="16dp" />
 
@@ -68,6 +73,8 @@
                     android:layout_marginTop="4dp"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.2"
+                    android:maxLength="@{viewModel.MAX_DESCRIPTION_LENGTH}"
+                    android:onTextChanged="@{viewModel::onDescriptionTextChanged}"
                     android:text="@={viewModel.description}"
                     android:textSize="16sp" />
 
@@ -75,6 +82,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/post_button"
+                    android:enabled="@{viewModel.postButtonEnabled}"
                     android:onClick="@{viewModel::onClickPostButton}"
                     android:padding="4dp"
                     android:text="@string/create_thread_btn_post"

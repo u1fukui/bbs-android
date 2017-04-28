@@ -1,13 +1,14 @@
 package com.u1fukui.bbs.viewmodel;
 
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
-import android.util.Log;
 import android.view.View;
 
 import com.u1fukui.bbs.App;
 import com.u1fukui.bbs.model.ApiResponse;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.ThreadRepository;
+import com.u1fukui.bbs.utils.StringUtils;
 import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 
 import io.reactivex.SingleObserver;
@@ -18,9 +19,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class InputThreadInfoViewModel implements ViewModel {
 
+    public static final int MAX_TITLE_LENGTH = 20;
+
+    public static final int MAX_DESCRIPTION_LENGTH = 200;
+
     public final Category category;
 
     public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
+
+    public final ObservableBoolean postButtonEnabled = new ObservableBoolean(false);
 
     public String title;
 
@@ -38,11 +45,25 @@ public class InputThreadInfoViewModel implements ViewModel {
         this.navigator = navigator;
     }
 
-    public void onClickPostButton(View view) {
-        //TOOD: 実装
-        Log.d("TAG10", "click: title=" + title + ", description=" + description);
+    public void onTitleTextChanged(CharSequence charSequence, int start , int before, int count) {
+        boolean isValid = isValid(charSequence.toString(), MAX_TITLE_LENGTH)
+                && isValid(description, MAX_DESCRIPTION_LENGTH);
+        postButtonEnabled.set(isValid);
+    }
 
-        if (loadingVisibility.get() == View.VISIBLE) {
+    public void onDescriptionTextChanged(CharSequence charSequence, int start , int before, int count) {
+        boolean isValid = isValid(charSequence.toString(), MAX_DESCRIPTION_LENGTH)
+                && isValid(title, MAX_TITLE_LENGTH);
+        postButtonEnabled.set(isValid);
+    }
+
+    public void onClickPostButton(View view) {
+        boolean isValid = isValid(title, MAX_TITLE_LENGTH)
+                && isValid(description, MAX_DESCRIPTION_LENGTH);
+
+        if (!isValid) {
+            return;
+        } else if (loadingVisibility.get() == View.VISIBLE) {
             return;
         }
         loadingVisibility.set(View.VISIBLE);
@@ -69,6 +90,10 @@ public class InputThreadInfoViewModel implements ViewModel {
                         App.getInstance().getToastUtils().showToast("エラー");
                     }
                 });
+    }
+
+    private boolean isValid(String text, int maxLength) {
+        return !StringUtils.isBlank(text) && StringUtils.isLength(text) <= maxLength;
     }
 
     @Override

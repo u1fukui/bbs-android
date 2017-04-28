@@ -49,7 +49,12 @@ public class InputThreadInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentInputThreadInfoBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
+        initViews();
 
         return binding.getRoot();
+    }
+
+    private void initViews() {
+        binding.editTextTitle.requestFocus();
     }
 }
