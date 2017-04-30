@@ -5,10 +5,12 @@ import android.databinding.ObservableInt;
 import android.view.View;
 
 import com.u1fukui.bbs.App;
+import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.model.ApiResponse;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.utils.StringUtils;
+import com.u1fukui.bbs.view.helper.Navigator;
 import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 
 import io.reactivex.SingleObserver;
@@ -58,6 +60,22 @@ public class InputThreadInfoViewModel implements ViewModel {
     }
 
     public void onClickPostButton(View view) {
+        navigator.showConfirmDialog(R.string.create_thread_confirm_dialog_title,
+                R.string.create_thread_confirm_dialog_description,
+                new Navigator.ConfirmDialogListener() {
+                    @Override
+                    public void onClickPositiveButton() {
+                        postThread();
+                    }
+
+                    @Override
+                    public void onClickNegativeButton() {
+                        // nop
+                    }
+                });
+    }
+
+    private void postThread() {
         boolean isValid = isValid(title, MAX_TITLE_LENGTH)
                 && isValid(description, MAX_DESCRIPTION_LENGTH);
 

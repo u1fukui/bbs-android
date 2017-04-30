@@ -1,13 +1,14 @@
 package com.u1fukui.bbs.view.helper;
 
 
+import android.app.Activity;
 import android.support.annotation.IdRes;
 
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 import com.u1fukui.bbs.view.fragment.InputThreadInfoFragment;
 
-public class CreateThreadNavigator {
+public class CreateThreadNavigator extends Navigator {
 
     private final CreateThreadActivity activity;
 
@@ -17,6 +18,11 @@ public class CreateThreadNavigator {
     public CreateThreadNavigator(CreateThreadActivity activity, @IdRes int fragmentContainerId) {
         this.activity = activity;
         this.fragmentContainerId = fragmentContainerId;
+    }
+
+    @Override
+    protected Activity getActivity() {
+        return activity;
     }
 
     public void navigateToInputInfoPage(Category category) {
