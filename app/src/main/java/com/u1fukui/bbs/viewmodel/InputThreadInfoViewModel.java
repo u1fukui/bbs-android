@@ -10,8 +10,8 @@ import com.u1fukui.bbs.model.ApiResponse;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.utils.StringUtils;
-import com.u1fukui.bbs.view.helper.Navigator;
 import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
+import com.u1fukui.bbs.view.helper.Navigator;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;

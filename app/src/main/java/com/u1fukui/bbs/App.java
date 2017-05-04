@@ -1,13 +1,14 @@
 package com.u1fukui.bbs;
 
 
-import android.app.Application;
-
+import com.u1fukui.bbs.di.DaggerAppComponent;
 import com.u1fukui.bbs.utils.ToastUtils;
 
+import dagger.android.AndroidInjector;
+import dagger.android.support.DaggerApplication;
 import lombok.Getter;
 
-public class App extends Application {
+public class App extends DaggerApplication {
 
     private static App instance;
 
@@ -29,4 +30,11 @@ public class App extends Application {
     private void initToastUtils() {
         toastUtils = new ToastUtils(this);
     }
+
+    //region DaggerApplication
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.builder().create(this);
+    }
+    //endregion
 }

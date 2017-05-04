@@ -8,12 +8,18 @@ import com.u1fukui.bbs.model.Category;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.annotations.NonNull;
 
 public class CategoryListRepository {
+
+    @Inject
+    public CategoryListRepository() {
+    }
 
     public Single<List<Category>> fetchCategoryList() {
         //TODO: API実装

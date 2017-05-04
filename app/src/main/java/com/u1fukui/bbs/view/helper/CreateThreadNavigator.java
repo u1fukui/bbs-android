@@ -2,22 +2,20 @@ package com.u1fukui.bbs.view.helper;
 
 
 import android.app.Activity;
-import android.support.annotation.IdRes;
 
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 import com.u1fukui.bbs.view.fragment.InputThreadInfoFragment;
 
+import javax.inject.Inject;
+
 public class CreateThreadNavigator extends Navigator {
 
     private final CreateThreadActivity activity;
 
-    @IdRes
-    private final int fragmentContainerId;
-
-    public CreateThreadNavigator(CreateThreadActivity activity, @IdRes int fragmentContainerId) {
+    @Inject
+    public CreateThreadNavigator(CreateThreadActivity activity) {
         this.activity = activity;
-        this.fragmentContainerId = fragmentContainerId;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class CreateThreadNavigator extends Navigator {
 
     public void navigateToInputInfoPage(Category category) {
         activity.getSupportFragmentManager().beginTransaction()
-                .replace(fragmentContainerId, InputThreadInfoFragment.newInstance(category))
+                .replace(activity.getFragmentContainerId(), InputThreadInfoFragment.newInstance(category))
                 .addToBackStack(null)
                 .commit();
     }

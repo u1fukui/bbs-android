@@ -1,12 +1,13 @@
 package com.u1fukui.bbs.view.activity;
 
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class BaseActivity extends AppCompatActivity {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class BaseActivity extends DaggerAppCompatActivity {
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

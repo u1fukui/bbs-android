@@ -13,6 +13,8 @@ import com.u1fukui.bbs.view.helper.LoadingManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -31,6 +33,7 @@ public class SelectCategoryViewModel implements ViewModel, ErrorView.ErrorViewLi
 
     private final CreateThreadNavigator navigator;
 
+    @Inject
     public SelectCategoryViewModel(CategoryListRepository repository, CreateThreadNavigator navigator) {
         this.repository = repository;
         this.navigator = navigator;

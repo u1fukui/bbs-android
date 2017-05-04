@@ -5,7 +5,6 @@ import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -15,34 +14,26 @@ import android.view.ViewGroup;
 import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.FragmentSelectCategoryBinding;
 import com.u1fukui.bbs.databinding.ViewCategoryCellBinding;
-import com.u1fukui.bbs.repository.CategoryListRepository;
-import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
-import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 import com.u1fukui.bbs.viewmodel.CategoryViewModel;
 import com.u1fukui.bbs.viewmodel.SelectCategoryViewModel;
 
-public class SelectCategoryFragment extends Fragment {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
+
+public class SelectCategoryFragment extends DaggerFragment {
 
     private FragmentSelectCategoryBinding binding;
 
-    private SelectCategoryViewModel viewModel;
+    @Inject
+    SelectCategoryViewModel viewModel;
 
     private Adapter adapter;
 
     public static SelectCategoryFragment newInstance() {
         return new SelectCategoryFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getActivity() instanceof CreateThreadActivity) {
-            CreateThreadNavigator navigator = ((CreateThreadActivity) getActivity()).getNavigator();
-            viewModel = new SelectCategoryViewModel(new CategoryListRepository(), navigator);
-        }
     }
 
     @Nullable
