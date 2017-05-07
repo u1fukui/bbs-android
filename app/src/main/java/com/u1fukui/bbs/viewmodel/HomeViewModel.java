@@ -15,6 +15,8 @@ import com.u1fukui.bbs.view.helper.LoadingManager;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -33,6 +35,7 @@ public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     private WeakReference<Context> contextRef;
 
+    @Inject
     public HomeViewModel(Context context, CategoryListRepository repository) {
         this.repository = repository;
         this.contextRef = new WeakReference<>(context);

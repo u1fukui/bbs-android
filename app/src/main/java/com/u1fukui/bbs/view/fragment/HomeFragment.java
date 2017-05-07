@@ -13,28 +13,26 @@ import android.view.ViewGroup;
 
 import com.u1fukui.bbs.databinding.FragmentHomeBinding;
 import com.u1fukui.bbs.model.Category;
-import com.u1fukui.bbs.repository.CategoryListRepository;
 import com.u1fukui.bbs.viewmodel.HomeViewModel;
 
-public class HomeFragment extends Fragment {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
+
+public class HomeFragment extends DaggerFragment {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    private FragmentHomeBinding binding;
+    @Inject
+    HomeViewModel viewModel;
 
-    private HomeViewModel viewModel;
+    private FragmentHomeBinding binding;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
     public HomeFragment() {
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        viewModel = new HomeViewModel(getContext(), new CategoryListRepository());
     }
 
     @Nullable
