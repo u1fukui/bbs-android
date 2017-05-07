@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.activity.MainActivity">
 
     <RelativeLayout
@@ -12,7 +13,7 @@
             style="@style/BaseToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:title="@string/create_thread_title" />
+            app:title="@string/create_thread_title" />
 
         <FrameLayout
             android:id="@+id/fragment_container"
