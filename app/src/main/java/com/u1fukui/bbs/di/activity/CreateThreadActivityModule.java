@@ -10,7 +10,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-public abstract class CreateThreadActivityModule {
+public class CreateThreadActivityModule {
 
     @Module
     public abstract class BindModule {
