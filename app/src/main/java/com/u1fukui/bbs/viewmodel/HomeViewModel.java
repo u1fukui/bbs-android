@@ -1,18 +1,15 @@
 package com.u1fukui.bbs.viewmodel;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.view.View;
 
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.CategoryListRepository;
-import com.u1fukui.bbs.view.activity.CreateThreadActivity;
 import com.u1fukui.bbs.view.customview.ErrorView;
 import com.u1fukui.bbs.view.helper.LoadingManager;
+import com.u1fukui.bbs.view.helper.MainNavigator;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,19 +30,16 @@ public class HomeViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     private final CategoryListRepository repository;
 
-    private WeakReference<Context> contextRef;
+    private final MainNavigator navigator;
 
     @Inject
-    public HomeViewModel(Context context, CategoryListRepository repository) {
+    public HomeViewModel(CategoryListRepository repository, MainNavigator navigator) {
         this.repository = repository;
-        this.contextRef = new WeakReference<>(context);
+        this.navigator = navigator;
     }
 
     public void onClickFloatingActionButton(View view) {
-        Context context = contextRef.get();
-        if (context != null) {
-            context.startActivity(new Intent(context, CreateThreadActivity.class));
-        }
+        navigator.navigateToCreateThreadPage();
     }
 
     public void start() {
