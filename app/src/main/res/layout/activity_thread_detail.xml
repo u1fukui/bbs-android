@@ -22,7 +22,9 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:visibility="@{viewModel.loadingManager.contentVisibility}">
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
@@ -50,11 +52,20 @@
 
         </FrameLayout>
 
+        <com.u1fukui.bbs.view.customview.ErrorView
+            android:id="@+id/error_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:visibility="@{viewModel.loadingManager.errorViewVisibility}"
+            app:errorMessage="@{viewModel.loadingManager.errorMessage}"
+            app:errorViewListener="@{viewModel}" />
+
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="@{viewModel.loadingVisibility}" />
+            android:layout_centerInParent="true"
+            android:visibility="@{viewModel.loadingManager.loadingVisibility}" />
     </RelativeLayout>
 
 </layout>

@@ -2,45 +2,55 @@ package com.u1fukui.bbs.viewmodel;
 
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableInt;
 import android.databinding.ObservableList;
 import android.view.View;
 
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.Comment;
-import com.u1fukui.bbs.model.User;
+import com.u1fukui.bbs.repository.ThreadRepository;
+import com.u1fukui.bbs.view.customview.ErrorView;
+import com.u1fukui.bbs.view.helper.LoadingManager;
 import com.u1fukui.bbs.view.helper.ThreadDetailNavigator;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 
-public class ThreadDetailViewModel implements ViewModel {
+public class ThreadDetailViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     //region DataBinding
     public final BbsThread bbsThread;
 
     public final ObservableBoolean refreshing = new ObservableBoolean(false);
 
-    public final ObservableInt loadingVisibility = new ObservableInt(View.GONE);
+    public final LoadingManager loadingManager = new LoadingManager();
     //endregion
 
     @Getter
     private ObservableList<CommentViewModel> commentViewModelList = new ObservableArrayList<>();
 
+    private final ThreadRepository repository;
+
     private final ThreadDetailNavigator navigator;
 
-    public ThreadDetailViewModel(BbsThread bbsThread, ThreadDetailNavigator navigator) {
+    public ThreadDetailViewModel(BbsThread bbsThread,
+                                 ThreadRepository repository,
+                                 ThreadDetailNavigator navigator) {
         this.bbsThread = bbsThread;
+        this.repository = repository;
         this.navigator = navigator;
     }
 
     //region Databinding
     public void onSwipeRefresh() {
         refreshing.set(true);
-        loadCommentList();
+        fetchCommentList();
     }
     //endregion
 
@@ -49,36 +59,58 @@ public class ThreadDetailViewModel implements ViewModel {
     }
 
     public void start() {
-        loadCommentList();
+        if (commentViewModelList.isEmpty()) {
+            fetchCommentList();
+        }
     }
 
-    private void loadCommentList() {
-        if (loadingVisibility.get() == View.VISIBLE) {
+    private void fetchCommentList() {
+        if (loadingManager.isLoading()) {
             refreshing.set(false);
             return;
         }
-        loadingVisibility.set(View.VISIBLE);
+        loadingManager.startLoading();
 
-        //TODO: サーバからデータを取得する
-        List<CommentViewModel> list = new ArrayList<>();
-        for (int i = 1; i <= 20; i++) {
-            User author = new User(i, "コメンター" + i);
-            Comment comment = new Comment(i, bbsThread.id, i, "コメント", author, i, false, new Date());
-            list.add(new CommentViewModel(comment));
-        }
-        renderCommentList(list);
+        repository.fetchCommentList(bbsThread.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Comment>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        // nop
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<Comment> bbsComments) {
+                        List<CommentViewModel> viewModelList = new ArrayList<>();
+                        for (Comment comment : bbsComments) {
+                            viewModelList.add(new CommentViewModel(comment));
+                        }
+                        renderCommentList(viewModelList);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        loadingManager.showErrorView(e);
+                    }
+                });
     }
 
     private void renderCommentList(List<CommentViewModel> list) {
         commentViewModelList.clear();
         commentViewModelList.addAll(list);
 
-        loadingVisibility.set(View.GONE);
+        loadingManager.showContentView();
         refreshing.set(false);
     }
 
     @Override
     public void destroy() {
 
+    }
+
+    @Override
+    public void onClickReloadButton() {
+        fetchCommentList();
     }
 }
