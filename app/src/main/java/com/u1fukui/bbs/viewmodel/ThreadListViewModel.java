@@ -1,6 +1,5 @@
 package com.u1fukui.bbs.viewmodel;
 
-import android.content.Context;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableList;
@@ -9,8 +8,8 @@ import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.customview.ErrorView;
 import com.u1fukui.bbs.view.helper.LoadingManager;
+import com.u1fukui.bbs.view.helper.ThreadListNavigator;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +31,13 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
     @Getter
     private ObservableList<ThreadViewModel> threadViewModelList = new ObservableArrayList<>();
 
-    private WeakReference<Context> contextRef;
+    private final ThreadListRepository repository;
 
-    private ThreadListRepository repository;
+    private final ThreadListNavigator navigator;
 
-    public ThreadListViewModel(Context context, ThreadListRepository repository) {
-        this.contextRef = new WeakReference<>(context);
+    public ThreadListViewModel(ThreadListRepository repository, ThreadListNavigator navigator) {
         this.repository = repository;
+        this.navigator = navigator;
     }
 
     //region Databinding
@@ -74,7 +73,7 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
                     public void onSuccess(@NonNull List<BbsThread> bbsThreads) {
                         List<ThreadViewModel> viewModelList = new ArrayList<>();
                         for (BbsThread thread : bbsThreads) {
-                            viewModelList.add(new ThreadViewModel(contextRef.get(), thread));
+                            viewModelList.add(new ThreadViewModel(navigator, thread));
                         }
                         renderThreadList(viewModelList);
 

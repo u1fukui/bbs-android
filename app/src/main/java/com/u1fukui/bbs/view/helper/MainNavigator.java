@@ -9,7 +9,7 @@ import com.u1fukui.bbs.view.activity.MainActivity;
 
 import javax.inject.Inject;
 
-public class MainNavigator extends Navigator {
+public class MainNavigator extends ThreadListNavigator {
 
     private final MainActivity activity;
 

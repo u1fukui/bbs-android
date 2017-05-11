@@ -13,6 +13,7 @@ import com.u1fukui.bbs.R;
 import com.u1fukui.bbs.databinding.ActivityMainBinding;
 import com.u1fukui.bbs.view.fragment.HomeFragment;
 import com.u1fukui.bbs.view.fragment.MyPageFragment;
+import com.u1fukui.bbs.view.helper.MainNavigator;
 
 public class MainActivity extends BaseActivity {
 
@@ -22,12 +23,15 @@ public class MainActivity extends BaseActivity {
 
     private Fragment myPageFragment;
 
+    private MainNavigator navigator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        initToolbar(binding.toolbar, false);
+        navigator = new MainNavigator(this);
 
+        initToolbar(binding.toolbar, false);
         initViews();
         initFragments(savedInstanceState);
     }
@@ -97,5 +101,10 @@ public class MainActivity extends BaseActivity {
         manager.executePendingTransactions();
 
         return true;
+    }
+
+    //TODO: 後で dagger に置き換える
+    public MainNavigator getNavigator() {
+        return navigator;
     }
 }

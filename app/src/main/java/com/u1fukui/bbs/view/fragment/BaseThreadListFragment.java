@@ -17,6 +17,7 @@ import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
 import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
+import com.u1fukui.bbs.view.helper.ThreadListNavigator;
 import com.u1fukui.bbs.viewmodel.ThreadListViewModel;
 import com.u1fukui.bbs.viewmodel.ThreadViewModel;
 
@@ -30,10 +31,12 @@ public abstract class BaseThreadListFragment extends Fragment {
 
     abstract ThreadListRepository getRepository();
 
+    abstract ThreadListNavigator getNavigator();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ThreadListViewModel(getContext(), getRepository());
+        viewModel = new ThreadListViewModel(getRepository(), getNavigator());
     }
 
     @Nullable

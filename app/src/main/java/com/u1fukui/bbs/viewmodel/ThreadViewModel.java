@@ -1,13 +1,10 @@
 package com.u1fukui.bbs.viewmodel;
 
-import android.content.Context;
 import android.text.format.DateFormat;
 import android.view.View;
 
 import com.u1fukui.bbs.model.BbsThread;
-import com.u1fukui.bbs.view.activity.ThreadDetailActivity;
-
-import java.lang.ref.WeakReference;
+import com.u1fukui.bbs.view.helper.ThreadListNavigator;
 
 public class ThreadViewModel implements ViewModel {
 
@@ -17,19 +14,16 @@ public class ThreadViewModel implements ViewModel {
 
     public final CharSequence updatedAt;
 
-    private WeakReference<Context> contextRef;
+    private final ThreadListNavigator navigator;
 
-    public ThreadViewModel(Context context, BbsThread bbsThread) {
-        this.contextRef = new WeakReference<>(context);
+    public ThreadViewModel(ThreadListNavigator navigator, BbsThread bbsThread) {
+        this.navigator = navigator;
         this.bbsThread = bbsThread;
         this.updatedAt = DateFormat.format(DATE_FORMAT_PATTERN, bbsThread.updatedAt);
     }
 
     public void onClickThread(View view) {
-        Context context = contextRef.get();
-        if (context != null) {
-            context.startActivity(ThreadDetailActivity.createIntent(context, bbsThread));
-        }
+        navigator.navigateToThreadDetailPage(bbsThread);
     }
 
     @Override
