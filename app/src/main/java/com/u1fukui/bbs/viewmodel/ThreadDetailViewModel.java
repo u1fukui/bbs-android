@@ -9,6 +9,7 @@ import android.view.View;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.Comment;
 import com.u1fukui.bbs.model.User;
+import com.u1fukui.bbs.view.helper.ThreadDetailNavigator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +30,11 @@ public class ThreadDetailViewModel implements ViewModel {
     @Getter
     private ObservableList<CommentViewModel> commentViewModelList = new ObservableArrayList<>();
 
-    public ThreadDetailViewModel(BbsThread bbsThread) {
+    private final ThreadDetailNavigator navigator;
+
+    public ThreadDetailViewModel(BbsThread bbsThread, ThreadDetailNavigator navigator) {
         this.bbsThread = bbsThread;
+        this.navigator = navigator;
     }
 
     //region Databinding
@@ -39,6 +43,10 @@ public class ThreadDetailViewModel implements ViewModel {
         loadCommentList();
     }
     //endregion
+
+    public void onClickFloatingActionButton(View view) {
+        navigator.navigateToCreateCommentPage(bbsThread);
+    }
 
     public void start() {
         loadCommentList();

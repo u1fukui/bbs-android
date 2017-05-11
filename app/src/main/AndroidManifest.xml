@@ -22,6 +22,7 @@
 
         <activity android:name=".view.activity.ThreadDetailActivity" />
         <activity android:name=".view.activity.CreateThreadActivity" />
+        <activity android:name=".view.activity.CreateCommentActivity" />
     </application>
 
 </manifest>

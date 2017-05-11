@@ -18,6 +18,7 @@ import com.u1fukui.bbs.databinding.ViewCommentCellBinding;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
+import com.u1fukui.bbs.view.helper.ThreadDetailNavigator;
 import com.u1fukui.bbs.viewmodel.CommentViewModel;
 import com.u1fukui.bbs.viewmodel.ThreadDetailViewModel;
 
@@ -33,6 +34,8 @@ public class ThreadDetailActivity extends BaseActivity {
 
     private Adapter adapter;
 
+    private ThreadDetailNavigator navigator;
+
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
@@ -47,9 +50,10 @@ public class ThreadDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_thread_detail);
+        navigator = new ThreadDetailNavigator(this);
 
         BbsThread thread = (BbsThread) getIntent().getSerializableExtra(EXTRA_THREAD);
-        viewModel = new ThreadDetailViewModel(thread);
+        viewModel = new ThreadDetailViewModel(thread, navigator);
         binding.setViewModel(viewModel);
         initToolbar(binding.toolbar, true);
 

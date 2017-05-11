@@ -14,6 +14,15 @@
     <string name="create_thread_btn_post">投稿</string>
     <string name="create_thread_confirm_dialog_title">確認</string>
     <string name="create_thread_confirm_dialog_description">この内容でスレッドを作成します。よろしいでしょうか？</string>
+    <string name="create_thread_complete_toast">投稿しました</string>
+
+    <string name="create_comment_title">コメント投稿</string>
+    <string name="create_comment_item_user_name">投稿者名</string>
+    <string name="create_comment_item_description">コメント内容</string>
+    <string name="create_comment_btn_post">投稿</string>
+    <string name="create_comment_confirm_dialog_title">確認</string>
+    <string name="create_comment_confirm_dialog_description">この内容でコメントを投稿します。よろしいでしょうか？</string>
+    <string name="create_comment_complete_toast">投稿しました</string>
 
     <string name="error_view_btn_reload">再読込み</string>
 </resources>

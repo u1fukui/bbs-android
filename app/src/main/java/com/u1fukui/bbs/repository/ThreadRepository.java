@@ -21,4 +21,14 @@ public class ThreadRepository {
             }
         });
     }
+
+    public Single<ApiResponse> postComment() {
+        return Single.create(new SingleOnSubscribe<ApiResponse>() {
+            @Override
+            public void subscribe(@NonNull SingleEmitter<ApiResponse> e) throws Exception {
+                SystemClock.sleep(1000);
+                e.onSuccess(new ApiResponse());
+            }
+        });
+    }
 }
