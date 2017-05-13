@@ -3,6 +3,7 @@
 
     <string name="main_tab_home">Home</string>
     <string name="main_tab_mypage">MyPage</string>
+    <string name="main_menu_notification">Notification</string>
 
     <string name="select_category_title">カテゴリ選択</string>
     <string name="select_category_description">作成するスレッドの\nカテゴリを選択してください</string>
@@ -23,6 +24,8 @@
     <string name="create_comment_confirm_dialog_title">確認</string>
     <string name="create_comment_confirm_dialog_description">この内容でコメントを投稿します。よろしいでしょうか？</string>
     <string name="create_comment_complete_toast">投稿しました</string>
+
+    <string name="notification_list_title">通知</string>
 
     <string name="error_view_btn_reload">再読込み</string>
 </resources>

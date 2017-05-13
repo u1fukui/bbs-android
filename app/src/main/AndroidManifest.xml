@@ -23,6 +23,7 @@
         <activity android:name=".view.activity.ThreadDetailActivity" />
         <activity android:name=".view.activity.CreateThreadActivity" />
         <activity android:name=".view.activity.CreateCommentActivity" />
+        <activity android:name=".view.activity.NotificationListActivity" />
     </application>
 
 </manifest>
