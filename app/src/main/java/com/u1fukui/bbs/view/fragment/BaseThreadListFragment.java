@@ -31,12 +31,12 @@ public abstract class BaseThreadListFragment extends Fragment {
 
     abstract ThreadListRepository getRepository();
 
-    abstract ThreadListNavigator getNavigator();
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ThreadListViewModel(getRepository(), getNavigator());
+
+        ThreadListNavigator navigator = new ThreadListNavigator(getActivity());
+        viewModel = new ThreadListViewModel(getRepository(), navigator);
     }
 
     @Nullable

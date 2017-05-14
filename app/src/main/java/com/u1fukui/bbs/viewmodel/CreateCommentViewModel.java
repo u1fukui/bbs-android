@@ -12,7 +12,7 @@ import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.User;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.utils.StringUtils;
-import com.u1fukui.bbs.view.helper.CreateCommentNavigator;
+import com.u1fukui.bbs.view.helper.Navigator;
 import com.u1fukui.bbs.view.helper.DialogHelper;
 
 import io.reactivex.SingleObserver;
@@ -37,14 +37,14 @@ public class CreateCommentViewModel implements ViewModel {
 
     private final ThreadRepository repository;
 
-    private final CreateCommentNavigator navigator;
+    private final Navigator navigator;
 
     private final DialogHelper dialogHelper;
 
     public CreateCommentViewModel(BbsThread bbsThread,
                                   User user,
                                   ThreadRepository repository,
-                                  CreateCommentNavigator navigator,
+                                  Navigator navigator,
                                   DialogHelper dialogHelper) {
         this.bbsThread = bbsThread;
         this.user = user;

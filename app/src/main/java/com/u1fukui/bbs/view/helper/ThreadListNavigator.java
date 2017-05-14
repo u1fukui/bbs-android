@@ -7,11 +7,14 @@ import android.content.Intent;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.view.activity.ThreadDetailActivity;
 
-public abstract class ThreadListNavigator extends Navigator {
+public class ThreadListNavigator extends Navigator {
+
+    public ThreadListNavigator(Activity activity) {
+        super(activity);
+    }
 
     public void navigateToThreadDetailPage(BbsThread thread) {
-        Activity activity = getActivity();
-        Intent intent = ThreadDetailActivity.createIntent(activity, thread);
-        activity.startActivity(intent);
+        Intent intent = ThreadDetailActivity.createIntent(getActivity(), thread);
+        getActivity().startActivity(intent);
     }
 }

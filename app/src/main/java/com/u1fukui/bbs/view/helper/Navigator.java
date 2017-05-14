@@ -3,7 +3,22 @@ package com.u1fukui.bbs.view.helper;
 
 import android.app.Activity;
 
-public abstract class Navigator {
+import javax.inject.Inject;
 
-    protected abstract Activity getActivity();
+public class Navigator {
+
+    private final Activity activity;
+
+    @Inject
+    public Navigator(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void finish() {
+        activity.finish();
+    }
+
+    protected Activity getActivity() {
+        return activity;
+    }
 }
