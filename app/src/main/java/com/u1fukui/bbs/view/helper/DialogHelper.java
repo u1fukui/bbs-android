@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog;
 
 import com.u1fukui.bbs.R;
 
+import javax.inject.Inject;
+
 public class DialogHelper {
 
     public interface ConfirmDialogListener {
@@ -19,6 +21,7 @@ public class DialogHelper {
 
     private final Context context;
 
+    @Inject
     public DialogHelper(Context context) {
         this.context = context;
     }

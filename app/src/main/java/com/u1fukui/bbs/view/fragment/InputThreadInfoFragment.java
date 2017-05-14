@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import com.u1fukui.bbs.databinding.FragmentInputThreadInfoBinding;
 import com.u1fukui.bbs.model.Category;
-import com.u1fukui.bbs.repository.ThreadRepository;
-import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
-import com.u1fukui.bbs.view.helper.DialogHelper;
 import com.u1fukui.bbs.viewmodel.InputThreadInfoViewModel;
 
 import javax.inject.Inject;
@@ -23,16 +20,9 @@ public class InputThreadInfoFragment extends DaggerFragment {
     private static final String ARG_CATEGORY = "arg.category";
 
     @Inject
-    ThreadRepository repository;
-
-    @Inject
-    CreateThreadNavigator navigator;
-
-    private Category category;
+    InputThreadInfoViewModel viewModel;
 
     private FragmentInputThreadInfoBinding binding;
-
-    private InputThreadInfoViewModel viewModel;
 
     public static InputThreadInfoFragment newInstance(Category category) {
         Bundle args = new Bundle();
@@ -41,15 +31,6 @@ public class InputThreadInfoFragment extends DaggerFragment {
         InputThreadInfoFragment instance = new InputThreadInfoFragment();
         instance.setArguments(args);
         return instance;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        category = (Category) getArguments().getSerializable(ARG_CATEGORY);
-
-        DialogHelper dialogHelper = new DialogHelper(getContext());
-        viewModel = new InputThreadInfoViewModel(category, repository, navigator, dialogHelper);
     }
 
     @Nullable
@@ -64,5 +45,9 @@ public class InputThreadInfoFragment extends DaggerFragment {
 
     private void initViews() {
         binding.editTextTitle.requestFocus();
+    }
+
+    public Category getCategory() {
+        return (Category) getArguments().getSerializable(ARG_CATEGORY);
     }
 }

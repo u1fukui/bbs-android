@@ -14,5 +14,12 @@ public interface AppComponent extends AndroidInjector<App> {
 
     @Component.Builder
     abstract class Builder extends AndroidInjector.Builder<App> {
+
+        public abstract void appModule(AppModule activityModule);
+
+        @Override
+        public void seedInstance(App instance) {
+            appModule(new AppModule(instance));
+        }
     }
 }

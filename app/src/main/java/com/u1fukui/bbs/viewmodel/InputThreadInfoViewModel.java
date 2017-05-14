@@ -13,6 +13,8 @@ import com.u1fukui.bbs.utils.StringUtils;
 import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
 import com.u1fukui.bbs.view.helper.DialogHelper;
 
+import javax.inject.Inject;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -41,6 +43,7 @@ public class InputThreadInfoViewModel implements ViewModel {
 
     private final DialogHelper dialogHelper;
 
+    @Inject
     public InputThreadInfoViewModel(Category category,
                                     ThreadRepository repository,
                                     CreateThreadNavigator navigator,
