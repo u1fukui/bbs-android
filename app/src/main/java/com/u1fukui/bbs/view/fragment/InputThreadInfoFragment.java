@@ -11,6 +11,7 @@ import com.u1fukui.bbs.databinding.FragmentInputThreadInfoBinding;
 import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
+import com.u1fukui.bbs.view.helper.DialogHelper;
 import com.u1fukui.bbs.viewmodel.InputThreadInfoViewModel;
 
 import javax.inject.Inject;
@@ -46,7 +47,9 @@ public class InputThreadInfoFragment extends DaggerFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         category = (Category) getArguments().getSerializable(ARG_CATEGORY);
-        viewModel = new InputThreadInfoViewModel(category, repository, navigator);
+
+        DialogHelper dialogHelper = new DialogHelper(getContext());
+        viewModel = new InputThreadInfoViewModel(category, repository, navigator, dialogHelper);
     }
 
     @Nullable

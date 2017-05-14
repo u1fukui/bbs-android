@@ -11,7 +11,7 @@ import com.u1fukui.bbs.model.Category;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.utils.StringUtils;
 import com.u1fukui.bbs.view.helper.CreateThreadNavigator;
-import com.u1fukui.bbs.view.helper.Navigator;
+import com.u1fukui.bbs.view.helper.DialogHelper;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,12 +39,16 @@ public class InputThreadInfoViewModel implements ViewModel {
 
     private final CreateThreadNavigator navigator;
 
+    private final DialogHelper dialogHelper;
+
     public InputThreadInfoViewModel(Category category,
                                     ThreadRepository repository,
-                                    CreateThreadNavigator navigator) {
+                                    CreateThreadNavigator navigator,
+                                    DialogHelper dialogHelper) {
         this.category = category;
         this.repository = repository;
         this.navigator = navigator;
+        this.dialogHelper = dialogHelper;
     }
 
     public void onTitleTextChanged(CharSequence charSequence, int start , int before, int count) {
@@ -60,9 +64,9 @@ public class InputThreadInfoViewModel implements ViewModel {
     }
 
     public void onClickPostButton(View view) {
-        navigator.showConfirmDialog(R.string.create_thread_confirm_dialog_title,
+        dialogHelper.showConfirmDialog(R.string.create_thread_confirm_dialog_title,
                 R.string.create_thread_confirm_dialog_description,
-                new Navigator.ConfirmDialogListener() {
+                new DialogHelper.ConfirmDialogListener() {
                     @Override
                     public void onClickPositiveButton() {
                         postThread();

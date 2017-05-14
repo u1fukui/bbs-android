@@ -13,7 +13,7 @@ import com.u1fukui.bbs.model.User;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.utils.StringUtils;
 import com.u1fukui.bbs.view.helper.CreateCommentNavigator;
-import com.u1fukui.bbs.view.helper.Navigator;
+import com.u1fukui.bbs.view.helper.DialogHelper;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,14 +39,18 @@ public class CreateCommentViewModel implements ViewModel {
 
     private final CreateCommentNavigator navigator;
 
+    private final DialogHelper dialogHelper;
+
     public CreateCommentViewModel(BbsThread bbsThread,
                                   User user,
                                   ThreadRepository repository,
-                                  CreateCommentNavigator navigator) {
+                                  CreateCommentNavigator navigator,
+                                  DialogHelper dialogHelper) {
         this.bbsThread = bbsThread;
         this.user = user;
         this.repository = repository;
         this.navigator = navigator;
+        this.dialogHelper = dialogHelper;
     }
 
     public void onDescriptionTextChanged(CharSequence charSequence, int start , int before, int count) {
@@ -55,9 +59,9 @@ public class CreateCommentViewModel implements ViewModel {
     }
 
     public void onClickPostButton(View view) {
-        navigator.showConfirmDialog(R.string.create_comment_confirm_dialog_title,
+        dialogHelper.showConfirmDialog(R.string.create_comment_confirm_dialog_title,
                 R.string.create_comment_confirm_dialog_description,
-                new Navigator.ConfirmDialogListener() {
+                new DialogHelper.ConfirmDialogListener() {
                     @Override
                     public void onClickPositiveButton() {
                         postComment();

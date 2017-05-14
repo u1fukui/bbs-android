@@ -12,6 +12,7 @@ import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.model.User;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.view.helper.CreateCommentNavigator;
+import com.u1fukui.bbs.view.helper.DialogHelper;
 import com.u1fukui.bbs.viewmodel.CreateCommentViewModel;
 
 public class CreateCommentActivity extends BaseActivity {
@@ -44,7 +45,8 @@ public class CreateCommentActivity extends BaseActivity {
         User user = new User(1, "たろう");
         ThreadRepository repository = new ThreadRepository();
         CreateCommentNavigator navigator = new CreateCommentNavigator(this);
-        return new CreateCommentViewModel(thread, user, repository, navigator);
+        DialogHelper dialogHelepr = new DialogHelper(this);
+        return new CreateCommentViewModel(thread, user, repository, navigator, dialogHelepr);
     }
 
     @Override
