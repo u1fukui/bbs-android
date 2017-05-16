@@ -7,7 +7,6 @@ import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.ViewGroup;
@@ -41,10 +40,6 @@ public class ThreadDetailActivity extends BaseActivity {
 
     @Inject
     ThreadRepository repository;
-
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
 
     public static Intent createIntent(Context context, BbsThread thread) {
         Intent intent = new Intent(context, ThreadDetailActivity.class);
