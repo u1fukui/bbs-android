@@ -4,6 +4,7 @@ package com.u1fukui.bbs.repository;
 import android.os.SystemClock;
 
 import com.u1fukui.bbs.model.BbsThread;
+import com.u1fukui.bbs.model.ThreadListResponse;
 import com.u1fukui.bbs.model.User;
 
 import java.util.ArrayList;
@@ -18,19 +19,24 @@ import io.reactivex.annotations.NonNull;
 public class CategoryThreadListRepository implements ThreadListRepository {
 
     @Override
-    public Single<List<BbsThread>> fetchThreadList() {
+    public Single<ThreadListResponse> fetchThreadList(final long lastId) {
         //TODO: APIを使う
-        return Single.create(new SingleOnSubscribe<List<BbsThread>>() {
+        return Single.create(new SingleOnSubscribe<ThreadListResponse>() {
             @Override
-            public void subscribe(@NonNull SingleEmitter<List<BbsThread>> e) throws Exception {
+            public void subscribe(@NonNull SingleEmitter<ThreadListResponse> e) throws Exception {
                 SystemClock.sleep(1000);
 
                 List<BbsThread> list = new ArrayList<>();
-                for (int i = 0; i < 20; i++) {
+                for (long i = lastId + 1; i <= lastId + 20; i++) {
                     User author = new User(i, "作者" + i);
-                    list.add(new BbsThread(i, "カテゴリスレッド" + i, author, i, new Date(), new Date()));
+                    list.add(new BbsThread(i, "カテゴリスレッド" + i, author, 0, new Date(), new Date()));
                 }
-                e.onSuccess(list);
+
+                ThreadListResponse res = new ThreadListResponse();
+                res.status = 200;
+                res.threadList = list;
+                res.isCompleted = lastId >= 100;
+                e.onSuccess(res);
             }
         });
     }

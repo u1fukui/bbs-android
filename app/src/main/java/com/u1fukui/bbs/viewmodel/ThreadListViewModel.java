@@ -4,7 +4,9 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableList;
 
+import com.u1fukui.bbs.App;
 import com.u1fukui.bbs.model.BbsThread;
+import com.u1fukui.bbs.model.ThreadListResponse;
 import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.customview.ErrorView;
 import com.u1fukui.bbs.view.helper.LoadingManager;
@@ -31,6 +33,8 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
     @Getter
     private ObservableList<ThreadViewModel> threadViewModelList = new ObservableArrayList<>();
 
+    private boolean isThreadListCompleted;
+
     private final ThreadListRepository repository;
 
     private final ThreadListNavigator navigator;
@@ -43,55 +47,69 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
     //region Databinding
     public void onSwipeRefresh() {
         refreshing.set(true);
-        fetchThreadList();
+        fetchThreadList(0);
     }
     //endregion
 
     public void start() {
         if (threadViewModelList.isEmpty()) {
-            fetchThreadList();
+            fetchThreadList(0);
         }
     }
 
-    private void fetchThreadList() {
-        if (loadingManager.isLoading()) {
+    public void loadNextPage() {
+        if (threadViewModelList.isEmpty()) {
+            return;
+        }
+        ThreadViewModel thread = threadViewModelList.get(threadViewModelList.size() - 1);
+        fetchThreadList(thread.bbsThread.id);
+    }
+
+    private void fetchThreadList(final long lastId) {
+        if (loadingManager.isLoading() || isThreadListCompleted) {
             refreshing.set(false);
             return;
         }
         loadingManager.startLoading();
 
-        repository.fetchThreadList()
+        repository.fetchThreadList(lastId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<BbsThread>>() {
+                .subscribe(new SingleObserver<ThreadListResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         // nop
                     }
 
                     @Override
-                    public void onSuccess(@NonNull List<BbsThread> bbsThreads) {
+                    public void onSuccess(@NonNull ThreadListResponse response) {
                         List<ThreadViewModel> viewModelList = new ArrayList<>();
-                        for (BbsThread thread : bbsThreads) {
+                        for (BbsThread thread : response.threadList) {
                             viewModelList.add(new ThreadViewModel(navigator, thread));
                         }
-                        renderThreadList(viewModelList);
 
+                        isThreadListCompleted = response.isCompleted;
+                        if (lastId == 0) {
+                            threadViewModelList.clear();
+                        }
+                        threadViewModelList.addAll(viewModelList);
+                        loadingManager.showContentView();
+                        refreshing.set(false);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        loadingManager.showErrorView(e);
+                        if (lastId == 0) {
+                            loadingManager.showErrorView(e);
+                        } else {
+                            App.getInstance().getToastUtils().showToast("エラー"); //TODO: エラーメッセージ
+                            isThreadListCompleted = true;
+                            loadingManager.finishLoading();
+                        }
+                        refreshing.set(false);
+
                     }
                 });
-    }
-
-    private void renderThreadList(List<ThreadViewModel> list) {
-        threadViewModelList.clear();
-        threadViewModelList.addAll(list);
-
-        loadingManager.showContentView();
-        refreshing.set(false);
     }
 
     @Override
@@ -100,6 +118,6 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
 
     @Override
     public void onClickReloadButton() {
-        fetchThreadList();
+        fetchThreadList(0);
     }
 }

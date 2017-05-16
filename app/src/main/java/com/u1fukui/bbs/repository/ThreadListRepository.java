@@ -1,13 +1,11 @@
 package com.u1fukui.bbs.repository;
 
 
-import com.u1fukui.bbs.model.BbsThread;
-
-import java.util.List;
+import com.u1fukui.bbs.model.ThreadListResponse;
 
 import io.reactivex.Single;
 
 public interface ThreadListRepository {
 
-    Single<List<BbsThread>> fetchThreadList();
+    Single<ThreadListResponse> fetchThreadList(long lastId);
 }
