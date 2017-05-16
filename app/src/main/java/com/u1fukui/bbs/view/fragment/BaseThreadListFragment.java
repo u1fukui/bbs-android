@@ -17,9 +17,14 @@ import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
 import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.view.customview.BindingHolder;
 import com.u1fukui.bbs.view.customview.ObservableListRecyclerAdapter;
+import com.u1fukui.bbs.view.customview.RecyclerViewScrolledEndSubject;
 import com.u1fukui.bbs.view.helper.ThreadListNavigator;
 import com.u1fukui.bbs.viewmodel.ThreadListViewModel;
 import com.u1fukui.bbs.viewmodel.ThreadViewModel;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Consumer;
 
 public abstract class BaseThreadListFragment extends Fragment {
 
@@ -28,6 +33,10 @@ public abstract class BaseThreadListFragment extends Fragment {
     private ThreadListViewModel viewModel;
 
     private Adapter adapter;
+
+    private RecyclerViewScrolledEndSubject scrollEndSubject;
+
+    private Disposable recyclerViewScrollEventDisposable = Disposables.empty();
 
     abstract ThreadListRepository getRepository();
 
@@ -44,6 +53,7 @@ public abstract class BaseThreadListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentThreadListBinding.inflate(inflater, container, false);
         initViews();
+        initScrollEventListener();
 
         binding.setViewModel(viewModel);
         viewModel.start();
@@ -58,11 +68,47 @@ public abstract class BaseThreadListFragment extends Fragment {
         binding.recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
     }
 
+    private void initScrollEventListener() {
+        scrollEndSubject = new RecyclerViewScrolledEndSubject(binding.recyclerView);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startListenScrollEvent();
+    }
+
+    @Override
+    public void onPause() {
+        stopListenScrollEvent();
+        super.onPause();
+    }
+
     @Override
     public void onDestroyView() {
+        scrollEndSubject.shutdown();
         viewModel.destroy();
         binding.unbind();
         super.onDestroyView();
+    }
+
+    private void startListenScrollEvent() {
+        recyclerViewScrollEventDisposable.dispose();
+        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe(new Consumer() {
+            @Override
+            public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                viewModel.loadNextPage();
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                stopListenScrollEvent();
+            }
+        });
+    }
+
+    private void stopListenScrollEvent() {
+        recyclerViewScrollEventDisposable.dispose();
     }
 
     private static class Adapter extends ObservableListRecyclerAdapter<ThreadViewModel, BindingHolder<ViewThreadCellBinding>> {
