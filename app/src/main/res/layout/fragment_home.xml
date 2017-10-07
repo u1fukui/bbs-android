@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.u1fukui.bbs.viewmodel.HomeViewModel" />
+            type="com.u1fukui.bbs.ui.main.home.HomeViewModel" />
     </data>
 
     <FrameLayout
@@ -41,7 +41,7 @@
                 app:srcCompat="@drawable/ic_create_white_24dp" />
         </FrameLayout>
 
-        <com.u1fukui.bbs.view.customview.ErrorView
+        <com.u1fukui.bbs.customview.ErrorView
             android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.u1fukui.bbs.viewmodel.CategoryViewModel" />
+            type="com.u1fukui.bbs.ui.creation.thread.CategoryViewModel" />
     </data>
 
     <FrameLayout

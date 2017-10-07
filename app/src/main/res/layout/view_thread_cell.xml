@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.u1fukui.bbs.viewmodel.ThreadViewModel" />
+            type="com.u1fukui.bbs.ui.main.ThreadViewModel" />
     </data>
 
     <LinearLayout

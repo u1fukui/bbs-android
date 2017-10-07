@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.u1fukui.bbs.viewmodel.NotificationListViewModel" />
+            type="com.u1fukui.bbs.ui.notification.NotificationListViewModel" />
     </data>
 
     <RelativeLayout
@@ -27,7 +27,7 @@
             android:layout_below="@id/toolbar"
             android:visibility="@{viewModel.loadingManager.contentVisibility}" />
 
-        <com.u1fukui.bbs.view.customview.ErrorView
+        <com.u1fukui.bbs.customview.ErrorView
             android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

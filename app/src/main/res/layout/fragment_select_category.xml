@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.u1fukui.bbs.viewmodel.SelectCategoryViewModel" />
+            type="com.u1fukui.bbs.ui.creation.thread.SelectCategoryViewModel" />
     </data>
 
     <FrameLayout
@@ -42,7 +42,7 @@
 
         </LinearLayout>
 
-        <com.u1fukui.bbs.view.customview.ErrorView
+        <com.u1fukui.bbs.customview.ErrorView
             android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

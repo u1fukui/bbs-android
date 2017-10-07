@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.ColoredStatusBar">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +20,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.ThreadDetailActivity" />
-        <activity android:name=".view.activity.CreateThreadActivity" />
-        <activity android:name=".view.activity.CreateCommentActivity" />
-        <activity android:name=".view.activity.NotificationListActivity" />
+        <activity android:name=".ui.detail.ThreadDetailActivity" />
+        <activity android:name=".ui.creation.thread.CreateThreadActivity" />
+        <activity android:name=".ui.creation.comment.CreateCommentActivity" />
+        <activity android:name=".ui.notification.NotificationListActivity" />
     </application>
 
 </manifest>

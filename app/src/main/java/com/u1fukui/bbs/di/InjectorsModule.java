@@ -6,11 +6,11 @@ import com.u1fukui.bbs.di.activity.MainActivityModule;
 import com.u1fukui.bbs.di.activity.NotificationListActivityModule;
 import com.u1fukui.bbs.di.activity.ThreadDetailActivityModule;
 import com.u1fukui.bbs.di.scope.ActivityScope;
-import com.u1fukui.bbs.view.activity.CreateCommentActivity;
-import com.u1fukui.bbs.view.activity.CreateThreadActivity;
-import com.u1fukui.bbs.view.activity.MainActivity;
-import com.u1fukui.bbs.view.activity.NotificationListActivity;
-import com.u1fukui.bbs.view.activity.ThreadDetailActivity;
+import com.u1fukui.bbs.ui.creation.comment.CreateCommentActivity;
+import com.u1fukui.bbs.ui.creation.thread.CreateThreadActivity;
+import com.u1fukui.bbs.ui.main.MainActivity;
+import com.u1fukui.bbs.ui.notification.NotificationListActivity;
+import com.u1fukui.bbs.ui.detail.ThreadDetailActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
