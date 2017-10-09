@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 ext {
     support_lib_version="25.3.0"
-    dagger_version="2.11-rc2"
+    dagger_version="2.11"
 }
 
 android {
