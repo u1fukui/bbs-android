@@ -12,13 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.ViewGroup;
 
 import com.u1fukui.bbs.R;
+import com.u1fukui.bbs.customview.BindingHolder;
+import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter;
 import com.u1fukui.bbs.databinding.ActivityThreadDetailBinding;
 import com.u1fukui.bbs.databinding.ViewCommentCellBinding;
 import com.u1fukui.bbs.model.BbsThread;
 import com.u1fukui.bbs.repository.ThreadRepository;
 import com.u1fukui.bbs.ui.BaseActivity;
-import com.u1fukui.bbs.customview.BindingHolder;
-import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter;
 
 import javax.inject.Inject;
 
@@ -28,16 +28,17 @@ public class ThreadDetailActivity extends BaseActivity {
 
     private static final String EXTRA_THREAD = "extra.thread";
 
-    private ActivityThreadDetailBinding binding;
-
-    private ThreadDetailViewModel viewModel;
-
-    private Adapter adapter;
-
-    private ThreadDetailNavigator navigator;
+    @Inject
+    ThreadDetailNavigator navigator;
 
     @Inject
     ThreadRepository repository;
+
+    private ActivityThreadDetailBinding binding;
+
+    private Adapter adapter;
+
+    private ThreadDetailViewModel viewModel;
 
     public static Intent createIntent(Context context, BbsThread thread) {
         Intent intent = new Intent(context, ThreadDetailActivity.class);
@@ -49,7 +50,6 @@ public class ThreadDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_thread_detail);
-        navigator = new ThreadDetailNavigator(this);
 
         BbsThread thread = (BbsThread) getIntent().getSerializableExtra(EXTRA_THREAD);
         viewModel = new ThreadDetailViewModel(thread, repository, navigator);
