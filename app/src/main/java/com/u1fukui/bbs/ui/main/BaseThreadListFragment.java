@@ -12,16 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.u1fukui.bbs.R;
-import com.u1fukui.bbs.databinding.FragmentThreadListBinding;
-import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
-import com.u1fukui.bbs.repository.ThreadListRepository;
 import com.u1fukui.bbs.customview.BindingHolder;
 import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter;
 import com.u1fukui.bbs.customview.RecyclerViewScrolledEndSubject;
+import com.u1fukui.bbs.databinding.FragmentThreadListBinding;
+import com.u1fukui.bbs.databinding.ViewThreadCellBinding;
+import com.u1fukui.bbs.repository.ThreadListRepository;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Consumer;
 
 public abstract class BaseThreadListFragment extends Fragment {
 
@@ -91,17 +90,7 @@ public abstract class BaseThreadListFragment extends Fragment {
 
     private void startListenScrollEvent() {
         recyclerViewScrollEventDisposable.dispose();
-        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe(new Consumer() {
-            @Override
-            public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                viewModel.loadNextPage();
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                stopListenScrollEvent();
-            }
-        });
+        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe(o -> viewModel.loadNextPage(), throwable -> stopListenScrollEvent());
     }
 
     private void stopListenScrollEvent() {

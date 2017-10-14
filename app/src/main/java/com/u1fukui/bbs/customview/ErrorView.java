@@ -49,12 +49,9 @@ public class ErrorView extends LinearLayout {
     public static void onClickReloadButton(View view, final ErrorViewListener listener) {
         View reloadButton = view.findViewById(R.id.reload_btn);
         if (reloadButton != null && listener != null) {
-            reloadButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onClickReloadButton();
-                    }
+            reloadButton.setOnClickListener(view1 -> {
+                if (listener != null) {
+                    listener.onClickReloadButton();
                 }
             });
         }

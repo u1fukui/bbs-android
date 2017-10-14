@@ -1,7 +1,6 @@
 package com.u1fukui.bbs.helper;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
@@ -33,18 +32,8 @@ public class DialogHelper {
         new AlertDialog.Builder(context, R.style.DialogTheme)
                 .setTitle(titleResId)
                 .setMessage(messageResId)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onClickPositiveButton();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onClickNegativeButton();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> listener.onClickPositiveButton())
+                .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> listener.onClickNegativeButton())
                 .show();
     }
 }
