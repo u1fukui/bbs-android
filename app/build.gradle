@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
 ext {
-    support_lib_version="25.3.0"
+    support_lib_version="26.1.0"
     dagger_version="2.11"
 }
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.u1fukui.bbs"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
