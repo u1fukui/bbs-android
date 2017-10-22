@@ -41,8 +41,6 @@ dependencies {
         exclude group: 'com.google.code.findbugs', module: 'jsr305' // for dagger
     })
 
-    compileOnly "org.projectlombok:lombok:1.16.18"
-    annotationProcessor "org.projectlombok:lombok:1.16.18"
     implementation "com.android.support:appcompat-v7:$support_lib_version"
     implementation "com.android.support:design:$support_lib_version"
     implementation "com.android.support:support-vector-drawable:$support_lib_version"

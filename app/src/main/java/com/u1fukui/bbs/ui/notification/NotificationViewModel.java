@@ -17,12 +17,12 @@ public class NotificationViewModel implements ViewModel {
 
     public NotificationViewModel(Notification notification) {
         this.notification = notification;
-        this.createdAt = DateFormat.format(DATE_FORMAT_PATTERN, notification.createdAt);
+        this.createdAt = DateFormat.format(DATE_FORMAT_PATTERN, notification.getCreatedAt());
     }
 
     public void onClickNotification(View view) {
         //TODO: 実装
-        App.getInstance().getToastUtils().showToast("click notification " + notification.id);
+        App.getToastUtils().showToast("click notification " + notification.getId());
     }
 
     @Override

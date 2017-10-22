@@ -42,7 +42,7 @@ public class CreateCommentActivity extends BaseActivity {
 
     private CreateCommentViewModel createViewModel() {
         BbsThread thread = (BbsThread) getIntent().getSerializableExtra(EXTRA_THREAD);
-        User user = new User(1, "たろう");
+        User user = new User(1L, "たろう");
         ThreadRepository repository = new ThreadRepository();
         Navigator navigator = new Navigator(this);
         DialogHelper dialogHelepr = new DialogHelper(this);

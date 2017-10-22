@@ -27,11 +27,7 @@ public class FavoriteThreadListRepository implements ThreadListRepository {
                 list.add(new BbsThread(i, "お気に入りスレッド" + i, author, 0, new Date(), new Date()));
             }
 
-            ThreadListResponse res = new ThreadListResponse();
-            res.status = 200;
-            res.threadList = list;
-            res.isCompleted = lastId >= 100;
-            e.onSuccess(res);
+            e.onSuccess(new ThreadListResponse(200, list, lastId >= 100));
         });
     }
 }

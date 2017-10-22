@@ -19,13 +19,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import lombok.Getter;
 
 public class NotificationListViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     public final LoadingManager loadingManager = new LoadingManager();
 
-    @Getter
     private ObservableList<NotificationViewModel> notificationViewModelList = new ObservableArrayList<>();
 
     private final NotificationListRepository repository;
@@ -87,5 +85,10 @@ public class NotificationListViewModel implements ViewModel, ErrorView.ErrorView
     @Override
     public void onClickReloadButton() {
         fetchNotificationList();
+    }
+
+    //TOOD: 整理する
+    ObservableList<NotificationViewModel> getNotificationViewModelList() {
+        return notificationViewModelList;
     }
 }

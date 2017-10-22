@@ -20,13 +20,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import lombok.Getter;
 
 public class SelectCategoryViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
     public final LoadingManager loadingManager = new LoadingManager();
 
-    @Getter
     private final ObservableList<CategoryViewModel> categoryList = new ObservableArrayList<>();
 
     private final CategoryListRepository repository;
@@ -87,5 +85,10 @@ public class SelectCategoryViewModel implements ViewModel, ErrorView.ErrorViewLi
     @Override
     public void onClickReloadButton() {
         fetchCategoryList();
+    }
+
+    //TODO: 整理する
+    ObservableList<CategoryViewModel> getCategoryList() {
+        return categoryList;
     }
 }

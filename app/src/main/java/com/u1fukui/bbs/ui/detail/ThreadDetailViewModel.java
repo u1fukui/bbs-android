@@ -20,7 +20,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import lombok.Getter;
 
 public class ThreadDetailViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
@@ -32,7 +31,6 @@ public class ThreadDetailViewModel implements ViewModel, ErrorView.ErrorViewList
     public final LoadingManager loadingManager = new LoadingManager();
     //endregion
 
-    @Getter
     private ObservableList<CommentViewModel> commentViewModelList = new ObservableArrayList<>();
 
     private final ThreadRepository repository;
@@ -71,7 +69,7 @@ public class ThreadDetailViewModel implements ViewModel, ErrorView.ErrorViewList
         }
         loadingManager.startLoading();
 
-        repository.fetchCommentList(bbsThread.id)
+        repository.fetchCommentList(bbsThread.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Comment>>() {
@@ -112,5 +110,10 @@ public class ThreadDetailViewModel implements ViewModel, ErrorView.ErrorViewList
     @Override
     public void onClickReloadButton() {
         fetchCommentList();
+    }
+
+    //TODO: 整理する
+    ObservableList<CommentViewModel> getCommentViewModelList() {
+        return commentViewModelList;
     }
 }

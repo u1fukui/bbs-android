@@ -26,7 +26,7 @@ public class NotificationListRepository {
 
             List<Notification> list = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
-                list.add(new Notification(i, "http://example.com", "通知です" + i, new Date()));
+                list.add(new Notification((long) i, "http://example.com", "通知です" + i, new Date()));
             }
             e.onSuccess(list);
         });
