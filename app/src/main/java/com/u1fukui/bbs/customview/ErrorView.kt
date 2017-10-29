@@ -40,12 +40,14 @@ class ErrorView : LinearLayout {
     companion object {
 
         @BindingAdapter("errorMessage")
-        fun errorMessage(view: View, message: String) {
+        @JvmStatic
+        fun errorMessage(view: View, message: String?) {
             val messageView = view.findViewById<View>(R.id.error_message) as TextView
             messageView.text = message
         }
 
         @BindingAdapter("errorViewListener")
+        @JvmStatic
         fun onClickReloadButton(view: View, listener: ErrorViewListener?) {
             val reloadButton = view.findViewById<View>(R.id.reload_btn)
             if (reloadButton != null && listener != null) {
