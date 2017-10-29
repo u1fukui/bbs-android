@@ -98,11 +98,7 @@ class MainActivity : BaseActivity() {
             ft.add(R.id.content_view, fragment, tag)
         }
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit()
-
-        // NOTE: When this method is called by user's continuous hitting at the same time,
-        // transactions are queued, so necessary to reflect commit instantly before next transaction starts.
-        manager.executePendingTransactions()
+                .commitNow()
 
         return true
     }
