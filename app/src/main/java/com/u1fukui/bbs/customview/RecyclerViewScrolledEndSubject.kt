@@ -29,10 +29,10 @@ class RecyclerViewScrolledEndSubject(private var recyclerView: RecyclerView?) {
     }
 
     init {
-        if (recyclerView.getLayoutManager() !is LinearLayoutManager) {
+        if (recyclerView?.layoutManager !is LinearLayoutManager) {
             throw IllegalArgumentException("RecyclerView needs to have LinearLayoutManager")
         }
-        this.recyclerView!!.addOnScrollListener(listener)
+        this.recyclerView?.addOnScrollListener(listener)
     }
 
     fun connect(): Subject<*> {
@@ -40,7 +40,7 @@ class RecyclerViewScrolledEndSubject(private var recyclerView: RecyclerView?) {
     }
 
     fun shutdown() {
-        recyclerView!!.removeOnScrollListener(listener)
+        recyclerView?.removeOnScrollListener(listener)
         recyclerView = null
     }
 
