@@ -58,8 +58,8 @@ class MainActivity : BaseActivity() {
             supportActionBar!!.title = item.title
             item.isChecked = true
             when (item.itemId) {
-                R.id.nav_home -> switchFragment(homeFragment!!, HomeFragment.TAG)
-                R.id.nav_mypage -> switchFragment(myPageFragment!!, MyPageFragment.TAG)
+                R.id.nav_home -> switchFragment(homeFragment, HomeFragment.TAG)
+                R.id.nav_mypage -> switchFragment(myPageFragment, MyPageFragment.TAG)
             }
             false
         }
@@ -76,12 +76,12 @@ class MainActivity : BaseActivity() {
             myPageFragment = MyPageFragment.newInstance()
         }
         if (savedInstanceState == null) {
-            switchFragment(homeFragment!!, HomeFragment.TAG)
+            switchFragment(homeFragment, HomeFragment.TAG)
         }
     }
 
-    private fun switchFragment(fragment: Fragment, tag: String): Boolean {
-        if (fragment.isAdded) {
+    private fun switchFragment(fragment: Fragment?, tag: String): Boolean {
+        if (fragment == null || fragment.isAdded) {
             return false
         }
 
