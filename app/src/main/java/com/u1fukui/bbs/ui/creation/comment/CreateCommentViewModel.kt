@@ -4,18 +4,16 @@ package com.u1fukui.bbs.ui.creation.comment
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableInt
 import android.view.View
-
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.R
+import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.model.ApiResponse
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.repository.ThreadRepository
-import com.u1fukui.bbs.utils.StringUtils
 import com.u1fukui.bbs.ui.Navigator
-import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.ui.ViewModel
-
+import com.u1fukui.bbs.utils.StringUtils
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
@@ -93,6 +91,6 @@ class CreateCommentViewModel(val bbsThread: BbsThread,
 
     companion object {
 
-        val MAX_DESCRIPTION_LENGTH = 200
+        const val MAX_DESCRIPTION_LENGTH = 200
     }
 }

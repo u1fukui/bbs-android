@@ -3,23 +3,20 @@ package com.u1fukui.bbs.ui.creation.thread
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableInt
 import android.view.View
-
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.model.ApiResponse
 import com.u1fukui.bbs.model.Category
 import com.u1fukui.bbs.repository.ThreadRepository
-import com.u1fukui.bbs.utils.StringUtils
 import com.u1fukui.bbs.ui.ViewModel
-
-import javax.inject.Inject
-
+import com.u1fukui.bbs.utils.StringUtils
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class InputThreadInfoViewModel @Inject
 constructor(val category: Category,
@@ -99,8 +96,8 @@ constructor(val category: Category,
 
     companion object {
 
-        val MAX_TITLE_LENGTH = 20
+        const val MAX_TITLE_LENGTH = 20
 
-        val MAX_DESCRIPTION_LENGTH = 200
+        const val MAX_DESCRIPTION_LENGTH = 200
     }
 }

@@ -41,6 +41,6 @@ class CommentViewModel(val comment: Comment) : ViewModel {
 
     companion object {
 
-        private val DATE_FORMAT_PATTERN = "yyyy/MM/dd(E) kk:mm"
+        private const val DATE_FORMAT_PATTERN = "yyyy/MM/dd(E) kk:mm"
     }
 }

@@ -78,7 +78,7 @@ class ThreadDetailActivity : BaseActivity() {
 
         val TAG = ThreadDetailActivity::class.java.simpleName
 
-        private val EXTRA_THREAD = "extra.thread"
+        private const val EXTRA_THREAD = "extra.thread"
 
         fun createIntent(context: Context, thread: BbsThread): Intent {
             val intent = Intent(context, ThreadDetailActivity::class.java)
