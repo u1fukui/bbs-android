@@ -79,8 +79,10 @@ class MyPageFragment : Fragment() {
 
     companion object {
 
+        @JvmStatic
         val TAG = MyPageFragment::class.java.simpleName
 
+        @JvmStatic
         fun newInstance(): MyPageFragment {
             return MyPageFragment()
         }

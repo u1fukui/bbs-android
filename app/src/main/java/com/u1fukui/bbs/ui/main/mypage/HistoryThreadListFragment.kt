@@ -11,6 +11,7 @@ class HistoryThreadListFragment : BaseThreadListFragment() {
 
     companion object {
 
+        @JvmStatic
         fun newInstance(): HistoryThreadListFragment {
             return HistoryThreadListFragment()
         }

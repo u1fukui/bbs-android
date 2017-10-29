@@ -1,8 +1,6 @@
 package com.u1fukui.bbs.ui.detail
 
 
-import android.content.Intent
-
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.ui.creation.comment.CreateCommentActivity
 import com.u1fukui.bbs.ui.Navigator

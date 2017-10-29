@@ -86,8 +86,10 @@ class HomeFragment : DaggerFragment() {
 
     companion object {
 
+        @JvmStatic
         val TAG = HomeFragment::class.java.simpleName
 
+        @JvmStatic
         fun newInstance(): HomeFragment {
             return HomeFragment()
         }

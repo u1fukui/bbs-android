@@ -5,15 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.databinding.ActivityCreateCommentBinding
+import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.repository.ThreadRepository
 import com.u1fukui.bbs.ui.BaseActivity
 import com.u1fukui.bbs.ui.Navigator
-import com.u1fukui.bbs.helper.DialogHelper
 
 class CreateCommentActivity : BaseActivity() {
 
@@ -49,6 +48,7 @@ class CreateCommentActivity : BaseActivity() {
 
         private val EXTRA_THREAD = "extra.thread"
 
+        @JvmStatic
         fun createIntent(context: Context, thread: BbsThread): Intent {
             val intent = Intent(context, CreateCommentActivity::class.java)
             intent.putExtra(EXTRA_THREAD, thread)

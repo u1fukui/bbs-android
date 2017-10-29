@@ -11,6 +11,7 @@ class FavoriteThreadListFragment : BaseThreadListFragment() {
 
     companion object {
 
+        @JvmStatic
         fun newInstance(): FavoriteThreadListFragment {
             return FavoriteThreadListFragment()
         }

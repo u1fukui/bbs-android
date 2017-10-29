@@ -61,6 +61,7 @@ class SelectCategoryFragment : DaggerFragment() {
 
     companion object {
 
+        @JvmStatic
         fun newInstance(): SelectCategoryFragment {
             return SelectCategoryFragment()
         }

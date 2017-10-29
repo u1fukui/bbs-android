@@ -76,10 +76,12 @@ class ThreadDetailActivity : BaseActivity() {
 
     companion object {
 
+        @JvmStatic
         val TAG = ThreadDetailActivity::class.java.simpleName
 
         private const val EXTRA_THREAD = "extra.thread"
 
+        @JvmStatic
         fun createIntent(context: Context, thread: BbsThread): Intent {
             val intent = Intent(context, ThreadDetailActivity::class.java)
             intent.putExtra(EXTRA_THREAD, thread)
