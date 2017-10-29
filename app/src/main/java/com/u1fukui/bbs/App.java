@@ -6,13 +6,11 @@ import com.u1fukui.bbs.utils.ToastUtils;
 
 import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerApplication;
-import lombok.Getter;
 
 public class App extends DaggerApplication {
 
     private static App instance;
 
-    @Getter
     private ToastUtils toastUtils;
 
     @Override
@@ -27,9 +25,15 @@ public class App extends DaggerApplication {
         return instance;
     }
 
+    public static ToastUtils getToastUtils() {
+        return getInstance().toastUtils;
+    }
+
+    //region Initialization
     private void initToastUtils() {
         toastUtils = new ToastUtils(this);
     }
+    //endregion
 
     //region DaggerApplication
     @Override

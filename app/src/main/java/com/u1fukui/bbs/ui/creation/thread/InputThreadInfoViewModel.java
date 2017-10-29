@@ -104,7 +104,7 @@ public class InputThreadInfoViewModel implements ViewModel {
                     @Override
                     public void onSuccess(@NonNull ApiResponse apiResponse) {
                         loadingVisibility.set(View.GONE);
-                        App.getInstance().getToastUtils().showToast(R.string.create_thread_complete_toast);
+                        App.getToastUtils().showToast(R.string.create_thread_complete_toast);
                         navigator.finish();
                     }
 
@@ -112,7 +112,7 @@ public class InputThreadInfoViewModel implements ViewModel {
                     public void onError(@NonNull Throwable e) {
                         loadingVisibility.set(View.GONE);
                         //TODO: エラー文言
-                        App.getInstance().getToastUtils().showToast("エラー");
+                        App.getToastUtils().showToast("エラー");
                     }
                 });
     }

@@ -19,7 +19,7 @@ public class ThreadViewModel implements ViewModel {
     public ThreadViewModel(ThreadListNavigator navigator, BbsThread bbsThread) {
         this.navigator = navigator;
         this.bbsThread = bbsThread;
-        this.updatedAt = DateFormat.format(DATE_FORMAT_PATTERN, bbsThread.updatedAt);
+        this.updatedAt = DateFormat.format(DATE_FORMAT_PATTERN, bbsThread.getUpdatedAt());
     }
 
     public void onClickThread(View view) {

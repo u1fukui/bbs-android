@@ -27,11 +27,7 @@ public class HistoryThreadListRepository implements ThreadListRepository {
                 list.add(new BbsThread(i, "閲覧履歴スレッド" + i, author, 0, new Date(), new Date()));
             }
 
-            ThreadListResponse res = new ThreadListResponse();
-            res.status = 200;
-            res.threadList = list;
-            res.isCompleted = lastId >= 100;
-            e.onSuccess(res);
+            e.onSuccess(new ThreadListResponse(200, list, lastId >= 100));
         });
     }
 }

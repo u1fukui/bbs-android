@@ -20,7 +20,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import lombok.Getter;
 
 public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListener {
 
@@ -30,7 +29,6 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
     public final ObservableBoolean refreshing = new ObservableBoolean(false);
     //endregion
 
-    @Getter
     private ObservableList<ThreadViewModel> threadViewModelList = new ObservableArrayList<>();
 
     private boolean isThreadListCompleted;
@@ -62,7 +60,7 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
             return;
         }
         ThreadViewModel thread = threadViewModelList.get(threadViewModelList.size() - 1);
-        fetchThreadList(thread.bbsThread.id);
+        fetchThreadList(thread.bbsThread.getId());
     }
 
     private void fetchThreadList(final long lastId) {
@@ -84,11 +82,11 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
                     @Override
                     public void onSuccess(@NonNull ThreadListResponse response) {
                         List<ThreadViewModel> viewModelList = new ArrayList<>();
-                        for (BbsThread thread : response.threadList) {
+                        for (BbsThread thread : response.getThreadList()) {
                             viewModelList.add(new ThreadViewModel(navigator, thread));
                         }
 
-                        isThreadListCompleted = response.isCompleted;
+                        isThreadListCompleted = response.isCompleted();
                         if (lastId == 0) {
                             threadViewModelList.clear();
                         }
@@ -102,7 +100,7 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
                         if (lastId == 0) {
                             loadingManager.showErrorView(e);
                         } else {
-                            App.getInstance().getToastUtils().showToast("エラー"); //TODO: エラーメッセージ
+                            App.getToastUtils().showToast("エラー"); //TODO: エラーメッセージ
                             isThreadListCompleted = true;
                             loadingManager.finishLoading();
                         }
@@ -119,5 +117,9 @@ public class ThreadListViewModel implements ViewModel, ErrorView.ErrorViewListen
     @Override
     public void onClickReloadButton() {
         fetchThreadList(0);
+    }
+
+    ObservableList<ThreadViewModel> getThreadViewModelList() {
+        return threadViewModelList;
     }
 }

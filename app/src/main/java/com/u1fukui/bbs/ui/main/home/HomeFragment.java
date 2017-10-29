@@ -105,7 +105,7 @@ public class HomeFragment extends DaggerFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return categoryList.get(position).name;
+            return categoryList.get(position).getName();
         }
     }
 }
