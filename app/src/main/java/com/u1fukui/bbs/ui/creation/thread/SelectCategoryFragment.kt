@@ -8,23 +8,20 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.u1fukui.bbs.R
-import com.u1fukui.bbs.databinding.FragmentSelectCategoryBinding
-import com.u1fukui.bbs.databinding.ViewCategoryCellBinding
 import com.u1fukui.bbs.customview.BindingHolder
 import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
-
-import javax.inject.Inject
-
+import com.u1fukui.bbs.databinding.FragmentSelectCategoryBinding
+import com.u1fukui.bbs.databinding.ViewCategoryCellBinding
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class SelectCategoryFragment : DaggerFragment() {
 
     private var binding: FragmentSelectCategoryBinding? = null
 
     @Inject
-    internal var viewModel: SelectCategoryViewModel? = null
+    lateinit var viewModel: SelectCategoryViewModel
 
     private var adapter: Adapter? = null
 
@@ -33,13 +30,13 @@ class SelectCategoryFragment : DaggerFragment() {
         binding!!.viewModel = viewModel
         initViews()
 
-        viewModel!!.start()
+        viewModel.start()
 
         return binding!!.root
     }
 
     private fun initViews() {
-        adapter = Adapter(viewModel!!.categoryList)
+        adapter = Adapter(viewModel.categoryList)
         binding!!.recyclerView.adapter = adapter
         binding!!.recyclerView.layoutManager = LinearLayoutManager(context)
         binding!!.recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))

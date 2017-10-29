@@ -23,10 +23,10 @@ import javax.inject.Inject
 class ThreadDetailActivity : BaseActivity() {
 
     @Inject
-    internal var navigator: ThreadDetailNavigator? = null
+    lateinit var navigator: ThreadDetailNavigator
 
     @Inject
-    internal var repository: ThreadRepository? = null
+    lateinit var repository: ThreadRepository
 
     private var binding: ActivityThreadDetailBinding? = null
 

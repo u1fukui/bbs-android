@@ -9,18 +9,15 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.u1fukui.bbs.databinding.FragmentHomeBinding
 import com.u1fukui.bbs.model.Category
-
-import javax.inject.Inject
-
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class HomeFragment : DaggerFragment() {
 
     @Inject
-    internal var viewModel: HomeViewModel? = null
+    lateinit var viewModel: HomeViewModel
 
     private var binding: FragmentHomeBinding? = null
 
@@ -29,13 +26,13 @@ class HomeFragment : DaggerFragment() {
         binding!!.viewModel = viewModel
         initViews()
 
-        viewModel!!.start()
+        viewModel.start()
 
         return binding!!.root
     }
 
     private fun initViews() {
-        binding!!.viewPager.adapter = HomePagerAdapter(childFragmentManager, viewModel!!.categoryList)
+        binding!!.viewPager.adapter = HomePagerAdapter(childFragmentManager, viewModel.categoryList)
         binding!!.tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
         binding!!.tabLayout.setupWithViewPager(binding!!.viewPager)
     }

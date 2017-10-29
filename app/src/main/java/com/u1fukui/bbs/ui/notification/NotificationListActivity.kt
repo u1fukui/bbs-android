@@ -7,20 +7,18 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
-
 import com.u1fukui.bbs.R
+import com.u1fukui.bbs.customview.BindingHolder
+import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
 import com.u1fukui.bbs.databinding.ActivityNotificationListBinding
 import com.u1fukui.bbs.databinding.ViewNotificationCellBinding
 import com.u1fukui.bbs.ui.BaseActivity
-import com.u1fukui.bbs.customview.BindingHolder
-import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
-
 import javax.inject.Inject
 
 class NotificationListActivity : BaseActivity() {
 
     @Inject
-    internal var viewModel: NotificationListViewModel? = null
+    lateinit var viewModel: NotificationListViewModel
 
     private var binding: ActivityNotificationListBinding? = null
 
@@ -34,18 +32,18 @@ class NotificationListActivity : BaseActivity() {
         initToolbar(binding!!.toolbar, true)
         initViews()
 
-        viewModel!!.start()
+        viewModel.start()
     }
 
     private fun initViews() {
-        adapter = Adapter(viewModel!!.notificationViewModelList)
+        adapter = Adapter(viewModel.notificationViewModelList)
         binding!!.recyclerView.adapter = adapter
         binding!!.recyclerView.layoutManager = LinearLayoutManager(this)
         binding!!.recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
     }
 
     override fun onDestroy() {
-        viewModel!!.destroy()
+        viewModel.destroy()
         binding!!.unbind()
         super.onDestroy()
     }

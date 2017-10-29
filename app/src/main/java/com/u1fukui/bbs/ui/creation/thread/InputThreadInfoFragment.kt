@@ -13,7 +13,7 @@ import javax.inject.Inject
 class InputThreadInfoFragment : DaggerFragment() {
 
     @Inject
-    internal var viewModel: InputThreadInfoViewModel? = null
+    lateinit var viewModel: InputThreadInfoViewModel
 
     private var binding: FragmentInputThreadInfoBinding? = null
 

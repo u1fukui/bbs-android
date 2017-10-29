@@ -16,7 +16,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity() {
 
     @Inject
-    internal lateinit var navigator: MainNavigator
+    lateinit var navigator: MainNavigator
 
     private lateinit var binding: ActivityMainBinding
 
