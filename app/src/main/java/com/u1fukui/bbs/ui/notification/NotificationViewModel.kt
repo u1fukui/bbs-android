@@ -17,7 +17,7 @@ class NotificationViewModel(val notification: Notification) : ViewModel {
 
     fun onClickNotification(view: View) {
         //TODO: 実装
-        App.getToastUtils()!!.showToast("click notification " + notification.id)
+        App.getToastUtils().showToast("click notification " + notification.id)
     }
 
     override fun destroy() {}

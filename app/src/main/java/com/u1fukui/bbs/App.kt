@@ -34,8 +34,8 @@ class App : DaggerApplication() {
         @JvmStatic var instance: App? = null
             private set
 
-        @JvmStatic fun getToastUtils(): ToastUtils? {
-            return instance!!.toastUtils
+        @JvmStatic fun getToastUtils(): ToastUtils {
+            return instance?.toastUtils!!
         }
     }
     //endregion

@@ -3,22 +3,18 @@ package com.u1fukui.bbs.ui.main
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
-
 import com.u1fukui.bbs.App
-import com.u1fukui.bbs.model.BbsThread
-import com.u1fukui.bbs.model.ThreadListResponse
-import com.u1fukui.bbs.repository.ThreadListRepository
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
+import com.u1fukui.bbs.model.ThreadListResponse
+import com.u1fukui.bbs.repository.ThreadListRepository
 import com.u1fukui.bbs.ui.ViewModel
-
-import java.util.ArrayList
-
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class ThreadListViewModel(private val repository: ThreadListRepository, private val navigator: ThreadListNavigator) : ViewModel, ErrorView.ErrorViewListener {
 
@@ -87,7 +83,7 @@ class ThreadListViewModel(private val repository: ThreadListRepository, private 
                         if (lastId == 0L) {
                             loadingManager.showErrorView(e)
                         } else {
-                            App.getToastUtils()!!.showToast("エラー") //TODO: エラーメッセージ
+                            App.getToastUtils().showToast("エラー") //TODO: エラーメッセージ
                             isThreadListCompleted = true
                             loadingManager.finishLoading()
                         }

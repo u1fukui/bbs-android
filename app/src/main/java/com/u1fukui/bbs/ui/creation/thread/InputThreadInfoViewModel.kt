@@ -74,14 +74,14 @@ constructor(val category: Category,
 
                     override fun onSuccess(@NonNull apiResponse: ApiResponse) {
                         loadingVisibility.set(View.GONE)
-                        App.getToastUtils()!!.showToast(R.string.create_thread_complete_toast)
+                        App.getToastUtils().showToast(R.string.create_thread_complete_toast)
                         navigator.finish()
                     }
 
                     override fun onError(@NonNull e: Throwable) {
                         loadingVisibility.set(View.GONE)
                         //TODO: エラー文言
-                        App.getToastUtils()!!.showToast("エラー")
+                        App.getToastUtils().showToast("エラー")
                     }
                 })
     }
