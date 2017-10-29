@@ -25,7 +25,7 @@ class SelectCategoryFragment : DaggerFragment() {
 
     private var adapter: Adapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSelectCategoryBinding.inflate(inflater, container, false)
         binding!!.viewModel = viewModel
         initViews()

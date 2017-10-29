@@ -20,7 +20,7 @@ class InputThreadInfoFragment : DaggerFragment() {
     val category: Category
         get() = arguments.getSerializable(ARG_CATEGORY) as Category
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentInputThreadInfoBinding.inflate(inflater, container, false)
         binding!!.viewModel = viewModel
         initViews()

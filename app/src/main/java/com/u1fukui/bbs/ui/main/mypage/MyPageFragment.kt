@@ -15,7 +15,7 @@ class MyPageFragment : Fragment() {
 
     private var binding: FragmentMypageBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMypageBinding.inflate(inflater, container, false)
         initViews()
 

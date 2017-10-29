@@ -38,7 +38,7 @@ abstract class BaseThreadListFragment : Fragment() {
         viewModel = ThreadListViewModel(repository, navigator)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentThreadListBinding.inflate(inflater, container, false)
         initViews()
         initScrollEventListener()
