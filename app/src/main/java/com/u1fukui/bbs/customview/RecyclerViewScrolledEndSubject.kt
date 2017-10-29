@@ -46,6 +46,6 @@ class RecyclerViewScrolledEndSubject(private var recyclerView: RecyclerView?) {
 
     companion object {
 
-        private val THRESHOLD_COUNT = 5
+        private const val THRESHOLD_COUNT = 5
     }
 }
