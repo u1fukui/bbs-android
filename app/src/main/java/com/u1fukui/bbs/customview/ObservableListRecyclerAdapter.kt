@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 abstract class ObservableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(list: ObservableList<T>) : ArrayRecyclerAdapter<T, VH>(list) {
 
     init {
-
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
             override fun onChanged(contributorViewModels: ObservableList<T>) {
                 notifyDataSetChanged()

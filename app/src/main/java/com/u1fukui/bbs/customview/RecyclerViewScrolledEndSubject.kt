@@ -11,9 +11,8 @@ class RecyclerViewScrolledEndSubject(private var recyclerView: RecyclerView?) {
     private val subject = PublishSubject.create<Any>()
 
     private val listener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-            val manager = recyclerView!!.layoutManager as LinearLayoutManager
-
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val manager = recyclerView.layoutManager as LinearLayoutManager
             val visibleCount = recyclerView.childCount
             val totalCount = manager.itemCount
             val firstPos = manager.findFirstVisibleItemPosition()
@@ -24,7 +23,7 @@ class RecyclerViewScrolledEndSubject(private var recyclerView: RecyclerView?) {
         }
     }
 
-    internal enum class Irrelevant {
+    private enum class Irrelevant {
         INSTANCE
     }
 
