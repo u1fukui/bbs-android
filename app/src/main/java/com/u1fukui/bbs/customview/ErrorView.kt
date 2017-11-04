@@ -13,25 +13,17 @@ import android.widget.TextView
 
 import com.u1fukui.bbs.R
 
-class ErrorView : LinearLayout {
+class ErrorView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     interface ErrorViewListener {
         fun onClickReloadButton()
     }
 
-    constructor(context: Context) : super(context) {
-        init()
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init()
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        init()
-    }
-
-    private fun init() {
+    init {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER
         DataBindingUtil.inflate<ViewDataBinding>(LayoutInflater.from(context), R.layout.view_error, this, true)
