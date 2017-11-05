@@ -87,7 +87,7 @@ abstract class BaseThreadListFragment : Fragment() {
 
     private class Adapter(list: ObservableList<ThreadViewModel>) : ObservableListRecyclerAdapter<ThreadViewModel, BindingHolder<ViewThreadCellBinding>>(list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ViewThreadCellBinding> = BindingHolder(parent.context, parent, R.layout.view_thread_cell)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewThreadCellBinding>(parent.context, parent, R.layout.view_thread_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewThreadCellBinding>, position: Int) {
             holder.binding.apply {

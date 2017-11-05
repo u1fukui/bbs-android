@@ -3,7 +3,6 @@ package com.u1fukui.bbs.ui.main.home
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
@@ -19,30 +18,35 @@ class HomeFragment : DaggerFragment() {
     @Inject
     lateinit var viewModel: HomeViewModel
 
-    private var binding: FragmentHomeBinding? = null
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding!!.viewModel = viewModel
+        binding.viewModel = viewModel
         initViews()
 
         viewModel.start()
 
-        return binding!!.root
+        return binding.root
     }
 
     private fun initViews() {
-        binding!!.viewPager.adapter = HomePagerAdapter(childFragmentManager, viewModel.categoryList)
-        binding!!.tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-        binding!!.tabLayout.setupWithViewPager(binding!!.viewPager)
+        binding.apply {
+            viewPager.adapter = HomePagerAdapter(childFragmentManager, viewModel!!.categoryList)
+            tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+            tabLayout.setupWithViewPager(binding.viewPager)
+        }
     }
 
     override fun onDestroyView() {
-        binding!!.unbind()
+        binding.unbind()
         super.onDestroyView()
     }
 
-    private class HomePagerAdapter(manager: FragmentManager, private val categoryList: ObservableList<Category>) : FragmentPagerAdapter(manager) {
+    private class HomePagerAdapter(
+            manager: FragmentManager,
+            private val categoryList: ObservableList<Category>
+    ) : FragmentPagerAdapter(manager) {
 
         init {
             this.categoryList.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<Category>>() {
@@ -68,17 +72,11 @@ class HomeFragment : DaggerFragment() {
             })
         }
 
-        override fun getItem(position: Int): Fragment {
-            return CategoryThreadListFragment.newInstance(categoryList[position])
-        }
+        override fun getItem(position: Int) = CategoryThreadListFragment.newInstance(categoryList[position])
 
-        override fun getCount(): Int {
-            return categoryList.size
-        }
+        override fun getCount() = categoryList.size
 
-        override fun getPageTitle(position: Int): CharSequence {
-            return categoryList[position].name
-        }
+        override fun getPageTitle(position: Int) = categoryList[position].name
     }
 
     companion object {
@@ -87,8 +85,6 @@ class HomeFragment : DaggerFragment() {
         val TAG = HomeFragment::class.java.simpleName
 
         @JvmStatic
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
-        }
+        fun newInstance() = HomeFragment()
     }
 }

@@ -13,23 +13,25 @@ import com.u1fukui.bbs.databinding.FragmentMypageBinding
 
 class MyPageFragment : Fragment() {
 
-    private var binding: FragmentMypageBinding? = null
+    private lateinit var binding: FragmentMypageBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMypageBinding.inflate(inflater, container, false)
         initViews()
 
-        return binding!!.root
+        return binding.root
     }
 
     private fun initViews() {
-        binding!!.tabLayout.tabMode = TabLayout.MODE_FIXED
-        binding!!.viewPager.adapter = MyPagePagerAdapter(childFragmentManager)
-        binding!!.tabLayout.setupWithViewPager(binding!!.viewPager)
+        binding.apply {
+            viewPager.adapter = MyPagePagerAdapter(childFragmentManager)
+            tabLayout.tabMode = TabLayout.MODE_FIXED
+            tabLayout.setupWithViewPager(viewPager)
+        }
     }
 
     override fun onDestroyView() {
-        binding!!.unbind()
+        binding.unbind()
         super.onDestroyView()
     }
 
@@ -37,24 +39,16 @@ class MyPageFragment : Fragment() {
 
         internal enum class Tab {
             FAVORITE {
+                //TODO: Apply resource string
+                override val title = "Favorite"
 
-                override//TODO: Apply resource string
-                val title: String
-                    get() = "Favorite"
-
-                override fun createInsatance(): Fragment {
-                    return FavoriteThreadListFragment.newInstance()
-                }
+                override fun createInsatance() = FavoriteThreadListFragment.newInstance()
             },
             HISTORY {
+                //TODO: Apply resource string
+                override val title = "History"
 
-                override//TODO: Apply resource string
-                val title: String
-                    get() = "History"
-
-                override fun createInsatance(): Fragment {
-                    return HistoryThreadListFragment.newInstance()
-                }
+                override fun createInsatance() = HistoryThreadListFragment.newInstance()
             };
 
             internal abstract val title: String
@@ -62,19 +56,11 @@ class MyPageFragment : Fragment() {
             internal abstract fun createInsatance(): Fragment
         }
 
-        override fun getItem(position: Int): Fragment {
-            val tab = Tab.values()[position]
-            return tab.createInsatance()
-        }
+        override fun getItem(position: Int) = Tab.values()[position].createInsatance()
 
-        override fun getCount(): Int {
-            return Tab.values().size
-        }
+        override fun getCount() = Tab.values().size
 
-        override fun getPageTitle(position: Int): CharSequence {
-            val tab = Tab.values()[position]
-            return tab.title
-        }
+        override fun getPageTitle(position: Int) = Tab.values()[position].title
     }
 
     companion object {
@@ -83,8 +69,6 @@ class MyPageFragment : Fragment() {
         val TAG = MyPageFragment::class.java.simpleName
 
         @JvmStatic
-        fun newInstance(): MyPageFragment {
-            return MyPageFragment()
-        }
+        fun newInstance() =  MyPageFragment()
     }
 }
