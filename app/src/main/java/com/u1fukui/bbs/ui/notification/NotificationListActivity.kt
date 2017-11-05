@@ -20,45 +20,43 @@ class NotificationListActivity : BaseActivity() {
     @Inject
     lateinit var viewModel: NotificationListViewModel
 
-    private var binding: ActivityNotificationListBinding? = null
-
-    private var adapter: Adapter? = null
+    private val binding by lazy {
+        DataBindingUtil.setContentView<ActivityNotificationListBinding>(this, R.layout.activity_notification_list)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_notification_list)
-        binding!!.viewModel = viewModel
+        binding.viewModel = viewModel
 
-        initToolbar(binding!!.toolbar, true)
+        initToolbar(binding.toolbar, true)
         initViews()
 
         viewModel.start()
     }
 
     private fun initViews() {
-        adapter = Adapter(viewModel.notificationViewModelList)
-        binding!!.recyclerView.adapter = adapter
-        binding!!.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding!!.recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        binding.recyclerView.apply {
+            adapter = Adapter(viewModel.notificationViewModelList)
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
     }
 
     override fun onDestroy() {
         viewModel.destroy()
-        binding!!.unbind()
+        binding.unbind()
         super.onDestroy()
     }
 
     private class Adapter(list: ObservableList<NotificationViewModel>) : ObservableListRecyclerAdapter<NotificationViewModel, BindingHolder<ViewNotificationCellBinding>>(list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ViewNotificationCellBinding> {
-            return BindingHolder(parent.context, parent, R.layout.view_notification_cell)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewNotificationCellBinding>(parent.context, parent, R.layout.view_notification_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewNotificationCellBinding>, position: Int) {
-            val viewModel = getItem(position)
-            val itemBinding = holder.binding
-            itemBinding.viewModel = viewModel
-            itemBinding.executePendingBindings()
+            holder.binding.apply {
+                viewModel = getItem(position)
+                executePendingBindings()
+            }
         }
     }
 }
