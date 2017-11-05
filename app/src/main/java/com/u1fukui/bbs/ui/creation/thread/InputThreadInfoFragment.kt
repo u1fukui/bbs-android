@@ -15,34 +15,32 @@ class InputThreadInfoFragment : DaggerFragment() {
     @Inject
     lateinit var viewModel: InputThreadInfoViewModel
 
-    private var binding: FragmentInputThreadInfoBinding? = null
+    internal val category by lazy {
+        arguments.getSerializable(ARG_CATEGORY) as Category
+    }
 
-    val category: Category
-        get() = arguments.getSerializable(ARG_CATEGORY) as Category
+    private lateinit var binding: FragmentInputThreadInfoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentInputThreadInfoBinding.inflate(inflater, container, false)
-        binding!!.viewModel = viewModel
+        binding.viewModel = viewModel
         initViews()
 
-        return binding!!.root
+        return binding.root
     }
 
     private fun initViews() {
-        binding!!.editTextTitle.requestFocus()
+        binding.editTextTitle.requestFocus()
     }
 
     companion object {
 
         private val ARG_CATEGORY = "arg.category"
 
-        fun newInstance(category: Category): InputThreadInfoFragment {
-            val args = Bundle()
-            args.putSerializable(ARG_CATEGORY, category)
-
-            val instance = InputThreadInfoFragment()
-            instance.arguments = args
-            return instance
+        fun newInstance(category: Category) = InputThreadInfoFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(ARG_CATEGORY, category)
+            }
         }
     }
 }

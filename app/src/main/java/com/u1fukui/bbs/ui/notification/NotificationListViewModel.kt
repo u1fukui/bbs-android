@@ -2,22 +2,17 @@ package com.u1fukui.bbs.ui.notification
 
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
-
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.Notification
 import com.u1fukui.bbs.repository.NotificationListRepository
 import com.u1fukui.bbs.ui.ViewModel
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class NotificationListViewModel @Inject
 constructor(private val repository: NotificationListRepository) : ViewModel, ErrorView.ErrorViewListener {
@@ -48,10 +43,7 @@ constructor(private val repository: NotificationListRepository) : ViewModel, Err
                     }
 
                     override fun onSuccess(@NonNull notificationList: List<Notification>) {
-                        val viewModelList = ArrayList<NotificationViewModel>()
-                        for (notification in notificationList) {
-                            viewModelList.add(NotificationViewModel(notification))
-                        }
+                        val viewModelList = notificationList.map { NotificationViewModel(it) }
                         renderNotificationList(viewModelList)
 
                     }

@@ -16,18 +16,18 @@ import com.u1fukui.bbs.ui.Navigator
 
 class CreateCommentActivity : BaseActivity() {
 
-    private var binding: ActivityCreateCommentBinding? = null
+    private val binding by lazy {
+        DataBindingUtil.setContentView<ActivityCreateCommentBinding>(this, R.layout.activity_create_comment)
+    }
 
-    private var viewModel: CreateCommentViewModel? = null
+    private lateinit var viewModel: CreateCommentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = createViewModel()
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_comment)
-        binding!!.viewModel = viewModel
-        initToolbar(binding!!.toolbar, true)
+        binding.viewModel = viewModel
+        initToolbar(binding.toolbar, true)
     }
 
     private fun createViewModel(): CreateCommentViewModel {
@@ -40,7 +40,7 @@ class CreateCommentActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        binding!!.unbind()
+        binding.unbind()
         super.onDestroy()
     }
 
@@ -49,10 +49,8 @@ class CreateCommentActivity : BaseActivity() {
         private val EXTRA_THREAD = "extra.thread"
 
         @JvmStatic
-        fun createIntent(context: Context, thread: BbsThread): Intent {
-            val intent = Intent(context, CreateCommentActivity::class.java)
-            intent.putExtra(EXTRA_THREAD, thread)
-            return intent
+        fun createIntent(context: Context, thread: BbsThread) = Intent(context, CreateCommentActivity::class.java).apply {
+            putExtra(EXTRA_THREAD, thread)
         }
     }
 }

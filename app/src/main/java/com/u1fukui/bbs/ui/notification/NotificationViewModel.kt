@@ -9,11 +9,7 @@ import com.u1fukui.bbs.ui.ViewModel
 
 class NotificationViewModel(val notification: Notification) : ViewModel {
 
-    val createdAt: CharSequence
-
-    init {
-        this.createdAt = DateFormat.format(DATE_FORMAT_PATTERN, notification.createdAt)
-    }
+    val createdAt = DateFormat.format(DATE_FORMAT_PATTERN, notification.createdAt)!!
 
     fun onClickNotification(view: View) {
         //TODO: 実装

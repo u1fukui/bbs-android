@@ -3,24 +3,24 @@ package com.u1fukui.bbs.ui.main.home
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
 import android.view.View
-
-import com.u1fukui.bbs.model.Category
-import com.u1fukui.bbs.repository.CategoryListRepository
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
-import com.u1fukui.bbs.ui.main.MainNavigator
+import com.u1fukui.bbs.model.Category
+import com.u1fukui.bbs.repository.CategoryListRepository
 import com.u1fukui.bbs.ui.ViewModel
-
-import javax.inject.Inject
-
+import com.u1fukui.bbs.ui.main.MainNavigator
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class HomeViewModel @Inject
-constructor(private val repository: CategoryListRepository, private val navigator: MainNavigator) : ViewModel, ErrorView.ErrorViewListener {
+constructor(
+        private val repository: CategoryListRepository,
+        private val navigator: MainNavigator
+) : ViewModel, ErrorView.ErrorViewListener {
 
     val loadingManager = LoadingManager()
 

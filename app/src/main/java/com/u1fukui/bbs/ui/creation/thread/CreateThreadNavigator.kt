@@ -11,7 +11,6 @@ constructor(activity: CreateThreadActivity) : Navigator(activity) {
 
     fun navigateToInputInfoPage(category: Category) {
         if (activity is CreateThreadActivity) {
-            val activity = activity
             activity.supportFragmentManager.beginTransaction()
                     .replace(activity.fragmentContainerId, InputThreadInfoFragment.newInstance(category))
                     .addToBackStack(null)

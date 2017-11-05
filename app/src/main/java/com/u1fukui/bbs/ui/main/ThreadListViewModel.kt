@@ -14,9 +14,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
-class ThreadListViewModel(private val repository: ThreadListRepository, private val navigator: ThreadListNavigator) : ViewModel, ErrorView.ErrorViewListener {
+class ThreadListViewModel(
+        private val repository: ThreadListRepository,
+        private val navigator: ThreadListNavigator
+) : ViewModel, ErrorView.ErrorViewListener {
 
     //region DataBinding
     val loadingManager = LoadingManager()
@@ -65,10 +67,7 @@ class ThreadListViewModel(private val repository: ThreadListRepository, private 
                     }
 
                     override fun onSuccess(@NonNull response: ThreadListResponse) {
-                        val viewModelList = ArrayList<ThreadViewModel>()
-                        for (thread in response.threadList) {
-                            viewModelList.add(ThreadViewModel(navigator, thread))
-                        }
+                        val viewModelList = response.threadList.map { ThreadViewModel(navigator, it) }
 
                         isThreadListCompleted = response.isCompleted
                         if (lastId == 0L) {

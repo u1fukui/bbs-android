@@ -15,10 +15,12 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
+    private val binding by lazy {
+        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+    }
+
     @Inject
     lateinit var navigator: MainNavigator
-
-    private lateinit var binding: ActivityMainBinding
 
     private var homeFragment: Fragment? = null
 
@@ -26,8 +28,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         initToolbar(binding.toolbar, false)
         initViews()
         initFragments(savedInstanceState)
@@ -67,14 +67,8 @@ class MainActivity : BaseActivity() {
 
     private fun initFragments(savedInstanceState: Bundle?) {
         val manager = supportFragmentManager
-        homeFragment = manager.findFragmentByTag(HomeFragment.TAG)
-        myPageFragment = manager.findFragmentByTag(MyPageFragment.TAG)
-        if (homeFragment == null) {
-            homeFragment = HomeFragment.newInstance()
-        }
-        if (myPageFragment == null) {
-            myPageFragment = MyPageFragment.newInstance()
-        }
+        homeFragment = manager.findFragmentByTag(HomeFragment.TAG)?: HomeFragment.newInstance()
+        myPageFragment = manager.findFragmentByTag(MyPageFragment.TAG)?: MyPageFragment.newInstance()
         if (savedInstanceState == null) {
             switchFragment(homeFragment, HomeFragment.TAG)
         }

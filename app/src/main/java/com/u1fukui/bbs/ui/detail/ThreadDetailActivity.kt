@@ -28,64 +28,57 @@ class ThreadDetailActivity : BaseActivity() {
     @Inject
     lateinit var repository: ThreadRepository
 
-    private var binding: ActivityThreadDetailBinding? = null
+    private val binding by lazy {
+        DataBindingUtil.setContentView<ActivityThreadDetailBinding>(this, R.layout.activity_thread_detail)
+    }
 
-    private var adapter: Adapter? = null
-
-    private var viewModel: ThreadDetailViewModel? = null
+    private lateinit var viewModel: ThreadDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_thread_detail)
 
         val thread = intent.getSerializableExtra(EXTRA_THREAD) as BbsThread
         viewModel = ThreadDetailViewModel(thread, repository, navigator)
-        binding!!.viewModel = viewModel
-        initToolbar(binding!!.toolbar, true)
+        binding.viewModel = viewModel
+        initToolbar(binding.toolbar, true)
 
         initViews()
-        viewModel!!.start()
+        viewModel.start()
     }
 
     private fun initViews() {
-        adapter = Adapter(viewModel!!.commentViewModelList)
-        binding!!.recyclerView.adapter = adapter
-        binding!!.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding!!.recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        binding.recyclerView.apply {
+            adapter = Adapter(viewModel.commentViewModelList)
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
     }
 
     override fun onDestroy() {
-        viewModel!!.destroy()
-        binding!!.unbind()
+        viewModel.destroy()
+        binding.unbind()
         super.onDestroy()
     }
 
     private class Adapter(list: ObservableList<CommentViewModel>) : ObservableListRecyclerAdapter<CommentViewModel, BindingHolder<ViewCommentCellBinding>>(list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ViewCommentCellBinding> {
-            return BindingHolder(parent.context, parent, R.layout.view_comment_cell)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCommentCellBinding>(parent.context, parent, R.layout.view_comment_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewCommentCellBinding>, position: Int) {
-            val viewModel = getItem(position)
-            val itemBinding = holder.binding
-            itemBinding.viewModel = viewModel
-            itemBinding.executePendingBindings()
+            holder.binding.apply {
+                viewModel = getItem(position)
+                executePendingBindings()
+            }
         }
     }
 
     companion object {
 
-        @JvmStatic
-        val TAG = ThreadDetailActivity::class.java.simpleName
-
         private const val EXTRA_THREAD = "extra.thread"
 
         @JvmStatic
-        fun createIntent(context: Context, thread: BbsThread): Intent {
-            val intent = Intent(context, ThreadDetailActivity::class.java)
-            intent.putExtra(EXTRA_THREAD, thread)
-            return intent
+        fun createIntent(context: Context, thread: BbsThread) = Intent(context, ThreadDetailActivity::class.java).apply {
+            putExtra(EXTRA_THREAD, thread)
         }
     }
 }

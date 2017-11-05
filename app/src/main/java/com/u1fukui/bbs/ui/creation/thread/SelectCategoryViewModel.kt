@@ -3,22 +3,17 @@ package com.u1fukui.bbs.ui.creation.thread
 
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
-
-import com.u1fukui.bbs.model.Category
-import com.u1fukui.bbs.repository.CategoryListRepository
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
+import com.u1fukui.bbs.model.Category
+import com.u1fukui.bbs.repository.CategoryListRepository
 import com.u1fukui.bbs.ui.ViewModel
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class SelectCategoryViewModel @Inject
 constructor(private val repository: CategoryListRepository, private val navigator: CreateThreadNavigator) : ViewModel, ErrorView.ErrorViewListener {
@@ -49,10 +44,7 @@ constructor(private val repository: CategoryListRepository, private val navigato
                     }
 
                     override fun onSuccess(@NonNull categoryList: List<Category>) {
-                        val viewModelList = ArrayList<CategoryViewModel>()
-                        for (category in categoryList) {
-                            viewModelList.add(CategoryViewModel(category, navigator))
-                        }
+                        val viewModelList = categoryList.map { CategoryViewModel(it, navigator) }
 
                         this@SelectCategoryViewModel.categoryList.clear()
                         this@SelectCategoryViewModel.categoryList.addAll(viewModelList)

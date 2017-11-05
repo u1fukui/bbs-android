@@ -18,16 +18,14 @@ import javax.inject.Inject
 
 class SelectCategoryFragment : DaggerFragment() {
 
-    private var binding: FragmentSelectCategoryBinding? = null
-
     @Inject
     lateinit var viewModel: SelectCategoryViewModel
 
-    private var adapter: Adapter? = null
+    private lateinit var binding: FragmentSelectCategoryBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSelectCategoryBinding.inflate(inflater, container, false)
-        binding!!.viewModel = viewModel
+        binding.viewModel = viewModel
         initViews()
 
         viewModel.start()
@@ -36,31 +34,28 @@ class SelectCategoryFragment : DaggerFragment() {
     }
 
     private fun initViews() {
-        adapter = Adapter(viewModel.categoryList)
-        binding!!.recyclerView.adapter = adapter
-        binding!!.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding!!.recyclerView.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        binding.recyclerView.apply {
+            adapter = Adapter(viewModel.categoryList)
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
     }
 
     private class Adapter(list: ObservableList<CategoryViewModel>) : ObservableListRecyclerAdapter<CategoryViewModel, BindingHolder<ViewCategoryCellBinding>>(list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ViewCategoryCellBinding> {
-            return BindingHolder(parent.context, parent, R.layout.view_category_cell)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCategoryCellBinding>(parent.context, parent, R.layout.view_category_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewCategoryCellBinding>, position: Int) {
-            val viewModel = getItem(position)
-            val itemBinding = holder.binding
-            itemBinding.viewModel = viewModel
-            itemBinding.executePendingBindings()
+            holder.binding.apply {
+                viewModel = getItem(position)
+                executePendingBindings()
+            }
         }
     }
 
     companion object {
 
         @JvmStatic
-        fun newInstance(): SelectCategoryFragment {
-            return SelectCategoryFragment()
-        }
+        fun newInstance() = SelectCategoryFragment()
     }
 }

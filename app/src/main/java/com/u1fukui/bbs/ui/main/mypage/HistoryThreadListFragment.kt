@@ -1,19 +1,15 @@
 package com.u1fukui.bbs.ui.main.mypage
 
 import com.u1fukui.bbs.repository.HistoryThreadListRepository
-import com.u1fukui.bbs.repository.ThreadListRepository
 import com.u1fukui.bbs.ui.main.BaseThreadListFragment
 
 class HistoryThreadListFragment : BaseThreadListFragment() {
 
-    protected override val repository: ThreadListRepository
-        get() = HistoryThreadListRepository()
+    override val repository = HistoryThreadListRepository()
 
     companion object {
 
         @JvmStatic
-        fun newInstance(): HistoryThreadListFragment {
-            return HistoryThreadListFragment()
-        }
+        fun newInstance() = HistoryThreadListFragment()
     }
 }
