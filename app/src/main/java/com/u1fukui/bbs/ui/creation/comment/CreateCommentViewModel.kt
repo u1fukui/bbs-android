@@ -20,11 +20,13 @@ import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class CreateCommentViewModel(val bbsThread: BbsThread,
-                             val user: User,
-                             private val repository: ThreadRepository,
-                             private val navigator: Navigator,
-                             private val dialogHelper: DialogHelper) : ViewModel {
+class CreateCommentViewModel(
+        val bbsThread: BbsThread,
+        val user: User,
+        private val repository: ThreadRepository,
+        private val navigator: Navigator,
+        private val dialogHelper: DialogHelper
+) : ViewModel {
 
     val loadingVisibility = ObservableInt(View.GONE)
 
