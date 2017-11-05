@@ -4,16 +4,12 @@ import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
 import android.view.View
-
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.repository.ThreadRepository
 import com.u1fukui.bbs.ui.ViewModel
-
-import java.util.ArrayList
-
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
@@ -23,7 +19,8 @@ import io.reactivex.schedulers.Schedulers
 class ThreadDetailViewModel(//region DataBinding
         val bbsThread: BbsThread,
         private val repository: ThreadRepository,
-        private val navigator: ThreadDetailNavigator) : ViewModel, ErrorView.ErrorViewListener {
+        private val navigator: ThreadDetailNavigator
+) : ViewModel, ErrorView.ErrorViewListener {
 
     val refreshing = ObservableBoolean(false)
 
@@ -66,10 +63,7 @@ class ThreadDetailViewModel(//region DataBinding
                     }
 
                     override fun onSuccess(@NonNull bbsComments: List<Comment>) {
-                        val viewModelList = ArrayList<CommentViewModel>()
-                        for (comment in bbsComments) {
-                            viewModelList.add(CommentViewModel(comment))
-                        }
+                        val viewModelList = bbsComments.map { CommentViewModel(it) }
                         renderCommentList(viewModelList)
                     }
 

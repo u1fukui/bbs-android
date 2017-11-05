@@ -11,17 +11,11 @@ import com.u1fukui.bbs.ui.ViewModel
 
 class CommentViewModel(val comment: Comment) : ViewModel {
 
-    val createdAt: CharSequence
+    val createdAt = DateFormat.format(DATE_FORMAT_PATTERN, comment.createdAt)!!
 
-    val isLiked: ObservableBoolean
+    val isLiked = ObservableBoolean(comment.isLiked)
 
-    val likeCount: ObservableInt
-
-    init {
-        this.createdAt = DateFormat.format(DATE_FORMAT_PATTERN, comment.createdAt)
-        this.isLiked = ObservableBoolean(comment.isLiked)
-        this.likeCount = ObservableInt(comment.likeCount)
-    }
+    val likeCount = ObservableInt(comment.likeCount)
 
     fun onClickComment(view: View) {
         //TODO: 実装
@@ -36,7 +30,7 @@ class CommentViewModel(val comment: Comment) : ViewModel {
     }
 
     override fun destroy() {
-
+        // nop
     }
 
     companion object {
