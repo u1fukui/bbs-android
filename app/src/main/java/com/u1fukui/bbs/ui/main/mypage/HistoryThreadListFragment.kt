@@ -5,7 +5,7 @@ import com.u1fukui.bbs.ui.main.BaseThreadListFragment
 
 class HistoryThreadListFragment : BaseThreadListFragment() {
 
-    override val repository = HistoryThreadListRepository()
+    override fun getRepository() = HistoryThreadListRepository()
 
     companion object {
 

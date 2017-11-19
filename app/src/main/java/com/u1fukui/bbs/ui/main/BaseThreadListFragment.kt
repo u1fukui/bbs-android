@@ -2,7 +2,6 @@ package com.u1fukui.bbs.ui.main
 
 import android.databinding.ObservableList
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -15,11 +14,10 @@ import com.u1fukui.bbs.customview.RecyclerViewScrolledEndSubject
 import com.u1fukui.bbs.databinding.FragmentThreadListBinding
 import com.u1fukui.bbs.databinding.ViewThreadCellBinding
 import com.u1fukui.bbs.repository.ThreadListRepository
+import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.Disposables
 
-abstract class BaseThreadListFragment : Fragment() {
-
-    protected abstract val repository: ThreadListRepository
+abstract class BaseThreadListFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentThreadListBinding
 
@@ -29,11 +27,13 @@ abstract class BaseThreadListFragment : Fragment() {
 
     private var recyclerViewScrollEventDisposable = Disposables.empty()
 
+    protected abstract fun getRepository(): ThreadListRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val navigator = ThreadListNavigator(activity!!)
-        viewModel = ThreadListViewModel(repository, navigator)
+        viewModel = ThreadListViewModel(getRepository(), navigator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
