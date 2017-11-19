@@ -5,6 +5,7 @@ import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.R
+import com.u1fukui.bbs.api.ThreadListApi
 import com.u1fukui.bbs.repository.ThreadRepository
 import dagger.Module
 import dagger.Provides
@@ -18,23 +19,38 @@ import javax.inject.Singleton
 class AppModule(private val app: App) {
 
     @Provides
+    @Singleton
     fun provideContext(): Context = app
 
     @Provides
+    @Singleton
     fun provideThreadRepository() = ThreadRepository()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideMoshi() =
             Moshi.Builder()
                     .add(KotlinJsonAdapterFactory())
                     .build()
 
-    @Provides @Singleton
+    @Singleton
+    @Provides
+    fun providesOkHttp() =
+            OkHttpClient.Builder()
+                    .build()
+
+    @Provides
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi) =
-        Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(app.getString(R.string.api_base))
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            Retrofit.Builder()
+                    .client(okHttpClient)
+                    .baseUrl(app.getString(R.string.api_base))
+                    .addConverterFactory(MoshiConverterFactory.create(moshi))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+
+    @Provides
+    @Singleton
+    fun provideThreadListApi(retrofit: Retrofit) =
+            retrofit.create(ThreadListApi::class.java)
 }
