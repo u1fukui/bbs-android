@@ -32,7 +32,7 @@ abstract class BaseThreadListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val navigator = ThreadListNavigator(activity)
+        val navigator = ThreadListNavigator(activity!!)
         viewModel = ThreadListViewModel(repository, navigator)
     }
 
