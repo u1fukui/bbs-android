@@ -16,7 +16,7 @@ class InputThreadInfoFragment : DaggerFragment() {
     lateinit var viewModel: InputThreadInfoViewModel
 
     internal val category by lazy {
-        arguments.getSerializable(ARG_CATEGORY) as Category
+        arguments?.getSerializable(ARG_CATEGORY) as Category
     }
 
     private lateinit var binding: FragmentInputThreadInfoBinding
