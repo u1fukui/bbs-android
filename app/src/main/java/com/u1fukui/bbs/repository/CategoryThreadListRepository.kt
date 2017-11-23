@@ -1,31 +1,40 @@
 package com.u1fukui.bbs.repository
 
 
-import android.os.SystemClock
-
+import com.u1fukui.bbs.api.ThreadListApi
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.model.ThreadListResponse
 import com.u1fukui.bbs.model.User
-
-import java.util.ArrayList
-import java.util.Date
-
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.util.Date
+import javax.inject.Inject
 
-class CategoryThreadListRepository : ThreadListRepository {
+class CategoryThreadListRepository @Inject constructor(
+        private val threadListApi: ThreadListApi,
+        private val categoryId: Int
+) : ThreadListRepository {
 
-    override fun fetchThreadList(lastId: Long): Single<ThreadListResponse> {
-        //TODO: APIを使う
-        return Single.create { e ->
-            SystemClock.sleep(1000)
+    override fun fetchThreadList(lastId: Long): Single<ThreadListResponse> =
+            threadListApi.search("android")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map { Any ->
+                        ThreadListResponse(0,
+                                createDebugDataList(lastId),
+                                lastId >= 100)
+                    }
 
-            val list = ArrayList<BbsThread>()
-            for (i in lastId + 1..lastId + 20) {
-                val author = User(i, "作者" + i)
-                list.add(BbsThread(i, "カテゴリスレッド" + i, author, 0, Date(), Date()))
+    private fun createDebugDataList(lastId: Long): List<BbsThread> =
+            ((lastId + 1)..(lastId + 20)).map {
+                BbsThread(
+                        it.toLong(),
+                        "カテゴリスレッド$it",
+                        User(it.toLong(), "作者$it"),
+                        0,
+                        Date(),
+                        Date()
+                )
             }
-
-            e.onSuccess(ThreadListResponse(200, list, lastId >= 100))
-        }
-    }
 }

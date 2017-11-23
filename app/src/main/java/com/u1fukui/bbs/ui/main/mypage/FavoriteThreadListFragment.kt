@@ -5,7 +5,7 @@ import com.u1fukui.bbs.ui.main.BaseThreadListFragment
 
 class FavoriteThreadListFragment : BaseThreadListFragment() {
 
-    override val repository = FavoriteThreadListRepository()
+    override fun getRepository() = FavoriteThreadListRepository()
 
     companion object {
 
