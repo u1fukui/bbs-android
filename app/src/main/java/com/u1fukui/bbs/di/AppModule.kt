@@ -4,12 +4,14 @@ import android.content.Context
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.u1fukui.bbs.App
+import com.u1fukui.bbs.BuildConfig
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.api.ThreadListApi
 import com.u1fukui.bbs.repository.ThreadRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -33,10 +35,13 @@ class AppModule(private val app: App) {
                     .add(KotlinJsonAdapterFactory())
                     .build()
 
-    @Singleton
     @Provides
+    @Singleton
     fun providesOkHttp() =
             OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().apply {
+                        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                    })
                     .build()
 
     @Provides
