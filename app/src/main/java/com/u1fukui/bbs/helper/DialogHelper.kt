@@ -20,13 +20,13 @@ constructor(private val context: Context) {
 
     fun showConfirmDialog(@StringRes titleResId: Int,
                           @StringRes messageResId: Int,
-                          listener: ConfirmDialogListener) {
+                          listener: ConfirmDialogListener?) {
 
         AlertDialog.Builder(context, R.style.DialogTheme)
                 .setTitle(titleResId)
                 .setMessage(messageResId)
-                .setPositiveButton(android.R.string.ok) { dialogInterface, i -> listener.onClickPositiveButton() }
-                .setNegativeButton(android.R.string.cancel) { dialogInterface, i -> listener.onClickNegativeButton() }
+                .setPositiveButton(android.R.string.ok) { _, _ -> listener?.onClickPositiveButton() }
+                .setNegativeButton(android.R.string.cancel) { _, _ -> listener?.onClickNegativeButton() }
                 .show()
     }
 }

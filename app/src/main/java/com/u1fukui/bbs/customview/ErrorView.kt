@@ -41,9 +41,8 @@ class ErrorView @JvmOverloads constructor(
         @BindingAdapter("errorViewListener")
         @JvmStatic
         fun onClickReloadButton(view: View, listener: ErrorViewListener?) {
-            val reloadButton = view.findViewById<View>(R.id.reload_btn)
-            if (reloadButton != null && listener != null) {
-                reloadButton.setOnClickListener { view1 ->
+            view.findViewById<View>(R.id.reload_btn).apply {
+                setOnClickListener {
                     listener?.onClickReloadButton()
                 }
             }

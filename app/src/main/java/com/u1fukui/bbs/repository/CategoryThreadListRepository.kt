@@ -8,7 +8,7 @@ import com.u1fukui.bbs.model.User
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 class CategoryThreadListRepository @Inject constructor(
@@ -20,7 +20,7 @@ class CategoryThreadListRepository @Inject constructor(
             threadListApi.search("android")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .map { Any ->
+                    .map {
                         ThreadListResponse(0,
                                 createDebugDataList(lastId),
                                 lastId >= 100)

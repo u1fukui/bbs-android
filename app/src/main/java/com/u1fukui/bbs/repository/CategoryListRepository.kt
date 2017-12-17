@@ -2,17 +2,14 @@ package com.u1fukui.bbs.repository
 
 
 import android.os.SystemClock
-
 import com.u1fukui.bbs.model.Category
-
-import java.util.ArrayList
-
+import io.reactivex.Single
+import java.util.ArrayList;
 import javax.inject.Inject
 
-import io.reactivex.Single
+class CategoryListRepository @Inject constructor(
 
-class CategoryListRepository @Inject
-constructor() {
+) {
 
     fun fetchCategoryList(): Single<List<Category>> {
         //TODO: API実装
