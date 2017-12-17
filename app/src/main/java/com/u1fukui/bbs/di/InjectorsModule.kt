@@ -14,22 +14,22 @@ import dagger.android.ContributesAndroidInjector
 internal abstract class InjectorsModule {
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(MainActivityModule::class, MainActivityModule.BindModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(ActivityModule::class, MainActivityModule::class, MainActivityModule.BindModule::class))
     internal abstract fun mainActivity(): MainActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(CreateThreadActivityModule::class, CreateThreadActivityModule.BindModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(ActivityModule::class, CreateThreadActivityModule::class, CreateThreadActivityModule.BindModule::class))
     internal abstract fun createThreadActivity(): CreateThreadActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(ThreadDetailActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(ActivityModule::class, ThreadDetailActivityModule::class))
     internal abstract fun threadDetailActivity(): ThreadDetailActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(CreateCommentActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(ActivityModule::class, CreateCommentActivityModule::class))
     internal abstract fun createCommentActivity(): CreateCommentActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(NotificationListActivityModule::class))
+    @ContributesAndroidInjector(modules = arrayOf(ActivityModule::class, NotificationListActivityModule::class))
     internal abstract fun notificationListActivity(): NotificationListActivity
 }
