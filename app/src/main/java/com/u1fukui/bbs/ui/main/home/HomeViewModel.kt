@@ -6,7 +6,7 @@ import android.view.View
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.Category
-import com.u1fukui.bbs.repository.thread_list.CategoryListRepository
+import com.u1fukui.bbs.repository.CategoryListRepository
 import com.u1fukui.bbs.ui.ViewModel
 import com.u1fukui.bbs.ui.main.MainNavigator
 import io.reactivex.SingleObserver
