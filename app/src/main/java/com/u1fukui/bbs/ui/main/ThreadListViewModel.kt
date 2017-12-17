@@ -7,7 +7,7 @@ import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.ThreadListResponse
-import com.u1fukui.bbs.repository.ThreadListRepository
+import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import com.u1fukui.bbs.ui.ViewModel
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers

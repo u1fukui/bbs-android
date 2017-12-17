@@ -1,4 +1,4 @@
-package com.u1fukui.bbs.repository
+package com.u1fukui.bbs.repository.thread_list
 
 
 import com.u1fukui.bbs.api.ThreadListApi
@@ -9,9 +9,11 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import javax.inject.Inject
 
-class HistoryThreadListRepository constructor(
-        private val threadListApi: ThreadListApi
+class CategoryThreadListRepository @Inject constructor(
+        private val threadListApi: ThreadListApi,
+        private val categoryId: Int
 ) : ThreadListRepository {
 
     override fun fetchThreadList(lastId: Long): Single<ThreadListResponse> =
@@ -19,7 +21,7 @@ class HistoryThreadListRepository constructor(
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map {
-                        ThreadListResponse(200,
+                        ThreadListResponse(0,
                                 createDebugDataList(lastId),
                                 lastId >= 100)
                     }
@@ -27,9 +29,9 @@ class HistoryThreadListRepository constructor(
     private fun createDebugDataList(lastId: Long): List<BbsThread> =
             ((lastId + 1)..(lastId + 20)).map {
                 BbsThread(
-                        it,
-                        "履歴スレッド$it",
-                        User(it, "作者$it"),
+                        it.toLong(),
+                        "カテゴリスレッド$it",
+                        User(it.toLong(), "作者$it"),
                         0,
                         Date(),
                         Date()
