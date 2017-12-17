@@ -1,4 +1,4 @@
-package com.u1fukui.bbs.repository.thread_list
+package com.u1fukui.bbs.repository
 
 
 import android.os.SystemClock
