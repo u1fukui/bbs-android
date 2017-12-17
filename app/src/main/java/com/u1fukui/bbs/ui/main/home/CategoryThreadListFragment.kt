@@ -3,7 +3,7 @@ package com.u1fukui.bbs.ui.main.home
 import android.os.Bundle
 import com.u1fukui.bbs.api.ThreadListApi
 import com.u1fukui.bbs.model.Category
-import com.u1fukui.bbs.repository.CategoryThreadListRepository
+import com.u1fukui.bbs.repository.thread_list.CategoryThreadListRepository
 import com.u1fukui.bbs.ui.main.BaseThreadListFragment
 import javax.inject.Inject
 
