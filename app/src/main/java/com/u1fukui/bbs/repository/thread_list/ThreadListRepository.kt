@@ -1,4 +1,4 @@
-package com.u1fukui.bbs.repository
+package com.u1fukui.bbs.repository.thread_list
 
 
 import com.u1fukui.bbs.model.ThreadListResponse

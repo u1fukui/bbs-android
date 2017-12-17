@@ -13,7 +13,7 @@ import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
 import com.u1fukui.bbs.customview.RecyclerViewScrolledEndSubject
 import com.u1fukui.bbs.databinding.FragmentThreadListBinding
 import com.u1fukui.bbs.databinding.ViewThreadCellBinding
-import com.u1fukui.bbs.repository.ThreadListRepository
+import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.Disposables
 

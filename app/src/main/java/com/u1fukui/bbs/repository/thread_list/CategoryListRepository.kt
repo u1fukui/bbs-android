@@ -1,10 +1,10 @@
-package com.u1fukui.bbs.repository
+package com.u1fukui.bbs.repository.thread_list
 
 
 import android.os.SystemClock
 import com.u1fukui.bbs.model.Category
 import io.reactivex.Single
-import java.util.ArrayList;
+import java.util.*
 import javax.inject.Inject
 
 class CategoryListRepository @Inject constructor(
