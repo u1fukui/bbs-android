@@ -21,7 +21,7 @@ abstract class BaseThreadListFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentThreadListBinding
 
-    private lateinit var viewModel: ThreadListViewModel
+    private lateinit var bindingModel: ThreadListBindingModel
 
     private lateinit var scrollEndSubject: RecyclerViewScrolledEndSubject
 
@@ -33,7 +33,7 @@ abstract class BaseThreadListFragment : DaggerFragment() {
         super.onCreate(savedInstanceState)
 
         val navigator = ThreadListNavigator(activity!!)
-        viewModel = ThreadListViewModel(getRepository(), navigator)
+        bindingModel = ThreadListBindingModel(getRepository(), navigator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,15 +41,15 @@ abstract class BaseThreadListFragment : DaggerFragment() {
         initViews()
         initScrollEventListener()
 
-        binding.viewModel = viewModel
-        viewModel.start()
+        binding.bindingModel = bindingModel
+        bindingModel.start()
 
         return binding.root
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(viewModel.threadViewModelList)
+            adapter = Adapter(bindingModel.threadBindingModelList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
@@ -71,27 +71,27 @@ abstract class BaseThreadListFragment : DaggerFragment() {
 
     override fun onDestroyView() {
         scrollEndSubject.shutdown()
-        viewModel.destroy()
+        bindingModel.destroy()
         binding.unbind()
         super.onDestroyView()
     }
 
     private fun startListenScrollEvent() {
         recyclerViewScrollEventDisposable.dispose()
-        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe({ viewModel.loadNextPage() }) { stopListenScrollEvent() }
+        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe({ bindingModel.loadNextPage() }) { stopListenScrollEvent() }
     }
 
     private fun stopListenScrollEvent() {
         recyclerViewScrollEventDisposable.dispose()
     }
 
-    private class Adapter(list: ObservableList<ThreadViewModel>) : ObservableListRecyclerAdapter<ThreadViewModel, BindingHolder<ViewThreadCellBinding>>(list) {
+    private class Adapter(list: ObservableList<ThreadBindingModel>) : ObservableListRecyclerAdapter<ThreadBindingModel, BindingHolder<ViewThreadCellBinding>>(list) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewThreadCellBinding>(parent.context, parent, R.layout.view_thread_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewThreadCellBinding>, position: Int) {
             holder.binding.apply {
-                viewModel = getItem(position)
+                bindingModel = getItem(position)
                 executePendingBindings()
             }
         }

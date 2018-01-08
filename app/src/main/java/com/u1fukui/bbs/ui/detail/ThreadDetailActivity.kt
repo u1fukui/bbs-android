@@ -32,41 +32,41 @@ class ThreadDetailActivity : BaseActivity() {
         DataBindingUtil.setContentView<ActivityThreadDetailBinding>(this, R.layout.activity_thread_detail)
     }
 
-    private lateinit var viewModel: ThreadDetailViewModel
+    private lateinit var bindingModel: ThreadDetailBindingModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val thread = intent.getSerializableExtra(EXTRA_THREAD) as BbsThread
-        viewModel = ThreadDetailViewModel(thread, repository, navigator)
-        binding.viewModel = viewModel
+        bindingModel = ThreadDetailBindingModel(thread, repository, navigator)
+        binding.bindingModel = bindingModel
         initToolbar(binding.toolbar, true)
 
         initViews()
-        viewModel.start()
+        bindingModel.start()
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(viewModel.commentViewModelList)
+            adapter = Adapter(bindingModel.commentBindingModelList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
 
     override fun onDestroy() {
-        viewModel.destroy()
+        bindingModel.destroy()
         binding.unbind()
         super.onDestroy()
     }
 
-    private class Adapter(list: ObservableList<CommentViewModel>) : ObservableListRecyclerAdapter<CommentViewModel, BindingHolder<ViewCommentCellBinding>>(list) {
+    private class Adapter(list: ObservableList<CommentBindingModel>) : ObservableListRecyclerAdapter<CommentBindingModel, BindingHolder<ViewCommentCellBinding>>(list) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCommentCellBinding>(parent.context, parent, R.layout.view_comment_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewCommentCellBinding>, position: Int) {
             holder.binding.apply {
-                viewModel = getItem(position)
+                bindingModel = getItem(position)
                 executePendingBindings()
             }
         }

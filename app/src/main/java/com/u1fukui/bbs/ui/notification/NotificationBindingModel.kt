@@ -5,9 +5,9 @@ import android.view.View
 
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.model.Notification
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 
-class NotificationViewModel(val notification: Notification) : ViewModel {
+class NotificationBindingModel(val notification: Notification) : BindingModel {
 
     val createdAt = DateFormat.format(DATE_FORMAT_PATTERN, notification.createdAt)!!
 

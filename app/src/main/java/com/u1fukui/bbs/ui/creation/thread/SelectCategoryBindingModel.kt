@@ -7,7 +7,7 @@ import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.Category
 import com.u1fukui.bbs.repository.CategoryListRepository
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
@@ -15,13 +15,13 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SelectCategoryViewModel @Inject
-constructor(private val repository: CategoryListRepository, private val navigator: CreateThreadNavigator) : ViewModel, ErrorView.ErrorViewListener {
+class SelectCategoryBindingModel @Inject
+constructor(private val repository: CategoryListRepository, private val navigator: CreateThreadNavigator) : BindingModel, ErrorView.ErrorViewListener {
 
     val loadingManager = LoadingManager()
 
     //TODO: 整理する
-    internal val categoryList: ObservableList<CategoryViewModel> = ObservableArrayList()
+    internal val categoryList: ObservableList<CategoryBindingModel> = ObservableArrayList()
 
     fun start() {
         if (categoryList.isEmpty()) {
@@ -44,10 +44,10 @@ constructor(private val repository: CategoryListRepository, private val navigato
                     }
 
                     override fun onSuccess(@NonNull categoryList: List<Category>) {
-                        val viewModelList = categoryList.map { CategoryViewModel(it, navigator) }
+                        val bindingModelList = categoryList.map { CategoryBindingModel(it, navigator) }
 
-                        this@SelectCategoryViewModel.categoryList.clear()
-                        this@SelectCategoryViewModel.categoryList.addAll(viewModelList)
+                        this@SelectCategoryBindingModel.categoryList.clear()
+                        this@SelectCategoryBindingModel.categoryList.addAll(bindingModelList)
                         loadingManager.showContentView()
                     }
 

@@ -1,6 +1,6 @@
 package com.u1fukui.bbs.ui
 
-interface ViewModel {
+interface BindingModel {
 
     fun destroy()
 }

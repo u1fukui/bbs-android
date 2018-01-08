@@ -3,12 +3,12 @@ package com.u1fukui.bbs.ui.creation.thread
 import android.view.View
 
 import com.u1fukui.bbs.model.Category
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 
-class CategoryViewModel(
+class CategoryBindingModel(
         val category: Category,
         private val navigator: CreateThreadNavigator
-) : ViewModel {
+) : BindingModel {
 
     fun onClickCategory(view: View) {
         navigator.navigateToInputInfoPage(category)

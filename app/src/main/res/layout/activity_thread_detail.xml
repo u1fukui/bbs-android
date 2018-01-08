@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.detail.ThreadDetailViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.detail.ThreadDetailBindingModel" />
     </data>
 
     <RelativeLayout
@@ -18,21 +18,21 @@
             style="@style/BaseToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:title="@{viewModel.bbsThread.title}" />
+            android:title="@{bindingModel.bbsThread.title}" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-            android:visibility="@{viewModel.loadingManager.contentVisibility}">
+            android:visibility="@{bindingModel.loadingManager.contentVisibility}">
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/toolbar"
-                app:onRefreshListener="@{viewModel::onSwipeRefresh}"
-                app:refreshing="@{viewModel.refreshing}">
+                app:onRefreshListener="@{bindingModel::onSwipeRefresh}"
+                app:refreshing="@{bindingModel.refreshing}">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="14dp"
-                android:onClick="@{viewModel::onClickFloatingActionButton}"
+                android:onClick="@{bindingModel::onClickFloatingActionButton}"
                 app:srcCompat="@drawable/ic_create_white_24dp" />
 
         </FrameLayout>
@@ -57,15 +57,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-            android:visibility="@{viewModel.loadingManager.errorViewVisibility}"
-            app:errorMessage="@{viewModel.loadingManager.errorMessage}"
-            app:errorViewListener="@{viewModel}" />
+            android:visibility="@{bindingModel.loadingManager.errorViewVisibility}"
+            app:errorMessage="@{bindingModel.loadingManager.errorMessage}"
+            app:errorViewListener="@{bindingModel}" />
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.loadingManager.loadingVisibility}" />
+            android:visibility="@{bindingModel.loadingManager.loadingVisibility}" />
     </RelativeLayout>
 
 </layout>

@@ -6,7 +6,7 @@ import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.Notification
 import com.u1fukui.bbs.repository.NotificationListRepository
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
@@ -14,16 +14,16 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class NotificationListViewModel @Inject
-constructor(private val repository: NotificationListRepository) : ViewModel, ErrorView.ErrorViewListener {
+class NotificationListBindingModel @Inject
+constructor(private val repository: NotificationListRepository) : BindingModel, ErrorView.ErrorViewListener {
 
     val loadingManager = LoadingManager()
 
     //TOOD: 整理する
-    internal val notificationViewModelList: ObservableList<NotificationViewModel> = ObservableArrayList()
+    internal val notificationBindingModelList: ObservableList<NotificationBindingModel> = ObservableArrayList()
 
     fun start() {
-        if (notificationViewModelList.isEmpty()) {
+        if (notificationBindingModelList.isEmpty()) {
             fetchNotificationList()
         }
     }
@@ -43,8 +43,8 @@ constructor(private val repository: NotificationListRepository) : ViewModel, Err
                     }
 
                     override fun onSuccess(@NonNull notificationList: List<Notification>) {
-                        val viewModelList = notificationList.map { NotificationViewModel(it) }
-                        renderNotificationList(viewModelList)
+                        val bindingModelList = notificationList.map { NotificationBindingModel(it) }
+                        renderNotificationList(bindingModelList)
 
                     }
 
@@ -54,9 +54,9 @@ constructor(private val repository: NotificationListRepository) : ViewModel, Err
                 })
     }
 
-    private fun renderNotificationList(list: List<NotificationViewModel>) {
-        notificationViewModelList.clear()
-        notificationViewModelList.addAll(list)
+    private fun renderNotificationList(list: List<NotificationBindingModel>) {
+        notificationBindingModelList.clear()
+        notificationBindingModelList.addAll(list)
 
         loadingManager.showContentView()
     }

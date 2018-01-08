@@ -13,7 +13,7 @@ import javax.inject.Inject
 class InputThreadInfoFragment : DaggerFragment() {
 
     @Inject
-    lateinit var viewModel: InputThreadInfoViewModel
+    lateinit var bindingModel: InputThreadInfoBindingModel
 
     internal val category by lazy {
         arguments?.getSerializable(ARG_CATEGORY) as Category
@@ -23,7 +23,7 @@ class InputThreadInfoFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentInputThreadInfoBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
+        binding.bindingModel = bindingModel
         initViews()
 
         return binding.root

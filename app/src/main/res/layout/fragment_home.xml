@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.main.home.HomeViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.main.home.HomeBindingModel" />
     </data>
 
     <FrameLayout
@@ -16,7 +16,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.loadingManager.contentVisibility}">
+            android:visibility="@{bindingModel.loadingManager.contentVisibility}">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_pager"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="14dp"
-                android:onClick="@{viewModel::onClickFloatingActionButton}"
+                android:onClick="@{bindingModel::onClickFloatingActionButton}"
                 app:srcCompat="@drawable/ic_create_white_24dp" />
         </FrameLayout>
 
@@ -45,14 +45,14 @@
             android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.loadingManager.errorViewVisibility}"
-            app:errorMessage="@{viewModel.loadingManager.errorMessage}"
-            app:errorViewListener="@{viewModel}" />
+            android:visibility="@{bindingModel.loadingManager.errorViewVisibility}"
+            app:errorMessage="@{bindingModel.loadingManager.errorMessage}"
+            app:errorViewListener="@{bindingModel}" />
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{viewModel.loadingManager.loadingVisibility}" />
+            android:visibility="@{bindingModel.loadingManager.loadingVisibility}" />
     </FrameLayout>
 </layout>

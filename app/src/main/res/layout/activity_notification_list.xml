@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.notification.NotificationListViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.notification.NotificationListBindingModel" />
     </data>
 
     <RelativeLayout
@@ -25,22 +25,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-            android:visibility="@{viewModel.loadingManager.contentVisibility}" />
+            android:visibility="@{bindingModel.loadingManager.contentVisibility}" />
 
         <com.u1fukui.bbs.customview.ErrorView
             android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-            android:visibility="@{viewModel.loadingManager.errorViewVisibility}"
-            app:errorMessage="@{viewModel.loadingManager.errorMessage}"
-            app:errorViewListener="@{viewModel}" />
+            android:visibility="@{bindingModel.loadingManager.errorViewVisibility}"
+            app:errorMessage="@{bindingModel.loadingManager.errorMessage}"
+            app:errorViewListener="@{bindingModel}" />
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.loadingManager.loadingVisibility}" />
+            android:visibility="@{bindingModel.loadingManager.loadingVisibility}" />
 
     </RelativeLayout>
 

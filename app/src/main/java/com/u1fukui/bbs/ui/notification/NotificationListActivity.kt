@@ -18,7 +18,7 @@ import javax.inject.Inject
 class NotificationListActivity : BaseActivity() {
 
     @Inject
-    lateinit var viewModel: NotificationListViewModel
+    lateinit var bindingModel: NotificationListBindingModel
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityNotificationListBinding>(this, R.layout.activity_notification_list)
@@ -26,35 +26,35 @@ class NotificationListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = viewModel
+        binding.bindingModel = bindingModel
 
         initToolbar(binding.toolbar, true)
         initViews()
 
-        viewModel.start()
+        bindingModel.start()
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(viewModel.notificationViewModelList)
+            adapter = Adapter(bindingModel.notificationBindingModelList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
 
     override fun onDestroy() {
-        viewModel.destroy()
+        bindingModel.destroy()
         binding.unbind()
         super.onDestroy()
     }
 
-    private class Adapter(list: ObservableList<NotificationViewModel>) : ObservableListRecyclerAdapter<NotificationViewModel, BindingHolder<ViewNotificationCellBinding>>(list) {
+    private class Adapter(list: ObservableList<NotificationBindingModel>) : ObservableListRecyclerAdapter<NotificationBindingModel, BindingHolder<ViewNotificationCellBinding>>(list) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewNotificationCellBinding>(parent.context, parent, R.layout.view_notification_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewNotificationCellBinding>, position: Int) {
             holder.binding.apply {
-                viewModel = getItem(position)
+                bindingModel = getItem(position)
                 executePendingBindings()
             }
         }

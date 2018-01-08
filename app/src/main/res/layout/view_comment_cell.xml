@@ -6,14 +6,14 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.detail.CommentViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.detail.CommentBindingModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{viewModel::onClickComment}"
+        android:onClick="@{bindingModel::onClickComment}"
         android:orientation="vertical"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
@@ -30,7 +30,7 @@
                 android:id="@+id/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{Integer.toString(viewModel.comment.displayNumber)}"
+                android:text="@{Integer.toString(bindingModel.comment.displayNumber)}"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="1" />
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="@{viewModel.comment.author.name}"
+                android:text="@{bindingModel.comment.author.name}"
                 android:textColor="@color/blue_alpha_50"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="@{viewModel.createdAt}"
+                android:text="@{bindingModel.createdAt}"
                 android:textColor="@color/grey500"
                 android:textSize="14sp"
                 tools:text="2017/01/01 12:00" />
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@{viewModel.comment.description}"
+            android:text="@{bindingModel.comment.description}"
             android:textColor="@color/black"
             android:textSize="14sp"
             tools:text="ここに本文を表示します" />
@@ -80,16 +80,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:onClick="@{viewModel::onClickLikeButton}"
+                android:onClick="@{bindingModel::onClickLikeButton}"
                 android:padding="6dp"
-                android:selected="@{viewModel.isLiked}"
+                android:selected="@{bindingModel.isLiked}"
                 app:srcCompat="@drawable/btn_like" />
 
             <TextView
                 android:id="@+id/like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{Integer.toString(viewModel.likeCount)}"
+                android:text="@{Integer.toString(bindingModel.likeCount)}"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 tools:text="0" />

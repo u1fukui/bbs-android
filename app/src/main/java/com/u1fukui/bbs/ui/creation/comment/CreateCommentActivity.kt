@@ -20,23 +20,23 @@ class CreateCommentActivity : BaseActivity() {
         DataBindingUtil.setContentView<ActivityCreateCommentBinding>(this, R.layout.activity_create_comment)
     }
 
-    private lateinit var viewModel: CreateCommentViewModel
+    private lateinit var bindingModel: CreateCommentBindingModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = createViewModel()
-        binding.viewModel = viewModel
+        bindingModel = createBindingModel()
+        binding.bindingModel = bindingModel
         initToolbar(binding.toolbar, true)
     }
 
-    private fun createViewModel(): CreateCommentViewModel {
+    private fun createBindingModel(): CreateCommentBindingModel {
         val thread = intent.getSerializableExtra(EXTRA_THREAD) as BbsThread
         val user = User(1L, "たろう")
         val repository = ThreadRepository()
         val navigator = Navigator(this)
         val dialogHelepr = DialogHelper(this)
-        return CreateCommentViewModel(thread, user, repository, navigator, dialogHelepr)
+        return CreateCommentBindingModel(thread, user, repository, navigator, dialogHelepr)
     }
 
     override fun onDestroy() {

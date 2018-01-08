@@ -1,4 +1,5 @@
-package com.u1fukui.bbs.ui.creation.thread
+package com.u1fukui.bbs.ui.creation.comment
+
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableInt
@@ -7,47 +8,43 @@ import com.u1fukui.bbs.App
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.model.ApiResponse
-import com.u1fukui.bbs.model.Category
+import com.u1fukui.bbs.model.BbsThread
+import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.repository.ThreadRepository
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.Navigator
+import com.u1fukui.bbs.ui.BindingModel
 import com.u1fukui.bbs.utils.StringUtils
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class InputThreadInfoViewModel @Inject
-constructor(val category: Category,
-            private val repository: ThreadRepository,
-            private val navigator: CreateThreadNavigator,
-            private val dialogHelper: DialogHelper) : ViewModel {
+class CreateCommentBindingModel(
+        val bbsThread: BbsThread,
+        val user: User,
+        private val repository: ThreadRepository,
+        private val navigator: Navigator,
+        private val dialogHelper: DialogHelper
+) : BindingModel {
 
     val loadingVisibility = ObservableInt(View.GONE)
 
     val postButtonEnabled = ObservableBoolean(false)
 
-    var title: String? = null
-
     var description: String? = null
 
-    fun onTitleTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
-        val isValid = isValid(charSequence.toString(), MAX_TITLE_LENGTH) && isValid(description, MAX_DESCRIPTION_LENGTH)
-        postButtonEnabled.set(isValid)
-    }
-
     fun onDescriptionTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
-        val isValid = isValid(charSequence.toString(), MAX_DESCRIPTION_LENGTH) && isValid(title, MAX_TITLE_LENGTH)
+        val isValid = isValid(charSequence.toString(), MAX_DESCRIPTION_LENGTH)
         postButtonEnabled.set(isValid)
     }
 
     fun onClickPostButton(view: View) {
-        dialogHelper.showConfirmDialog(R.string.create_thread_confirm_dialog_title,
-                R.string.create_thread_confirm_dialog_description,
+        dialogHelper.showConfirmDialog(R.string.create_comment_confirm_dialog_title,
+                R.string.create_comment_confirm_dialog_description,
                 object : DialogHelper.ConfirmDialogListener {
                     override fun onClickPositiveButton() {
-                        postThread()
+                        postComment()
                     }
 
                     override fun onClickNegativeButton() {
@@ -56,8 +53,8 @@ constructor(val category: Category,
                 })
     }
 
-    private fun postThread() {
-        val isValid = isValid(title, MAX_TITLE_LENGTH) && isValid(description, MAX_DESCRIPTION_LENGTH)
+    private fun postComment() {
+        val isValid = isValid(description, MAX_DESCRIPTION_LENGTH)
 
         if (!isValid) {
             return
@@ -66,7 +63,7 @@ constructor(val category: Category,
         }
         loadingVisibility.set(View.VISIBLE)
 
-        repository.postThread()
+        repository.postComment()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<ApiResponse> {
@@ -74,7 +71,7 @@ constructor(val category: Category,
 
                     override fun onSuccess(@NonNull apiResponse: ApiResponse) {
                         loadingVisibility.set(View.GONE)
-                        App.getToastUtils().showToast(R.string.create_thread_complete_toast)
+                        App.getToastUtils().showToast(R.string.create_comment_complete_toast)
                         navigator.finish()
                     }
 
@@ -95,8 +92,6 @@ constructor(val category: Category,
     }
 
     companion object {
-
-        const val MAX_TITLE_LENGTH = 20
 
         const val MAX_DESCRIPTION_LENGTH = 200
     }

@@ -7,7 +7,7 @@ import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.Category
 import com.u1fukui.bbs.repository.CategoryListRepository
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 import com.u1fukui.bbs.ui.main.MainNavigator
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,11 +16,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class HomeViewModel @Inject
+class HomeBindingModel @Inject
 constructor(
         private val repository: CategoryListRepository,
         private val navigator: MainNavigator
-) : ViewModel, ErrorView.ErrorViewListener {
+) : BindingModel, ErrorView.ErrorViewListener {
 
     val loadingManager = LoadingManager()
 
@@ -52,8 +52,8 @@ constructor(
                     }
 
                     override fun onSuccess(@NonNull categoryList: List<Category>) {
-                        this@HomeViewModel.categoryList.clear()
-                        this@HomeViewModel.categoryList.addAll(categoryList)
+                        this@HomeBindingModel.categoryList.clear()
+                        this@HomeBindingModel.categoryList.addAll(categoryList)
                         loadingManager.showContentView()
                     }
 

@@ -16,23 +16,23 @@ import javax.inject.Inject
 class HomeFragment : DaggerFragment() {
 
     @Inject
-    lateinit var viewModel: HomeViewModel
+    lateinit var bindingModel: HomeBindingModel
 
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
+        binding.bindingModel = bindingModel
         initViews()
 
-        viewModel.start()
+        bindingModel.start()
 
         return binding.root
     }
 
     private fun initViews() {
         binding.apply {
-            viewPager.adapter = HomePagerAdapter(childFragmentManager, viewModel!!.categoryList)
+            viewPager.adapter = HomePagerAdapter(childFragmentManager, bindingModel!!.categoryList)
             tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
             tabLayout.setupWithViewPager(binding.viewPager)
         }

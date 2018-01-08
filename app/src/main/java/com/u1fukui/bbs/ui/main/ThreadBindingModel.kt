@@ -4,12 +4,12 @@ import android.text.format.DateFormat
 import android.view.View
 
 import com.u1fukui.bbs.model.BbsThread
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 
-class ThreadViewModel(
+class ThreadBindingModel(
         private val navigator: ThreadListNavigator,
         val bbsThread: BbsThread
-) : ViewModel {
+) : BindingModel {
 
     val updatedAt : CharSequence? = DateFormat.format(DATE_FORMAT_PATTERN, bbsThread.updatedAt)
 

@@ -5,14 +5,14 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.creation.thread.CategoryViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.creation.thread.CategoryBindingModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{viewModel::onClickCategory}"
+        android:onClick="@{bindingModel::onClickCategory}"
         android:paddingBottom="10dp"
         android:paddingLeft="18dp"
         android:paddingRight="18dp"
@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.category.name}"
+            android:text="@{bindingModel.category.name}"
             android:textColor="@color/black"
             android:textSize="20sp"
             tools:text="カテゴリ名" />

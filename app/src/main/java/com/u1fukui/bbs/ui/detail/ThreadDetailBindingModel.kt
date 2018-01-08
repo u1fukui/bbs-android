@@ -9,18 +9,18 @@ import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.repository.ThreadRepository
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class ThreadDetailViewModel(//region DataBinding
+class ThreadDetailBindingModel(//region DataBinding
         val bbsThread: BbsThread,
         private val repository: ThreadRepository,
         private val navigator: ThreadDetailNavigator
-) : ViewModel, ErrorView.ErrorViewListener {
+) : BindingModel, ErrorView.ErrorViewListener {
 
     val refreshing = ObservableBoolean(false)
 
@@ -28,7 +28,7 @@ class ThreadDetailViewModel(//region DataBinding
     //endregion
 
     //TODO: 整理する
-    internal val commentViewModelList: ObservableList<CommentViewModel> = ObservableArrayList()
+    internal val commentBindingModelList: ObservableList<CommentBindingModel> = ObservableArrayList()
 
     //region Databinding
     fun onSwipeRefresh() {
@@ -42,7 +42,7 @@ class ThreadDetailViewModel(//region DataBinding
     }
 
     fun start() {
-        if (commentViewModelList.isEmpty()) {
+        if (commentBindingModelList.isEmpty()) {
             fetchCommentList()
         }
     }
@@ -63,8 +63,8 @@ class ThreadDetailViewModel(//region DataBinding
                     }
 
                     override fun onSuccess(@NonNull bbsComments: List<Comment>) {
-                        val viewModelList = bbsComments.map { CommentViewModel(it) }
-                        renderCommentList(viewModelList)
+                        val bindingModelList = bbsComments.map { CommentBindingModel(it) }
+                        renderCommentList(bindingModelList)
                     }
 
                     override fun onError(@NonNull e: Throwable) {
@@ -73,9 +73,9 @@ class ThreadDetailViewModel(//region DataBinding
                 })
     }
 
-    private fun renderCommentList(list: List<CommentViewModel>) {
-        commentViewModelList.clear()
-        commentViewModelList.addAll(list)
+    private fun renderCommentList(list: List<CommentBindingModel>) {
+        commentBindingModelList.clear()
+        commentBindingModelList.addAll(list)
 
         loadingManager.showContentView()
         refreshing.set(false)

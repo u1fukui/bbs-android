@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.creation.thread.InputThreadInfoViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.creation.thread.InputThreadInfoBindingModel" />
     </data>
 
     <RelativeLayout
@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@{viewModel.category.name}"
+                    android:text="@{bindingModel.category.name}"
                     android:textColor="@color/black"
                     android:textSize="16dp" />
 
@@ -50,11 +50,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:imeOptions="actionNext"
-                    android:maxLength="@{viewModel.MAX_TITLE_LENGTH}"
+                    android:maxLength="@{bindingModel.MAX_TITLE_LENGTH}"
                     android:maxLines="1"
-                    android:onTextChanged="@{viewModel::onTitleTextChanged}"
+                    android:onTextChanged="@{bindingModel::onTitleTextChanged}"
                     android:singleLine="true"
-                    android:text="@={viewModel.title}"
+                    android:text="@={bindingModel.title}"
                     android:textSize="16dp" />
 
                 <TextView
@@ -71,9 +71,9 @@
                     android:layout_marginTop="4dp"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.2"
-                    android:maxLength="@{viewModel.MAX_DESCRIPTION_LENGTH}"
-                    android:onTextChanged="@{viewModel::onDescriptionTextChanged}"
-                    android:text="@={viewModel.description}"
+                    android:maxLength="@{bindingModel.MAX_DESCRIPTION_LENGTH}"
+                    android:onTextChanged="@{bindingModel::onDescriptionTextChanged}"
+                    android:text="@={bindingModel.description}"
                     android:textSize="16sp" />
 
                 <Button
@@ -81,8 +81,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/post_button"
-                    android:enabled="@{viewModel.postButtonEnabled}"
-                    android:onClick="@{viewModel::onClickPostButton}"
+                    android:enabled="@{bindingModel.postButtonEnabled}"
+                    android:onClick="@{bindingModel::onClickPostButton}"
                     android:padding="4dp"
                     android:text="@string/create_thread_btn_post"
                     android:textColor="@color/white"
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.loadingVisibility}" />
+            android:visibility="@{bindingModel.loadingVisibility}" />
     </RelativeLayout>
 
 </layout>

@@ -5,14 +5,14 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.u1fukui.bbs.ui.main.ThreadViewModel" />
+            name="bindingModel"
+            type="com.u1fukui.bbs.ui.main.ThreadBindingModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{viewModel::onClickThread}"
+        android:onClick="@{bindingModel::onClickThread}"
         android:orientation="vertical"
         android:paddingBottom="6dp"
         android:paddingLeft="12dp"
@@ -26,7 +26,7 @@
             android:ellipsize="end"
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
-            android:text="@{viewModel.bbsThread.title}"
+            android:text="@{bindingModel.bbsThread.title}"
             android:textColor="@color/black"
             android:textSize="16sp"
             tools:text="タイトル" />
@@ -42,7 +42,7 @@
                 android:id="@+id/updated_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.updatedAt}"
+                android:text="@{bindingModel.updatedAt}"
                 android:textColor="@color/grey500"
                 android:textSize="12sp"
                 tools:text="2017/01/01 12:00" />
@@ -59,7 +59,7 @@
                 android:drawableLeft="@drawable/ic_chat_bubble_outline_black_18dp"
                 android:drawablePadding="3dp"
                 android:gravity="center_vertical"
-                android:text="@{Integer.toString(viewModel.bbsThread.commentCount)}"
+                android:text="@{Integer.toString(bindingModel.bbsThread.commentCount)}"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 tools:text="0" />

@@ -7,9 +7,9 @@ import android.util.Log
 import android.view.View
 
 import com.u1fukui.bbs.model.Comment
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 
-class CommentViewModel(val comment: Comment) : ViewModel {
+class CommentBindingModel(val comment: Comment) : BindingModel {
 
     val createdAt = DateFormat.format(DATE_FORMAT_PATTERN, comment.createdAt)!!
 

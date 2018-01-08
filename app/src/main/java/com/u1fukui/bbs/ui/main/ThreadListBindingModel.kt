@@ -8,17 +8,17 @@ import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.ThreadListResponse
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
-import com.u1fukui.bbs.ui.ViewModel
+import com.u1fukui.bbs.ui.BindingModel
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class ThreadListViewModel(
+class ThreadListBindingModel(
         private val repository: ThreadListRepository,
         private val navigator: ThreadListNavigator
-) : ViewModel, ErrorView.ErrorViewListener {
+) : BindingModel, ErrorView.ErrorViewListener {
 
     //region DataBinding
     val loadingManager = LoadingManager()
@@ -26,7 +26,7 @@ class ThreadListViewModel(
     val refreshing = ObservableBoolean(false)
     //endregion
 
-    internal val threadViewModelList: ObservableList<ThreadViewModel> = ObservableArrayList()
+    internal val threadBindingModelList: ObservableList<ThreadBindingModel> = ObservableArrayList()
 
     private var isThreadListCompleted: Boolean = false
 
@@ -38,16 +38,16 @@ class ThreadListViewModel(
     //endregion
 
     fun start() {
-        if (threadViewModelList.isEmpty()) {
+        if (threadBindingModelList.isEmpty()) {
             fetchThreadList(0)
         }
     }
 
     fun loadNextPage() {
-        if (threadViewModelList.isEmpty()) {
+        if (threadBindingModelList.isEmpty()) {
             return
         }
-        val thread = threadViewModelList[threadViewModelList.size - 1]
+        val thread = threadBindingModelList[threadBindingModelList.size - 1]
         fetchThreadList(thread.bbsThread.id)
     }
 
@@ -67,13 +67,13 @@ class ThreadListViewModel(
                     }
 
                     override fun onSuccess(@NonNull response: ThreadListResponse) {
-                        val viewModelList = response.threadList.map { ThreadViewModel(navigator, it) }
+                        val bindingModelList = response.threadList.map { ThreadBindingModel(navigator, it) }
 
                         isThreadListCompleted = response.isCompleted
                         if (lastId == 0L) {
-                            threadViewModelList.clear()
+                            threadBindingModelList.clear()
                         }
-                        threadViewModelList.addAll(viewModelList)
+                        threadBindingModelList.addAll(bindingModelList)
                         loadingManager.showContentView()
                         refreshing.set(false)
                     }

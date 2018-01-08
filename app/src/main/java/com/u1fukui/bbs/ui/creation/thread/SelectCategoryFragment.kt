@@ -19,35 +19,35 @@ import javax.inject.Inject
 class SelectCategoryFragment : DaggerFragment() {
 
     @Inject
-    lateinit var viewModel: SelectCategoryViewModel
+    lateinit var bindingModel: SelectCategoryBindingModel
 
     private lateinit var binding: FragmentSelectCategoryBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSelectCategoryBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
+        binding.bindingModel = bindingModel
         initViews()
 
-        viewModel.start()
+        bindingModel.start()
 
         return binding!!.root
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(viewModel.categoryList)
+            adapter = Adapter(bindingModel.categoryList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
 
-    private class Adapter(list: ObservableList<CategoryViewModel>) : ObservableListRecyclerAdapter<CategoryViewModel, BindingHolder<ViewCategoryCellBinding>>(list) {
+    private class Adapter(list: ObservableList<CategoryBindingModel>) : ObservableListRecyclerAdapter<CategoryBindingModel, BindingHolder<ViewCategoryCellBinding>>(list) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCategoryCellBinding>(parent.context, parent, R.layout.view_category_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewCategoryCellBinding>, position: Int) {
             holder.binding.apply {
-                viewModel = getItem(position)
+                bindingModel = getItem(position)
                 executePendingBindings()
             }
         }
