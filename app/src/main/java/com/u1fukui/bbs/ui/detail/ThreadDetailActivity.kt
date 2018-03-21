@@ -65,7 +65,7 @@ class ThreadDetailActivity : BaseActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCommentCellBinding>(parent.context, parent, R.layout.view_comment_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewCommentCellBinding>, position: Int) {
-            holder.binding.apply {
+            holder.binding?.apply {
                 bindingModel = getItem(position)
                 executePendingBindings()
             }

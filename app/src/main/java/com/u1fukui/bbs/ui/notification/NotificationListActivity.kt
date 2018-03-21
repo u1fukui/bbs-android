@@ -53,7 +53,7 @@ class NotificationListActivity : BaseActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewNotificationCellBinding>(parent.context, parent, R.layout.view_notification_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewNotificationCellBinding>, position: Int) {
-            holder.binding.apply {
+            holder.binding?.apply {
                 bindingModel = getItem(position)
                 executePendingBindings()
             }

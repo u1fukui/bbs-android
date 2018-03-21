@@ -90,7 +90,7 @@ abstract class BaseThreadListFragment : DaggerFragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewThreadCellBinding>(parent.context, parent, R.layout.view_thread_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewThreadCellBinding>, position: Int) {
-            holder.binding.apply {
+            holder.binding?.apply {
                 bindingModel = getItem(position)
                 executePendingBindings()
             }

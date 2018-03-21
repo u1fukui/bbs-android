@@ -46,7 +46,7 @@ class SelectCategoryFragment : DaggerFragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCategoryCellBinding>(parent.context, parent, R.layout.view_category_cell)
 
         override fun onBindViewHolder(holder: BindingHolder<ViewCategoryCellBinding>, position: Int) {
-            holder.binding.apply {
+            holder.binding?.apply {
                 bindingModel = getItem(position)
                 executePendingBindings()
             }
