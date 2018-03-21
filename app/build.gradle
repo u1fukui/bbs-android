@@ -6,8 +6,9 @@ ext {
     support_lib_version="27.1.0"
     dagger_version="2.11"
     okhttp_version="3.9.1"
-    moshi_version="1.5.0"
     retrofit_version="2.3.0"
+    moshi_version="1.5.0"
+    koshi_version="1.0.2"
 }
 
 android {
@@ -62,11 +63,13 @@ dependencies {
     // Network
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.squareup.moshi:moshi:$moshi_version"
-    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "se.ansman.kotshi:api:$koshi_version"
+    kapt "se.ansman.kotshi:compiler:$koshi_version"
 
     // Test
     testImplementation 'junit:junit:4.12'

@@ -1,12 +1,12 @@
 package com.u1fukui.bbs.di
 
 import android.content.Context
-import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.BuildConfig
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.api.ThreadListApi
+import com.u1fukui.bbs.network.ApplicationJsonAdapterFactory
 import com.u1fukui.bbs.repository.ThreadRepository
 import dagger.Module
 import dagger.Provides
@@ -32,7 +32,7 @@ class AppModule(private val app: App) {
     @Singleton
     fun provideMoshi() =
             Moshi.Builder()
-                    .add(KotlinJsonAdapterFactory())
+                    .add(ApplicationJsonAdapterFactory.INSTANCE)
                     .build()
 
     @Provides
