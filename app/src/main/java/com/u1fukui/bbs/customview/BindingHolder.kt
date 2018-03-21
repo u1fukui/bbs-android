@@ -16,5 +16,5 @@ class BindingHolder<out T : ViewDataBinding>(
         LayoutInflater.from(context).inflate(layoutResId, parent, false)
 ) {
 
-    val binding: T = DataBindingUtil.bind(itemView)
+    val binding: T? = DataBindingUtil.bind(itemView)
 }
