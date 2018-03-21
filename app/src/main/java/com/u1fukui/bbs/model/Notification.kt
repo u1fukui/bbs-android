@@ -1,9 +1,11 @@
 package com.u1fukui.bbs.model
 
 
+import se.ansman.kotshi.JsonSerializable
 import java.io.Serializable
 import java.util.*
 
+@JsonSerializable
 data class Notification(
         val id: Long,
         val url: String,

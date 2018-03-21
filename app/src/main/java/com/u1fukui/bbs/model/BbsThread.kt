@@ -1,8 +1,10 @@
 package com.u1fukui.bbs.model
 
+import se.ansman.kotshi.JsonSerializable
 import java.io.Serializable
 import java.util.*
 
+@JsonSerializable
 data class BbsThread(
         val id: Long,
         val title: String,
