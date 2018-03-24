@@ -6,7 +6,7 @@
 
         <variable
             name="bindingModel"
-            type="com.u1fukui.bbs.ui.main.ThreadListBindingModel" />
+            type="com.u1fukui.bbs.ui.main.ThreadListViewModel" />
     </data>
 
     <FrameLayout

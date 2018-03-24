@@ -1,5 +1,6 @@
 package com.u1fukui.bbs.ui.main
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -17,24 +18,20 @@ import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.Disposables
 
+
 abstract class BaseThreadListFragment : DaggerFragment() {
 
+    private val viewModel: ThreadListViewModel by lazy {
+        ViewModelProviders
+                .of(this, ThreadListViewModel.Factory(getRepository(), ThreadListNavigator(activity!!)))
+                .get(ThreadListViewModel::class.java)
+    }
+
     private lateinit var binding: FragmentThreadListBinding
-
-    private lateinit var bindingModel: ThreadListBindingModel
-
     private lateinit var scrollEndSubject: RecyclerViewScrolledEndSubject
-
     private var recyclerViewScrollEventDisposable = Disposables.empty()
 
     protected abstract fun getRepository(): ThreadListRepository
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val navigator = ThreadListNavigator(activity!!)
-        bindingModel = ThreadListBindingModel(getRepository(), navigator)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentThreadListBinding.inflate(inflater, container, false)
@@ -42,14 +39,14 @@ abstract class BaseThreadListFragment : DaggerFragment() {
         initScrollEventListener()
 
         binding.bindingModel = bindingModel
-        bindingModel.start()
+        viewModel.start()
 
         return binding.root
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(bindingModel.threadBindingModelList)
+            adapter = Adapter(viewModel.threadBindingModelList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
@@ -71,14 +68,13 @@ abstract class BaseThreadListFragment : DaggerFragment() {
 
     override fun onDestroyView() {
         scrollEndSubject.shutdown()
-        bindingModel.destroy()
         binding.unbind()
         super.onDestroyView()
     }
 
     private fun startListenScrollEvent() {
         recyclerViewScrollEventDisposable.dispose()
-        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe({ bindingModel.loadNextPage() }) { stopListenScrollEvent() }
+        recyclerViewScrollEventDisposable = scrollEndSubject.connect().subscribe({ viewModel.loadNextPage() }) { stopListenScrollEvent() }
     }
 
     private fun stopListenScrollEvent() {

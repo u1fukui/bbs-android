@@ -1,5 +1,7 @@
 package com.u1fukui.bbs.ui.main
 
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
@@ -7,27 +9,27 @@ import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
-import com.u1fukui.bbs.ui.BindingModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class ThreadListBindingModel(
+
+class ThreadListViewModel(
         private val repository: ThreadListRepository,
         private val navigator: ThreadListNavigator
-) : BindingModel, ErrorView.ErrorViewListener {
+) : ViewModel(), ErrorView.ErrorViewListener {
 
     //region DataBinding
     val loadingManager = LoadingManager()
-
     val refreshing = ObservableBoolean(false)
     //endregion
 
     internal val threadBindingModelList: ObservableList<ThreadBindingModel> = ObservableArrayList()
-
     private var isThreadListCompleted: Boolean = false
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     //region Databinding
     fun onSwipeRefresh() {
@@ -82,11 +84,27 @@ class ThreadListBindingModel(
                             }
                             refreshing.set(false)
                         })
+                .addTo(compositeDisposable)
     }
 
-    override fun destroy() {}
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+    }
 
     override fun onClickReloadButton() {
         fetchThreadList(0)
+    }
+
+    class Factory(
+            private val repository: ThreadListRepository,
+            private val navigator: ThreadListNavigator
+    ) : ViewModelProvider.NewInstanceFactory() {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = ThreadListViewModel(
+                repository,
+                navigator
+        ) as T
     }
 }
