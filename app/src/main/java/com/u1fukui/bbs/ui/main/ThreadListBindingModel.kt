@@ -6,13 +6,12 @@ import android.databinding.ObservableList
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
-import com.u1fukui.bbs.model.ThreadListResponse
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import com.u1fukui.bbs.ui.BindingModel
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.annotations.NonNull
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class ThreadListBindingModel(
@@ -61,35 +60,28 @@ class ThreadListBindingModel(
         repository.fetchThreadList(lastId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<ThreadListResponse> {
-                    override fun onSubscribe(@NonNull d: Disposable) {
-                        // nop
-                    }
+                .subscribeBy(
+                        onSuccess = {
+                            val bindingModelList = it.threadList.map { ThreadBindingModel(navigator, it) }
 
-                    override fun onSuccess(@NonNull response: ThreadListResponse) {
-                        val bindingModelList = response.threadList.map { ThreadBindingModel(navigator, it) }
-
-                        isThreadListCompleted = response.isCompleted
-                        if (lastId == 0L) {
-                            threadBindingModelList.clear()
-                        }
-                        threadBindingModelList.addAll(bindingModelList)
-                        loadingManager.showContentView()
-                        refreshing.set(false)
-                    }
-
-                    override fun onError(@NonNull e: Throwable) {
-                        if (lastId == 0L) {
-                            loadingManager.showErrorView(e)
-                        } else {
-                            App.getToastUtils().showToast("エラー") //TODO: エラーメッセージ
-                            isThreadListCompleted = true
-                            loadingManager.finishLoading()
-                        }
-                        refreshing.set(false)
-
-                    }
-                })
+                            isThreadListCompleted = it.isCompleted
+                            if (lastId == 0L) {
+                                threadBindingModelList.clear()
+                            }
+                            threadBindingModelList.addAll(bindingModelList)
+                            loadingManager.showContentView()
+                            refreshing.set(false)
+                        },
+                        onError = {
+                            if (lastId == 0L) {
+                                loadingManager.showErrorView(it)
+                            } else {
+                                App.getToastUtils().showToast("エラー") //TODO: エラーメッセージ
+                                isThreadListCompleted = true
+                                loadingManager.finishLoading()
+                            }
+                            refreshing.set(false)
+                        })
     }
 
     override fun destroy() {}
