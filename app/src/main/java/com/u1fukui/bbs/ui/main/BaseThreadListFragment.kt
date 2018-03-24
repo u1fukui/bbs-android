@@ -38,7 +38,7 @@ abstract class BaseThreadListFragment : DaggerFragment() {
         initViews()
         initScrollEventListener()
 
-        binding.bindingModel = bindingModel
+        binding.viewModel = viewModel
         viewModel.start()
 
         return binding.root
