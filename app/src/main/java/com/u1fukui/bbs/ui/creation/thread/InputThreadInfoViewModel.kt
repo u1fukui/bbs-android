@@ -1,36 +1,37 @@
 package com.u1fukui.bbs.ui.creation.thread
 
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableInt
 import android.view.View
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.helper.DialogHelper
-import com.u1fukui.bbs.model.ApiResponse
 import com.u1fukui.bbs.model.Category
 import com.u1fukui.bbs.repository.ThreadRepository
-import com.u1fukui.bbs.ui.BindingModel
 import com.u1fukui.bbs.utils.StringUtils
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.annotations.NonNull
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class InputThreadInfoBindingModel @Inject
-constructor(val category: Category,
-            private val repository: ThreadRepository,
-            private val navigator: CreateThreadNavigator,
-            private val dialogHelper: DialogHelper) : BindingModel {
+class InputThreadInfoViewModel(
+        val category: Category,
+        private val repository: ThreadRepository,
+        private val navigator: CreateThreadNavigator,
+        private val dialogHelper: DialogHelper
+) : ViewModel() {
 
+    //region DataBinding
     val loadingVisibility = ObservableInt(View.GONE)
-
     val postButtonEnabled = ObservableBoolean(false)
-
     var title: String? = null
-
     var description: String? = null
+    //endregion
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     fun onTitleTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
         val isValid = isValid(charSequence.toString(), MAX_TITLE_LENGTH) && isValid(description, MAX_DESCRIPTION_LENGTH)
@@ -69,29 +70,28 @@ constructor(val category: Category,
         repository.postThread()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<ApiResponse> {
-                    override fun onSubscribe(@NonNull d: Disposable) {}
-
-                    override fun onSuccess(@NonNull apiResponse: ApiResponse) {
-                        loadingVisibility.set(View.GONE)
-                        App.getToastUtils().showToast(R.string.create_thread_complete_toast)
-                        navigator.finish()
-                    }
-
-                    override fun onError(@NonNull e: Throwable) {
-                        loadingVisibility.set(View.GONE)
-                        //TODO: エラー文言
-                        App.getToastUtils().showToast("エラー")
-                    }
-                })
+                .subscribeBy(
+                        onSuccess = {
+                            loadingVisibility.set(View.GONE)
+                            App.getToastUtils().showToast(R.string.create_thread_complete_toast)
+                            navigator.finish()
+                        },
+                        onError = {
+                            loadingVisibility.set(View.GONE)
+                            //TODO: apply correct message and avoid using static method
+                            App.getToastUtils().showToast("エラー")
+                        }
+                )
+                .addTo(compositeDisposable)
     }
 
     private fun isValid(text: String?, maxLength: Int): Boolean {
         return !StringUtils.isBlank(text) && StringUtils.isLength(text) <= maxLength
     }
 
-    override fun destroy() {
-
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 
     companion object {
@@ -99,5 +99,21 @@ constructor(val category: Category,
         const val MAX_TITLE_LENGTH = 20
 
         const val MAX_DESCRIPTION_LENGTH = 200
+    }
+
+    class Factory(
+            private val category: Category,
+            private val repository: ThreadRepository,
+            private val navigator: CreateThreadNavigator,
+            private val dialogHelper: DialogHelper
+    ) : ViewModelProvider.NewInstanceFactory() {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = InputThreadInfoViewModel(
+                category,
+                repository,
+                navigator,
+                dialogHelper
+        ) as T
     }
 }
