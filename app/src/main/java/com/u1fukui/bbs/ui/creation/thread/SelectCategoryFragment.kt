@@ -1,6 +1,7 @@
 package com.u1fukui.bbs.ui.creation.thread
 
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -13,32 +14,43 @@ import com.u1fukui.bbs.customview.BindingHolder
 import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
 import com.u1fukui.bbs.databinding.FragmentSelectCategoryBinding
 import com.u1fukui.bbs.databinding.ViewCategoryCellBinding
+import com.u1fukui.bbs.repository.CategoryListRepository
 import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
 class SelectCategoryFragment : DaggerFragment() {
 
-    @Inject
-    lateinit var bindingModel: SelectCategoryBindingModel
-
     private lateinit var binding: FragmentSelectCategoryBinding
+
+    private val viewModel: SelectCategoryViewModel by lazy {
+        ViewModelProviders
+                .of(this, SelectCategoryViewModel.Factory(
+                        CategoryListRepository(),
+                        CreateThreadNavigator(activity as CreateThreadActivity)
+                ))
+                .get(SelectCategoryViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSelectCategoryBinding.inflate(inflater, container, false)
-        binding.bindingModel = bindingModel
+        binding.viewModel = viewModel
         initViews()
 
-        bindingModel.start()
+        viewModel.start()
 
-        return binding!!.root
+        return binding.root
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(bindingModel.categoryList)
+            adapter = Adapter(viewModel.categoryList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
+    }
+
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
     }
 
     private class Adapter(list: ObservableList<CategoryBindingModel>) : ObservableListRecyclerAdapter<CategoryBindingModel, BindingHolder<ViewCategoryCellBinding>>(list) {
