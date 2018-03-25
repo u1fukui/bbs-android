@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="bindingModel"
-            type="com.u1fukui.bbs.ui.creation.comment.CreateCommentBindingModel" />
+            name="viewModel"
+            type="com.u1fukui.bbs.ui.creation.comment.CreateCommentViewModel" />
     </data>
 
     <RelativeLayout
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@={bindingModel.user.name}"
+                    android:text="@={viewModel.user.name}"
                     android:textSize="16dp"
                     tools:text="たろう" />
 
@@ -62,9 +62,9 @@
                     android:layout_marginTop="4dp"
                     android:gravity="top"
                     android:lineSpacingMultiplier="1.2"
-                    android:maxLength="@{bindingModel.MAX_DESCRIPTION_LENGTH}"
-                    android:onTextChanged="@{bindingModel::onDescriptionTextChanged}"
-                    android:text="@={bindingModel.description}"
+                    android:maxLength="@{viewModel.MAX_DESCRIPTION_LENGTH}"
+                    android:onTextChanged="@{viewModel::onDescriptionTextChanged}"
+                    android:text="@={viewModel.description}"
                     android:textSize="16sp" />
 
                 <Button
@@ -72,8 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/post_button"
-                    android:enabled="@{bindingModel.postButtonEnabled}"
-                    android:onClick="@{bindingModel::onClickPostButton}"
+                    android:enabled="@{viewModel.postButtonEnabled}"
+                    android:onClick="@{viewModel::onClickPostButton}"
                     android:padding="4dp"
                     android:text="@string/create_comment_btn_post"
                     android:textColor="@color/white"
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{bindingModel.loadingVisibility}" />
+            android:visibility="@{viewModel.loadingVisibility}" />
     </RelativeLayout>
 
 </layout>

@@ -1,5 +1,6 @@
 package com.u1fukui.bbs.ui.main.home
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -10,29 +11,37 @@ import android.view.View
 import android.view.ViewGroup
 import com.u1fukui.bbs.databinding.FragmentHomeBinding
 import com.u1fukui.bbs.model.Category
+import com.u1fukui.bbs.repository.CategoryListRepository
+import com.u1fukui.bbs.ui.main.MainActivity
+import com.u1fukui.bbs.ui.main.MainNavigator
 import dagger.android.support.DaggerFragment
-import javax.inject.Inject
 
 class HomeFragment : DaggerFragment() {
 
-    @Inject
-    lateinit var bindingModel: HomeBindingModel
-
     private lateinit var binding: FragmentHomeBinding
+
+    private val viewModel: HomeViewModel by lazy {
+        ViewModelProviders
+                .of(this, HomeViewModel.Factory(
+                        CategoryListRepository(),
+                        MainNavigator(activity as MainActivity)
+                ))
+                .get(HomeViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.bindingModel = bindingModel
+        binding.viewModel = viewModel
         initViews()
 
-        bindingModel.start()
+        viewModel.start()
 
         return binding.root
     }
 
     private fun initViews() {
         binding.apply {
-            viewPager.adapter = HomePagerAdapter(childFragmentManager, bindingModel!!.categoryList)
+            viewPager.adapter = HomePagerAdapter(childFragmentManager, viewModel!!.categoryList)
             tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
             tabLayout.setupWithViewPager(binding.viewPager)
         }

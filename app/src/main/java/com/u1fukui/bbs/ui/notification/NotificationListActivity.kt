@@ -1,6 +1,7 @@
 package com.u1fukui.bbs.ui.notification
 
 
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.os.Bundle
@@ -12,38 +13,42 @@ import com.u1fukui.bbs.customview.BindingHolder
 import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
 import com.u1fukui.bbs.databinding.ActivityNotificationListBinding
 import com.u1fukui.bbs.databinding.ViewNotificationCellBinding
+import com.u1fukui.bbs.repository.NotificationListRepository
 import com.u1fukui.bbs.ui.BaseActivity
-import javax.inject.Inject
 
 class NotificationListActivity : BaseActivity() {
-
-    @Inject
-    lateinit var bindingModel: NotificationListBindingModel
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityNotificationListBinding>(this, R.layout.activity_notification_list)
     }
 
+    private val viewModel: NotificationListViewModel by lazy {
+        ViewModelProviders
+                .of(this, NotificationListViewModel.Factory(
+                        NotificationListRepository()
+                ))
+                .get(NotificationListViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.bindingModel = bindingModel
+        binding.viewModel = viewModel
 
         initToolbar(binding.toolbar, true)
         initViews()
 
-        bindingModel.start()
+        viewModel.start()
     }
 
     private fun initViews() {
         binding.recyclerView.apply {
-            adapter = Adapter(bindingModel.notificationBindingModelList)
+            adapter = Adapter(viewModel.notificationBindingModelList)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
     }
 
     override fun onDestroy() {
-        bindingModel.destroy()
         binding.unbind()
         super.onDestroy()
     }

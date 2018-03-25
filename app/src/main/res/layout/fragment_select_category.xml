@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="bindingModel"
-            type="com.u1fukui.bbs.ui.creation.thread.SelectCategoryBindingModel" />
+            name="viewModel"
+            type="com.u1fukui.bbs.ui.creation.thread.SelectCategoryViewModel" />
     </data>
 
     <FrameLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="@{bindingModel.loadingManager.contentVisibility}">
+            android:visibility="@{viewModel.loadingManager.contentVisibility}">
 
             <TextView
                 android:layout_width="match_parent"
@@ -46,15 +46,15 @@
             android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{bindingModel.loadingManager.errorViewVisibility}"
-            app:errorMessage="@{bindingModel.loadingManager.errorMessage}"
-            app:errorViewListener="@{bindingModel}" />
+            android:visibility="@{viewModel.loadingManager.errorViewVisibility}"
+            app:errorMessage="@{viewModel.loadingManager.errorMessage}"
+            app:errorViewListener="@{viewModel}" />
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{bindingModel.loadingManager.loadingVisibility}" />
+            android:visibility="@{viewModel.loadingManager.loadingVisibility}" />
     </FrameLayout>
 
 </layout>

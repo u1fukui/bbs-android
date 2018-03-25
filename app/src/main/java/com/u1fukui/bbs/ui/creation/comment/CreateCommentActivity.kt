@@ -1,6 +1,7 @@
 package com.u1fukui.bbs.ui.creation.comment
 
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -20,23 +21,26 @@ class CreateCommentActivity : BaseActivity() {
         DataBindingUtil.setContentView<ActivityCreateCommentBinding>(this, R.layout.activity_create_comment)
     }
 
-    private lateinit var bindingModel: CreateCommentBindingModel
+    private val bbsThread: BbsThread by lazy {
+        intent.getSerializableExtra(EXTRA_THREAD) as BbsThread
+    }
+
+    private val viewModel: CreateCommentViewModel by lazy {
+        ViewModelProviders
+                .of(this, CreateCommentViewModel.Factory(
+                        bbsThread,
+                        User(1L, "たろう"),
+                        ThreadRepository(),
+                        Navigator(this),
+                        DialogHelper(this)
+                ))
+                .get(CreateCommentViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        bindingModel = createBindingModel()
-        binding.bindingModel = bindingModel
+        binding.viewModel = viewModel
         initToolbar(binding.toolbar, true)
-    }
-
-    private fun createBindingModel(): CreateCommentBindingModel {
-        val thread = intent.getSerializableExtra(EXTRA_THREAD) as BbsThread
-        val user = User(1L, "たろう")
-        val repository = ThreadRepository()
-        val navigator = Navigator(this)
-        val dialogHelepr = DialogHelper(this)
-        return CreateCommentBindingModel(thread, user, repository, navigator, dialogHelepr)
     }
 
     override fun onDestroy() {

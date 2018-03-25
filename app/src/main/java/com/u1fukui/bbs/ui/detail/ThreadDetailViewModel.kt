@@ -1,5 +1,7 @@
 package com.u1fukui.bbs.ui.detail
 
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
@@ -7,30 +9,30 @@ import android.view.View
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.BbsThread
-import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.repository.ThreadRepository
-import com.u1fukui.bbs.ui.BindingModel
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.annotations.NonNull
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
-class ThreadDetailBindingModel(//region DataBinding
+class ThreadDetailViewModel(
         val bbsThread: BbsThread,
         private val repository: ThreadRepository,
         private val navigator: ThreadDetailNavigator
-) : BindingModel, ErrorView.ErrorViewListener {
+) : ViewModel(), ErrorView.ErrorViewListener {
 
+    //region DataBinding
     val refreshing = ObservableBoolean(false)
-
     val loadingManager = LoadingManager()
     //endregion
 
     //TODO: 整理する
     internal val commentBindingModelList: ObservableList<CommentBindingModel> = ObservableArrayList()
 
-    //region Databinding
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    //region DataBinding
     fun onSwipeRefresh() {
         refreshing.set(true)
         fetchCommentList()
@@ -57,20 +59,16 @@ class ThreadDetailBindingModel(//region DataBinding
         repository.fetchCommentList(bbsThread.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<List<Comment>> {
-                    override fun onSubscribe(@NonNull d: Disposable) {
-                        // nop
-                    }
-
-                    override fun onSuccess(@NonNull bbsComments: List<Comment>) {
-                        val bindingModelList = bbsComments.map { CommentBindingModel(it) }
-                        renderCommentList(bindingModelList)
-                    }
-
-                    override fun onError(@NonNull e: Throwable) {
-                        loadingManager.showErrorView(e)
-                    }
-                })
+                .subscribeBy(
+                        onSuccess = {
+                            val bindingModelList = it.map { CommentBindingModel(it) }
+                            renderCommentList(bindingModelList)
+                        },
+                        onError = {
+                            loadingManager.showErrorView(it)
+                        }
+                )
+                .addTo(compositeDisposable)
     }
 
     private fun renderCommentList(list: List<CommentBindingModel>) {
@@ -81,11 +79,26 @@ class ThreadDetailBindingModel(//region DataBinding
         refreshing.set(false)
     }
 
-    override fun destroy() {
-
-    }
-
     override fun onClickReloadButton() {
         fetchCommentList()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+    }
+
+    class Factory(
+            private val bbsThread: BbsThread,
+            private val repository: ThreadRepository,
+            private val navigator: ThreadDetailNavigator
+    ) : ViewModelProvider.NewInstanceFactory() {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = ThreadDetailViewModel(
+                bbsThread,
+                repository,
+                navigator
+        ) as T
     }
 }
