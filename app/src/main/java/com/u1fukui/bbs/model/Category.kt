@@ -5,7 +5,7 @@ import java.io.Serializable
 
 @JsonSerializable
 data class Category(
-        val id: Int,
+        val id: Long,
         val name: String
 ) : Serializable {
 

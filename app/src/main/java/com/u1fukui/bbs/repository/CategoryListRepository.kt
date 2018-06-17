@@ -1,10 +1,9 @@
 package com.u1fukui.bbs.repository
 
-
 import android.os.SystemClock
 import com.u1fukui.bbs.model.Category
 import io.reactivex.Single
-import java.util.*
+import java.util.ArrayList
 import javax.inject.Inject
 
 class CategoryListRepository @Inject constructor(
@@ -18,7 +17,7 @@ class CategoryListRepository @Inject constructor(
 
             val list = ArrayList<Category>()
             for (i in 0..9) {
-                list.add(Category(i, "カテゴリ" + i))
+                list.add(Category(i.toLong(), "カテゴリ$i"))
             }
             e.onSuccess(list)
         }
