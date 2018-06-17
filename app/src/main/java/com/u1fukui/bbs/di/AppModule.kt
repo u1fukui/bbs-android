@@ -1,20 +1,26 @@
 package com.u1fukui.bbs.di
 
 import android.content.Context
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.BuildConfig
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.api.ThreadListApi
+import com.u1fukui.bbs.model.BbsThread
+import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.network.ApplicationJsonAdapterFactory
 import com.u1fukui.bbs.repository.ThreadRepository
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.Date
 import javax.inject.Singleton
 
 @Module
@@ -51,11 +57,36 @@ class AppModule(private val app: App) {
                     .client(okHttpClient)
                     .baseUrl(app.getString(R.string.api_base))
                     .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .build()
 
     @Provides
     @Singleton
-    fun provideThreadListApi(retrofit: Retrofit) =
-            retrofit.create(ThreadListApi::class.java)
+    fun provideThreadListApi(retrofit: Retrofit): ThreadListApi {
+        //        retrofit.create(ThreadListApi::class.java)
+
+        //TODO: Remove
+        return object : ThreadListApi {
+            override fun fetchCategoryThreadList(
+                categoryId: Long,
+                lastId: Long
+            ): Deferred<List<BbsThread>> =
+                async(CommonPool) {
+                    createDebugList(lastId)
+                }
+        }
+    }
+
+    private fun createDebugList(lastId: Long): List<BbsThread> =
+        ((lastId + 1)..(lastId + 20)).map {
+            BbsThread(
+                it,
+                "お気に入りスレッド$it",
+                User(it, "作者$it"),
+                0,
+                Date(),
+                Date()
+            )
+        }
+
 }

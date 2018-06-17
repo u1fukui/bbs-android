@@ -1,11 +1,9 @@
 package com.u1fukui.bbs.repository.thread_list
 
-
-import com.u1fukui.bbs.model.ThreadListResponse
-
-import io.reactivex.Single
+import com.u1fukui.bbs.model.BbsThread
+import kotlinx.coroutines.experimental.Deferred
 
 interface ThreadListRepository {
 
-    fun fetchThreadList(lastId: Long): Single<ThreadListResponse>
+    fun fetchThreadList(lastId: Long): Deferred<List<BbsThread>>
 }

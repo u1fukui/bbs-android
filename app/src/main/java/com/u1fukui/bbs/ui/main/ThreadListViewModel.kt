@@ -8,17 +8,15 @@ import android.databinding.ObservableList
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
+import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
-
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
 class ThreadListViewModel(
-        private val repository: ThreadListRepository,
-        private val navigator: ThreadListNavigator
+    private val repository: ThreadListRepository,
+    private val navigator: ThreadListNavigator
 ) : ViewModel(), ErrorView.ErrorViewListener {
 
     //region DataBinding
@@ -29,7 +27,7 @@ class ThreadListViewModel(
     internal val threadBindingModelList: ObservableList<ThreadBindingModel> = ObservableArrayList()
     private var isThreadListCompleted: Boolean = false
 
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val job = Job()
 
     //region Databinding
     fun onSwipeRefresh() {
@@ -59,37 +57,43 @@ class ThreadListViewModel(
         }
         loadingManager.startLoading()
 
-        repository.fetchThreadList(lastId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onSuccess = {
-                            val bindingModelList = it.threadList.map { ThreadBindingModel(navigator, it) }
+        launch(job + UI) {
+            val isListHead = lastId == 0L
+            try {
+                repository.fetchThreadList(lastId).await()
+                    .let {
+                        bindThreadList(it, isListHead)
+                        loadingManager.showContentView()
+                        refreshing.set(false)
+                    }
+            } catch (t: Throwable) {
+                if (isListHead) {
+                    loadingManager.showErrorView(t)
+                } else {
+                    App.getToastUtils().showToast("エラー") //TODO: エラーメッセージ
+                    isThreadListCompleted = true
+                    loadingManager.finishLoading()
+                }
+                refreshing.set(false)
+            }
+        }
+    }
 
-                            isThreadListCompleted = it.isCompleted
-                            if (lastId == 0L) {
-                                threadBindingModelList.clear()
-                            }
-                            threadBindingModelList.addAll(bindingModelList)
-                            loadingManager.showContentView()
-                            refreshing.set(false)
-                        },
-                        onError = {
-                            if (lastId == 0L) {
-                                loadingManager.showErrorView(it)
-                            } else {
-                                App.getToastUtils().showToast("エラー") //TODO: エラーメッセージ
-                                isThreadListCompleted = true
-                                loadingManager.finishLoading()
-                            }
-                            refreshing.set(false)
-                        })
-                .addTo(compositeDisposable)
+    private fun bindThreadList(list: List<BbsThread>, isListHead: Boolean) {
+        if (isListHead) {
+            threadBindingModelList.clear()
+        }
+
+        val bindingModelList = list.map { ThreadBindingModel(navigator, it) }
+        threadBindingModelList.addAll(bindingModelList)
+
+        //TODO: ちゃんとする
+        isThreadListCompleted = list.size < 20
     }
 
     override fun onCleared() {
+        job.cancel()
         super.onCleared()
-        compositeDisposable.clear()
     }
 
     override fun onClickReloadButton() {
@@ -97,14 +101,14 @@ class ThreadListViewModel(
     }
 
     class Factory(
-            private val repository: ThreadListRepository,
-            private val navigator: ThreadListNavigator
+        private val repository: ThreadListRepository,
+        private val navigator: ThreadListNavigator
     ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = ThreadListViewModel(
-                repository,
-                navigator
+            repository,
+            navigator
         ) as T
     }
 }
