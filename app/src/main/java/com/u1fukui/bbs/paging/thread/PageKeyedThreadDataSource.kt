@@ -1,8 +1,9 @@
-package com.u1fukui.bbs.paging
+package com.u1fukui.bbs.paging.thread
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PageKeyedDataSource
 import com.u1fukui.bbs.model.BbsThread
+import com.u1fukui.bbs.paging.NetworkState
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI

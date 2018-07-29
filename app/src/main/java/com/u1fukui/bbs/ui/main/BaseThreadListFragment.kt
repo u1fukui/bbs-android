@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.u1fukui.bbs.databinding.FragmentThreadListBinding
-import com.u1fukui.bbs.paging.ThreadPagedListAdapter
+import com.u1fukui.bbs.paging.thread.ThreadPagedListAdapter
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import dagger.android.support.DaggerFragment
 

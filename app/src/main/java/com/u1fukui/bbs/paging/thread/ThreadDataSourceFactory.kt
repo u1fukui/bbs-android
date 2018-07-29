@@ -1,4 +1,4 @@
-package com.u1fukui.bbs.paging
+package com.u1fukui.bbs.paging.thread
 
 import android.arch.paging.DataSource
 import com.u1fukui.bbs.model.BbsThread

@@ -12,7 +12,7 @@ import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.paging.Status
-import com.u1fukui.bbs.paging.ThreadDataSourceFactory
+import com.u1fukui.bbs.paging.thread.ThreadDataSourceFactory
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import kotlinx.coroutines.experimental.Job
 
