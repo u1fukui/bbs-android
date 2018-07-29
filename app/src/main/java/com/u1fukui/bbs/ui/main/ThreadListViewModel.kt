@@ -29,11 +29,11 @@ class ThreadListViewModel(
 
     //    internal val threadBindingModelList: ObservableList<ThreadBindingModel> = ObservableArrayList()
 
-    private val job = Job()
-
     internal val threadBindingModelList: LiveData<PagedList<ThreadBindingModel>>
 
-    val factory = ThreadDataSourceFactory(repository, job)
+    private val job = Job()
+
+    private val factory = ThreadDataSourceFactory(repository, job)
 
     init {
         val config = PagedList.Config.Builder()
