@@ -3,10 +3,12 @@ package com.u1fukui.bbs.customview
 import android.databinding.ObservableList
 import android.support.v7.widget.RecyclerView
 
-abstract class ObservableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(list: ObservableList<T>) : ArrayRecyclerAdapter<T, VH>(list) {
+abstract class ObservableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(list: ObservableList<T>) :
+    ArrayRecyclerAdapter<T, VH>(list) {
 
     init {
-        list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
+        list.addOnListChangedCallback(object :
+            ObservableList.OnListChangedCallback<ObservableList<T>>() {
             override fun onChanged(list: ObservableList<T>) {
                 notifyDataSetChanged()
             }
@@ -19,8 +21,7 @@ abstract class ObservableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(li
                 notifyItemRangeInserted(i, i1)
             }
 
-            override fun onItemRangeMoved(list: ObservableList<T>, i: Int, i1: Int,
-                                          i2: Int) {
+            override fun onItemRangeMoved(list: ObservableList<T>, i: Int, i1: Int, i2: Int) {
                 notifyItemMoved(i, i1)
             }
 
