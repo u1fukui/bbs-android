@@ -5,5 +5,8 @@ import kotlinx.coroutines.experimental.Deferred
 
 interface ThreadListRepository {
 
-    fun fetchThreadList(lastId: Long): Deferred<List<BbsThread>>
+    fun fetchThreadList(
+        lastId: Long?,
+        pageSize: Int
+    ): Deferred<List<BbsThread>>
 }

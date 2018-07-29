@@ -10,6 +10,7 @@ interface ThreadListApi {
     @GET("threads")
     fun fetchCategoryThreadList(
         @Query("category") categoryId: Long,
-        @Query("lastId") lastId: Long = 0
+        @Query("lastId") lastId: Long?,
+        @Query("size") pageSize: Int
     ): Deferred<List<BbsThread>>
 }

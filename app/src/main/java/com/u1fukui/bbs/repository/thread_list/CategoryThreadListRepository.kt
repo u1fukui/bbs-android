@@ -10,6 +10,9 @@ class CategoryThreadListRepository @Inject constructor(
     private val categoryId: Long
 ) : ThreadListRepository {
 
-    override fun fetchThreadList(lastId: Long): Deferred<List<BbsThread>> =
-        threadListApi.fetchCategoryThreadList(categoryId, lastId)
+    override fun fetchThreadList(
+        lastId: Long?,
+        pageSize: Int
+    ): Deferred<List<BbsThread>> =
+        threadListApi.fetchCategoryThreadList(categoryId, lastId, pageSize)
 }

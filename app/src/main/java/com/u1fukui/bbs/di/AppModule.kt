@@ -69,16 +69,18 @@ class AppModule(private val app: App) {
         return object : ThreadListApi {
             override fun fetchCategoryThreadList(
                 categoryId: Long,
-                lastId: Long
+                lastId: Long?,
+                pageSize: Int
             ): Deferred<List<BbsThread>> =
                 async(CommonPool) {
-                    createDebugList(lastId)
+                    val key = lastId ?: 0
+                    createDebugList(key, pageSize)
                 }
         }
     }
 
-    private fun createDebugList(lastId: Long): List<BbsThread> =
-        ((lastId + 1)..(lastId + 20)).map {
+    private fun createDebugList(lastId: Long, pageSize: Int): List<BbsThread> =
+        ((lastId + 1)..(lastId + pageSize)).map {
             BbsThread(
                 it,
                 "お気に入りスレッド$it",
