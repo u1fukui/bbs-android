@@ -17,14 +17,23 @@ import com.u1fukui.bbs.paging.Status
 import com.u1fukui.bbs.paging.comment.CommentDataSourceFactory
 import com.u1fukui.bbs.repository.ThreadRepository
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
+import kotlin.coroutines.CoroutineContext
 
 class ThreadDetailViewModel(
     private val owner: LifecycleOwner,
     val bbsThread: BbsThread,
     private val repository: ThreadRepository,
     private val navigator: ThreadDetailNavigator
-) : ViewModel(), ErrorView.ErrorViewListener {
+) : ViewModel(), ErrorView.ErrorViewListener, CoroutineScope {
+
+    //region CoroutineScope
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+    //endregion
 
     //region DataBinding
     val refreshing = MutableLiveData<Boolean>()
@@ -37,7 +46,7 @@ class ThreadDetailViewModel(
 
     private val job = Job()
 
-    private val factory = CommentDataSourceFactory(repository, bbsThread.id, job)
+    private val factory = CommentDataSourceFactory(repository, bbsThread.id, this)
 
     init {
         val config = PagedList.Config.Builder()
@@ -98,9 +107,9 @@ class ThreadDetailViewModel(
     }
 
     override fun onCleared() {
-        super.onCleared()
         compositeDisposable.clear()
-        job.cancel()
+        job.cancelChildren()
+        super.onCleared()
     }
 
     class Factory(

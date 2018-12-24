@@ -2,7 +2,7 @@ package com.u1fukui.bbs.repository.thread_list
 
 import com.u1fukui.bbs.api.ThreadListApi
 import com.u1fukui.bbs.model.BbsThread
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 
 class HistoryThreadListRepository constructor(
     private val threadListApi: ThreadListApi

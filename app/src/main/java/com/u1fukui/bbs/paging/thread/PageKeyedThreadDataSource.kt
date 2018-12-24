@@ -5,13 +5,12 @@ import android.arch.paging.PageKeyedDataSource
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.paging.NetworkState
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class PageKeyedThreadDataSource(
     private val repository: ThreadListRepository,
-    private val job: Job
+    private val coroutineScope: CoroutineScope
 ) : PageKeyedDataSource<Long, BbsThread>() {
 
     val networkState = MutableLiveData<NetworkState>()
@@ -50,7 +49,7 @@ class PageKeyedThreadDataSource(
     ) {
         val isInitial = lastId == null
         updateNetworkState(NetworkState.LOADING, isInitial)
-        launch(job + UI) {
+        coroutineScope.launch {
             try {
                 repository.fetchThreadList(lastId, size).await()
                     .let {

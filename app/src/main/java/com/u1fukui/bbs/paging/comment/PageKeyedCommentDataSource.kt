@@ -5,14 +5,13 @@ import android.arch.paging.PageKeyedDataSource
 import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.paging.NetworkState
 import com.u1fukui.bbs.repository.ThreadRepository
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class PageKeyedCommentDataSource(
     private val repository: ThreadRepository,
     private val threadId: Long,
-    private val job: Job
+    private val coroutineScope: CoroutineScope
 ) : PageKeyedDataSource<Long, Comment>() {
 
     val networkState = MutableLiveData<NetworkState>()
@@ -51,7 +50,7 @@ class PageKeyedCommentDataSource(
     ) {
         val isInitial = lastId == null
         updateNetworkState(NetworkState.LOADING, isInitial)
-        launch(job + UI) {
+        coroutineScope.launch {
             try {
                 repository.fetchCommentList(threadId, lastId, size).await()
                     .let {

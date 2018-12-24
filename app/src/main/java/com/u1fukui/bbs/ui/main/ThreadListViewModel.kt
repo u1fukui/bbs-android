@@ -14,13 +14,21 @@ import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.paging.Status
 import com.u1fukui.bbs.paging.thread.ThreadDataSourceFactory
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
-import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
 class ThreadListViewModel(
     private val owner: LifecycleOwner,
     private val repository: ThreadListRepository,
     private val navigator: ThreadListNavigator
-) : ViewModel(), ErrorView.ErrorViewListener {
+) : ViewModel(), ErrorView.ErrorViewListener, CoroutineScope {
+
+    //region CoroutineScope
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+    //endregion
 
     //region DataBinding
     val loadingManager = LoadingManager()
@@ -33,7 +41,7 @@ class ThreadListViewModel(
 
     private val job = Job()
 
-    private val factory = ThreadDataSourceFactory(repository, job)
+    private val factory = ThreadDataSourceFactory(repository, this)
 
     init {
         val config = PagedList.Config.Builder()

@@ -1,7 +1,7 @@
 package com.u1fukui.bbs.di
 
 import android.content.Context
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.BuildConfig
@@ -14,9 +14,10 @@ import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.network.ApplicationJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -70,7 +71,7 @@ class AppModule(private val app: App) {
                 lastId: Long?,
                 pageSize: Int
             ): Deferred<List<BbsThread>> =
-                async(CommonPool) {
+                GlobalScope.async {
                     val key = lastId ?: 0
                     createThreadDebugList(key, pageSize)
                 }
@@ -101,7 +102,7 @@ class AppModule(private val app: App) {
                 lastId: Long?,
                 pageSize: Int
             ): Deferred<List<Comment>> =
-                async(CommonPool) {
+                GlobalScope.async(Dispatchers.Default) {
                     val key = lastId ?: 0
                     createCommentDebugList(threadId, key, pageSize)
                 }
