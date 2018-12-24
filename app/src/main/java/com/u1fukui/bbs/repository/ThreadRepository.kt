@@ -7,7 +7,7 @@ import com.u1fukui.bbs.model.ApiResponse
 import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.model.EmptyResponse
 import io.reactivex.Single
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 
 class ThreadRepository(private val threadApi: ThreadApi) {
 

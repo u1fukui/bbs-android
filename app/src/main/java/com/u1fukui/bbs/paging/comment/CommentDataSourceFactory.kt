@@ -3,15 +3,16 @@ package com.u1fukui.bbs.paging.comment
 import android.arch.paging.DataSource
 import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.repository.ThreadRepository
-import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 
 class CommentDataSourceFactory(
     repository: ThreadRepository,
     threadId: Long,
-    job: Job
+    coroutineScope: CoroutineScope
 ) : DataSource.Factory<Long, Comment>() {
 
-    val source = PageKeyedCommentDataSource(repository, threadId, job)
+    val source = PageKeyedCommentDataSource(repository, threadId, coroutineScope)
 
     override fun create(): DataSource<Long, Comment> = source
 }

@@ -1,7 +1,7 @@
 package com.u1fukui.bbs.api
 
 import com.u1fukui.bbs.model.BbsThread
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
