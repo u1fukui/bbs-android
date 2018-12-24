@@ -4,6 +4,7 @@ package com.u1fukui.bbs.helper
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import android.view.View
+import com.u1fukui.bbs.network.ApiErrorMesageResolver
 
 class LoadingManager {
 
@@ -33,10 +34,13 @@ class LoadingManager {
     }
 
     fun showErrorView(t: Throwable) {
+        showErrorView(ApiErrorMesageResolver.getMessage(t))
+    }
+
+    fun showErrorView(message: String) {
         contentVisibility.set(View.GONE)
 
-        //TODO: エラー文言
-        errorMessage.set("エラーです")
+        errorMessage.set(message)
         errorViewVisibility.set(View.VISIBLE)
 
         finishLoading()

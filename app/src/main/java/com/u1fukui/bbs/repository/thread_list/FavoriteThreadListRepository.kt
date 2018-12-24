@@ -8,7 +8,9 @@ class FavoriteThreadListRepository constructor(
     private val threadListApi: ThreadListApi
 ) : ThreadListRepository {
 
-    //TODO: Apply correct API
-    override fun fetchThreadList(lastId: Long): Deferred<List<BbsThread>> =
-        threadListApi.fetchCategoryThreadList(1)
+    override fun fetchThreadList(
+        lastId: Long?,
+        pageSize: Int
+    ): Deferred<List<BbsThread>> =
+        threadListApi.fetchCategoryThreadList(1, lastId, pageSize)
 }

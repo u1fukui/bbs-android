@@ -1,41 +1,91 @@
 package com.u1fukui.bbs.ui.detail
 
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableList
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import android.view.View
+import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.model.BbsThread
+import com.u1fukui.bbs.paging.Status
+import com.u1fukui.bbs.paging.comment.CommentDataSourceFactory
 import com.u1fukui.bbs.repository.ThreadRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.Job
 
 class ThreadDetailViewModel(
-        val bbsThread: BbsThread,
-        private val repository: ThreadRepository,
-        private val navigator: ThreadDetailNavigator
+    private val owner: LifecycleOwner,
+    val bbsThread: BbsThread,
+    private val repository: ThreadRepository,
+    private val navigator: ThreadDetailNavigator
 ) : ViewModel(), ErrorView.ErrorViewListener {
 
     //region DataBinding
-    val refreshing = ObservableBoolean(false)
+    val refreshing = MutableLiveData<Boolean>()
     val loadingManager = LoadingManager()
     //endregion
 
-    //TODO: 整理する
-    internal val commentBindingModelList: ObservableList<CommentBindingModel> = ObservableArrayList()
+    internal val commentBindingModelList: LiveData<PagedList<CommentBindingModel>>
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
+    private val job = Job()
+
+    private val factory = CommentDataSourceFactory(repository, bbsThread.id, job)
+
+    init {
+        val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(ThreadDetailViewModel.PAGE_SIZE)
+            .setPageSize(ThreadDetailViewModel.PAGE_SIZE)
+            .setEnablePlaceholders(false)
+            .setPrefetchDistance(5)
+            .build()
+
+        commentBindingModelList = LivePagedListBuilder(
+            factory.map { CommentBindingModel(it) },
+            config
+        ).build()
+
+        observeNetworkState()
+    }
+
+    private fun observeNetworkState() {
+        factory.source.initialLoad.observe(owner, Observer {
+            when (it?.status) {
+                Status.RUNNING -> loadingManager.startLoading()
+                Status.SUCCESS -> {
+                    loadingManager.showContentView()
+                    refreshing.postValue(false)
+                }
+                Status.FAILED -> {
+                    loadingManager.showErrorView(it.throwable!!)
+                    refreshing.postValue(false)
+                }
+            }
+        })
+
+        factory.source.networkState.observe(owner, Observer {
+            when (it?.status) {
+                Status.RUNNING -> loadingManager.startLoading()
+                Status.SUCCESS -> loadingManager.finishLoading()
+                Status.FAILED -> {
+                    loadingManager.finishLoading()
+                    App.getToastUtils().showApiError(it.throwable!!)
+                }
+            }
+        })
+    }
+
     //region DataBinding
     fun onSwipeRefresh() {
-        refreshing.set(true)
-        fetchCommentList()
+        refreshing.postValue(true)
+        factory.source.invalidate()
     }
     //endregion
 
@@ -43,62 +93,33 @@ class ThreadDetailViewModel(
         navigator.navigateToCreateCommentPage(bbsThread)
     }
 
-    fun start() {
-        if (commentBindingModelList.isEmpty()) {
-            fetchCommentList()
-        }
-    }
-
-    private fun fetchCommentList() {
-        if (loadingManager.isLoading) {
-            refreshing.set(false)
-            return
-        }
-        loadingManager.startLoading()
-
-        repository.fetchCommentList(bbsThread.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onSuccess = {
-                            val bindingModelList = it.map { CommentBindingModel(it) }
-                            renderCommentList(bindingModelList)
-                        },
-                        onError = {
-                            loadingManager.showErrorView(it)
-                        }
-                )
-                .addTo(compositeDisposable)
-    }
-
-    private fun renderCommentList(list: List<CommentBindingModel>) {
-        commentBindingModelList.clear()
-        commentBindingModelList.addAll(list)
-
-        loadingManager.showContentView()
-        refreshing.set(false)
-    }
-
     override fun onClickReloadButton() {
-        fetchCommentList()
+        factory.source.invalidate()
     }
 
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
+        job.cancel()
     }
 
     class Factory(
-            private val bbsThread: BbsThread,
-            private val repository: ThreadRepository,
-            private val navigator: ThreadDetailNavigator
+        private val lifecycle: LifecycleOwner,
+        private val bbsThread: BbsThread,
+        private val repository: ThreadRepository,
+        private val navigator: ThreadDetailNavigator
     ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = ThreadDetailViewModel(
-                bbsThread,
-                repository,
-                navigator
+            lifecycle,
+            bbsThread,
+            repository,
+            navigator
         ) as T
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 20
     }
 }

@@ -1,95 +1,89 @@
 package com.u1fukui.bbs.ui.main
 
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableList
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
-import com.u1fukui.bbs.model.BbsThread
+import com.u1fukui.bbs.paging.Status
+import com.u1fukui.bbs.paging.thread.ThreadDataSourceFactory
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 
 class ThreadListViewModel(
+    private val owner: LifecycleOwner,
     private val repository: ThreadListRepository,
     private val navigator: ThreadListNavigator
 ) : ViewModel(), ErrorView.ErrorViewListener {
 
     //region DataBinding
     val loadingManager = LoadingManager()
-    val refreshing = ObservableBoolean(false)
+    val refreshing = MutableLiveData<Boolean>()
     //endregion
 
-    internal val threadBindingModelList: ObservableList<ThreadBindingModel> = ObservableArrayList()
-    private var isThreadListCompleted: Boolean = false
+    //    internal val threadBindingModelList: ObservableList<ThreadBindingModel> = ObservableArrayList()
+
+    internal val threadBindingModelList: LiveData<PagedList<ThreadBindingModel>>
 
     private val job = Job()
 
+    private val factory = ThreadDataSourceFactory(repository, job)
+
+    init {
+        val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(PAGE_SIZE)
+            .setPageSize(PAGE_SIZE)
+            .setEnablePlaceholders(false)
+            .setPrefetchDistance(5)
+            .build()
+
+        threadBindingModelList = LivePagedListBuilder(
+            factory.map { ThreadBindingModel(navigator, it) },
+            config
+        ).build()
+
+        observeNetworkState()
+    }
+
+    private fun observeNetworkState() {
+        factory.source.initialLoad.observe(owner, Observer {
+            when (it?.status) {
+                Status.RUNNING -> loadingManager.startLoading()
+                Status.SUCCESS -> {
+                    loadingManager.showContentView()
+                    refreshing.postValue(false)
+                }
+                Status.FAILED -> {
+                    loadingManager.showErrorView(it.throwable!!)
+                    refreshing.postValue(false)
+                }
+            }
+        })
+
+        factory.source.networkState.observe(owner, Observer {
+            when (it?.status) {
+                Status.RUNNING -> loadingManager.startLoading()
+                Status.SUCCESS -> loadingManager.finishLoading()
+                Status.FAILED -> {
+                    loadingManager.finishLoading()
+                    App.getToastUtils().showApiError(it.throwable!!)
+                }
+            }
+        })
+    }
+
     //region Databinding
     fun onSwipeRefresh() {
-        refreshing.set(true)
-        fetchThreadList(0)
+        refreshing.postValue(true)
+        factory.source.invalidate()
     }
     //endregion
-
-    fun start() {
-        if (threadBindingModelList.isEmpty()) {
-            fetchThreadList(0)
-        }
-    }
-
-    fun loadNextPage() {
-        if (threadBindingModelList.isEmpty()) {
-            return
-        }
-        val thread = threadBindingModelList[threadBindingModelList.size - 1]
-        fetchThreadList(thread.bbsThread.id)
-    }
-
-    private fun fetchThreadList(lastId: Long) {
-        if (loadingManager.isLoading || isThreadListCompleted) {
-            refreshing.set(false)
-            return
-        }
-        loadingManager.startLoading()
-
-        launch(job + UI) {
-            val isListHead = lastId == 0L
-            try {
-                repository.fetchThreadList(lastId).await()
-                    .let {
-                        bindThreadList(it, isListHead)
-                        loadingManager.showContentView()
-                        refreshing.set(false)
-                    }
-            } catch (t: Throwable) {
-                if (isListHead) {
-                    loadingManager.showErrorView(t)
-                } else {
-                    App.getToastUtils().showToast("エラー") //TODO: エラーメッセージ
-                    isThreadListCompleted = true
-                    loadingManager.finishLoading()
-                }
-                refreshing.set(false)
-            }
-        }
-    }
-
-    private fun bindThreadList(list: List<BbsThread>, isListHead: Boolean) {
-        if (isListHead) {
-            threadBindingModelList.clear()
-        }
-
-        val bindingModelList = list.map { ThreadBindingModel(navigator, it) }
-        threadBindingModelList.addAll(bindingModelList)
-
-        //TODO: ちゃんとする
-        isThreadListCompleted = list.size < 20
-    }
 
     override fun onCleared() {
         job.cancel()
@@ -97,18 +91,24 @@ class ThreadListViewModel(
     }
 
     override fun onClickReloadButton() {
-        fetchThreadList(0)
+        factory.source.invalidate()
     }
 
     class Factory(
+        private val lifecycle: LifecycleOwner,
         private val repository: ThreadListRepository,
         private val navigator: ThreadListNavigator
     ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = ThreadListViewModel(
+            lifecycle,
             repository,
             navigator
         ) as T
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 20
     }
 }

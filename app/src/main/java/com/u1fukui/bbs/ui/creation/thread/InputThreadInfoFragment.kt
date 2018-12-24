@@ -6,13 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.u1fukui.bbs.api.ThreadApi
 import com.u1fukui.bbs.databinding.FragmentInputThreadInfoBinding
 import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.model.Category
 import com.u1fukui.bbs.repository.ThreadRepository
 import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
 class InputThreadInfoFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var threadApi: ThreadApi
 
     internal val category by lazy {
         arguments?.getSerializable(ARG_CATEGORY) as Category
@@ -22,7 +27,7 @@ class InputThreadInfoFragment : DaggerFragment() {
         ViewModelProviders
                 .of(this, InputThreadInfoViewModel.Factory(
                         category,
-                        ThreadRepository(),
+                        ThreadRepository(threadApi),
                         CreateThreadNavigator(activity as CreateThreadActivity),
                         DialogHelper(requireContext())
                 ))

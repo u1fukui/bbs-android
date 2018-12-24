@@ -6,11 +6,12 @@ import com.squareup.moshi.Moshi
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.BuildConfig
 import com.u1fukui.bbs.R
+import com.u1fukui.bbs.api.ThreadApi
 import com.u1fukui.bbs.api.ThreadListApi
 import com.u1fukui.bbs.model.BbsThread
+import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.network.ApplicationJsonAdapterFactory
-import com.u1fukui.bbs.repository.ThreadRepository
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.experimental.CommonPool
@@ -32,33 +33,30 @@ class AppModule(private val app: App) {
 
     @Provides
     @Singleton
-    fun provideThreadRepository() = ThreadRepository()
-
-    @Provides
-    @Singleton
     fun provideMoshi() =
-            Moshi.Builder()
-                    .add(ApplicationJsonAdapterFactory.INSTANCE)
-                    .build()
+        Moshi.Builder()
+            .add(ApplicationJsonAdapterFactory.INSTANCE)
+            .build()
 
     @Provides
     @Singleton
     fun providesOkHttp() =
-            OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().apply {
-                        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-                    })
-                    .build()
+        OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level =
+                        if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            })
+            .build()
 
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi) =
-            Retrofit.Builder()
-                    .client(okHttpClient)
-                    .baseUrl(app.getString(R.string.api_base))
-                    .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                    .build()
+        Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(app.getString(R.string.api_base))
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
 
     @Provides
     @Singleton
@@ -69,16 +67,18 @@ class AppModule(private val app: App) {
         return object : ThreadListApi {
             override fun fetchCategoryThreadList(
                 categoryId: Long,
-                lastId: Long
+                lastId: Long?,
+                pageSize: Int
             ): Deferred<List<BbsThread>> =
                 async(CommonPool) {
-                    createDebugList(lastId)
+                    val key = lastId ?: 0
+                    createThreadDebugList(key, pageSize)
                 }
         }
     }
 
-    private fun createDebugList(lastId: Long): List<BbsThread> =
-        ((lastId + 1)..(lastId + 20)).map {
+    private fun createThreadDebugList(lastId: Long, pageSize: Int): List<BbsThread> =
+        ((lastId + 1)..(lastId + pageSize)).map {
             BbsThread(
                 it,
                 "お気に入りスレッド$it",
@@ -89,4 +89,41 @@ class AppModule(private val app: App) {
             )
         }
 
+    @Provides
+    @Singleton
+    fun provideThreadApi(retrofit: Retrofit): ThreadApi {
+        //        retrofit.create(ThreadApi::class.java)
+
+        //TODO: Remove
+        return object : ThreadApi {
+            override fun fetchCommentList(
+                threadId: Long,
+                lastId: Long?,
+                pageSize: Int
+            ): Deferred<List<Comment>> =
+                async(CommonPool) {
+                    val key = lastId ?: 0
+                    createCommentDebugList(threadId, key, pageSize)
+                }
+        }
+    }
+
+    private fun createCommentDebugList(
+        threadId: Long,
+        lastId: Long,
+        pageSize: Int
+    ): List<Comment> =
+        ((lastId + 1)..(lastId + pageSize)).map {
+            val author = User(it, "コメンター" + it)
+            Comment(
+                it,
+                threadId,
+                it.toInt(),
+                "コメント",
+                author,
+                it.toInt(),
+                false,
+                Date()
+            )
+        }
 }

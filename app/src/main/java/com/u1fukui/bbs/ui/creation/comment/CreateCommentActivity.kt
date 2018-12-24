@@ -7,6 +7,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import com.u1fukui.bbs.R
+import com.u1fukui.bbs.api.ThreadApi
 import com.u1fukui.bbs.databinding.ActivityCreateCommentBinding
 import com.u1fukui.bbs.helper.DialogHelper
 import com.u1fukui.bbs.model.BbsThread
@@ -14,8 +15,12 @@ import com.u1fukui.bbs.model.User
 import com.u1fukui.bbs.repository.ThreadRepository
 import com.u1fukui.bbs.ui.BaseActivity
 import com.u1fukui.bbs.ui.Navigator
+import javax.inject.Inject
 
 class CreateCommentActivity : BaseActivity() {
+
+    @Inject
+    lateinit var threadApi: ThreadApi
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityCreateCommentBinding>(this, R.layout.activity_create_comment)
@@ -30,7 +35,7 @@ class CreateCommentActivity : BaseActivity() {
                 .of(this, CreateCommentViewModel.Factory(
                         bbsThread,
                         User(1L, "たろう"),
-                        ThreadRepository(),
+                        ThreadRepository(threadApi),
                         Navigator(this),
                         DialogHelper(this)
                 ))
