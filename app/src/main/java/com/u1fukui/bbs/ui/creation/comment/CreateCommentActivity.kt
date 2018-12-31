@@ -1,10 +1,10 @@
 package com.u1fukui.bbs.ui.creation.comment
 
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.api.ThreadApi

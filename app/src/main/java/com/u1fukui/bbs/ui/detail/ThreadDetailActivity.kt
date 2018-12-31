@@ -1,13 +1,13 @@
 package com.u1fukui.bbs.ui.detail
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.api.ThreadApi
 import com.u1fukui.bbs.databinding.ActivityThreadDetailBinding
@@ -71,7 +71,12 @@ class ThreadDetailActivity : BaseActivity() {
         binding.recyclerView.let {
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(this)
-            it.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+            it.addItemDecoration(
+                DividerItemDecoration(
+                    this,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 

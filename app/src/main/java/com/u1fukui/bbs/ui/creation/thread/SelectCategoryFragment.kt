@@ -1,14 +1,13 @@
 package com.u1fukui.bbs.ui.creation.thread
 
-
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.ObservableList
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ObservableList
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.customview.BindingHolder
 import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
@@ -23,14 +22,20 @@ class SelectCategoryFragment : DaggerFragment() {
 
     private val viewModel: SelectCategoryViewModel by lazy {
         ViewModelProviders
-                .of(this, SelectCategoryViewModel.Factory(
-                        CategoryListRepository(),
-                        CreateThreadNavigator(activity as CreateThreadActivity)
-                ))
-                .get(SelectCategoryViewModel::class.java)
+            .of(
+                this, SelectCategoryViewModel.Factory(
+                    CategoryListRepository(),
+                    CreateThreadNavigator(activity as CreateThreadActivity)
+                )
+            )
+            .get(SelectCategoryViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentSelectCategoryBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         initViews()
@@ -44,7 +49,12 @@ class SelectCategoryFragment : DaggerFragment() {
         binding.recyclerView.apply {
             adapter = Adapter(viewModel.categoryList)
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 
@@ -53,11 +63,22 @@ class SelectCategoryFragment : DaggerFragment() {
         super.onDestroyView()
     }
 
-    private class Adapter(list: ObservableList<CategoryBindingModel>) : ObservableListRecyclerAdapter<CategoryBindingModel, BindingHolder<ViewCategoryCellBinding>>(list) {
+    private class Adapter(list: ObservableList<CategoryBindingModel>) :
+        ObservableListRecyclerAdapter<CategoryBindingModel, BindingHolder<ViewCategoryCellBinding>>(
+            list
+        ) {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BindingHolder<ViewCategoryCellBinding>(parent.context, parent, R.layout.view_category_cell)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            BindingHolder<ViewCategoryCellBinding>(
+                parent.context,
+                parent,
+                R.layout.view_category_cell
+            )
 
-        override fun onBindViewHolder(holder: BindingHolder<ViewCategoryCellBinding>, position: Int) {
+        override fun onBindViewHolder(
+            holder: BindingHolder<ViewCategoryCellBinding>,
+            position: Int
+        ) {
             holder.binding?.apply {
                 bindingModel = getItem(position)
                 executePendingBindings()

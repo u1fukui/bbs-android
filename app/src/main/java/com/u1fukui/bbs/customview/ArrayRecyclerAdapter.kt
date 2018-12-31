@@ -1,10 +1,10 @@
 package com.u1fukui.bbs.customview
 
-import android.support.annotation.UiThread
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.UiThread
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class ArrayRecyclerAdapter<T, VH : RecyclerView.ViewHolder> @JvmOverloads constructor(
-        protected val list: MutableList<T> = ArrayList()
+    protected val list: MutableList<T> = ArrayList()
 ) : RecyclerView.Adapter<VH>() {
 
     @UiThread

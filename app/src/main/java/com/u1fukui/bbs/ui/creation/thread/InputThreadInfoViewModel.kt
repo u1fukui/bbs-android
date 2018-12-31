@@ -1,9 +1,9 @@
 package com.u1fukui.bbs.ui.creation.thread
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableInt
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
 import android.view.View
 import com.u1fukui.bbs.App
 import com.u1fukui.bbs.R

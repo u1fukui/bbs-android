@@ -1,7 +1,7 @@
 package com.u1fukui.bbs.ui
 
-import android.support.v7.app.AppCompatDelegate
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 

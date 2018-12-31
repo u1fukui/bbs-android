@@ -1,7 +1,7 @@
 package com.u1fukui.bbs.customview
 
-import android.databinding.ObservableList
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.ObservableList
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class ObservableListRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(list: ObservableList<T>) :
     ArrayRecyclerAdapter<T, VH>(list) {

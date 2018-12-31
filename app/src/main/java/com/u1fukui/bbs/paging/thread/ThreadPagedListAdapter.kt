@@ -1,7 +1,7 @@
 package com.u1fukui.bbs.paging.thread
 
-import android.arch.paging.PagedListAdapter
-import android.support.v7.util.DiffUtil
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import android.view.ViewGroup
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.customview.BindingHolder

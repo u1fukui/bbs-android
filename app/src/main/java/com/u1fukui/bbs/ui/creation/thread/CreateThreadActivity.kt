@@ -1,6 +1,6 @@
 package com.u1fukui.bbs.ui.creation.thread
 
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.databinding.ActivityCreateThreadBinding
