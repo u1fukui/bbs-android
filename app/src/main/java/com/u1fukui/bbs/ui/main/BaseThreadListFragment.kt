@@ -1,13 +1,13 @@
 package com.u1fukui.bbs.ui.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.u1fukui.bbs.databinding.FragmentThreadListBinding
 import com.u1fukui.bbs.paging.thread.ThreadPagedListAdapter
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
@@ -53,7 +53,12 @@ abstract class BaseThreadListFragment : DaggerFragment() {
         binding.recyclerView.let {
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(context)
-            it.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            it.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 

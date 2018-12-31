@@ -1,9 +1,9 @@
 package com.u1fukui.bbs.ui.notification
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
 import com.u1fukui.bbs.customview.ErrorView
 import com.u1fukui.bbs.helper.LoadingManager
 import com.u1fukui.bbs.repository.NotificationListRepository

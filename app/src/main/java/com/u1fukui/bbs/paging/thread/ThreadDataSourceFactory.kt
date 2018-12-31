@@ -1,6 +1,6 @@
 package com.u1fukui.bbs.paging.thread
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.u1fukui.bbs.model.BbsThread
 import com.u1fukui.bbs.repository.thread_list.ThreadListRepository
 import kotlinx.coroutines.CoroutineScope

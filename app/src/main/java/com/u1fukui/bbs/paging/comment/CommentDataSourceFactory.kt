@@ -1,6 +1,6 @@
 package com.u1fukui.bbs.paging.comment
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.u1fukui.bbs.model.Comment
 import com.u1fukui.bbs.repository.ThreadRepository
 import kotlinx.coroutines.CoroutineScope

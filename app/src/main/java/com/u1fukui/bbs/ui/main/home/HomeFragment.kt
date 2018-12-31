@@ -1,14 +1,14 @@
 package com.u1fukui.bbs.ui.main.home
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.ObservableList
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ObservableList
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.tabs.TabLayout
 import com.u1fukui.bbs.databinding.FragmentHomeBinding
 import com.u1fukui.bbs.model.Category
 import com.u1fukui.bbs.repository.CategoryListRepository
@@ -53,8 +53,8 @@ class HomeFragment : DaggerFragment() {
     }
 
     private class HomePagerAdapter(
-            manager: FragmentManager,
-            private val categoryList: ObservableList<Category>
+        manager: FragmentManager,
+        private val categoryList: ObservableList<Category>
     ) : FragmentPagerAdapter(manager) {
 
         init {

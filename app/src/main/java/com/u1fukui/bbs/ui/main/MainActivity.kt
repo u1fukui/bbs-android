@@ -1,11 +1,11 @@
 package com.u1fukui.bbs.ui.main
 
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.databinding.ActivityMainBinding
 import com.u1fukui.bbs.ui.BaseActivity
@@ -74,7 +74,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun switchFragment(fragment: Fragment?, tag: String): Boolean {
+    private fun switchFragment(fragment: androidx.fragment.app.Fragment?, tag: String): Boolean {
         if (fragment == null || fragment.isAdded) {
             return false
         }

@@ -3,25 +3,24 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 ext {
-    support_lib_version = "27.1.0"
-    arch_lib_version = "1.1.0"
-    dagger_version = "2.15"
-    okhttp_version = "3.9.1"
-    retrofit_version = "2.3.0"
-    moshi_version = "1.5.0"
-    koshi_version = "1.0.2"
+    support_lib_version = "28.0.0"
+    dagger_version = "2.16"
+    okhttp_version = "3.12.0"
+    retrofit_version = "2.5.0"
+    moshi_version = "1.8.0"
+    koshi_version = "1.0.6"
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.u1fukui.bbs"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     dataBinding {
@@ -49,28 +48,28 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs', module: 'jsr305' // for dagger
     })
 
     // support library
-    implementation "com.android.support:appcompat-v7:$support_lib_version"
-    implementation "com.android.support:design:$support_lib_version"
-    implementation "com.android.support:support-vector-drawable:$support_lib_version"
-    implementation "com.android.support:recyclerview-v7:$support_lib_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
 
     // Architecture Components
-    implementation "android.arch.lifecycle:extensions:1.1.0"
-    implementation "android.arch.lifecycle:common-java8:1.1.0"
-    implementation "android.arch.lifecycle:reactivestreams:1.1.0"
-    implementation "android.arch.paging:runtime:1.0.0"
-    kapt "android.arch.lifecycle:compiler:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:2.1.0-alpha01"
+    implementation "androidx.paging:paging-runtime:2.1.0-rc01"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha01"
 
     // Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.4'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
 
     // DI
     implementation "com.google.dagger:dagger:$dagger_version"

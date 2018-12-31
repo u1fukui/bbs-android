@@ -47,7 +47,7 @@
                 android:textSize="12sp"
                 tools:text="2017/01/01 12:00" />
 
-            <android.support.v4.widget.Space
+            <androidx.legacy.widget.Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />

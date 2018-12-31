@@ -1,7 +1,7 @@
 package com.u1fukui.bbs.ui.detail
 
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableInt
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View

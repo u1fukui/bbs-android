@@ -1,13 +1,13 @@
 package com.u1fukui.bbs.ui.notification
 
 
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableList
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableList
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.u1fukui.bbs.R
 import com.u1fukui.bbs.customview.BindingHolder
 import com.u1fukui.bbs.customview.ObservableListRecyclerAdapter
@@ -44,7 +44,12 @@ class NotificationListActivity : BaseActivity() {
         binding.recyclerView.apply {
             adapter = Adapter(viewModel.notificationBindingModelList)
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    LinearLayoutManager.VERTICAL
+                )
+            )
         }
     }
 
